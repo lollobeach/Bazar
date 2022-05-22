@@ -38,7 +38,7 @@ serviceRoutes.route("/service/:id").get(function (req, res){
 });
 
 serviceRoutes.route("/service/").post(function (req, response){
-    let db_connect = dbo.getDb();
+    let db_connect = dbo.getDb("services");
     let myService = {
         name: req.body.name,
         type: req.body.type,
@@ -51,8 +51,8 @@ serviceRoutes.route("/service/").post(function (req, response){
     });
 });
 
-serviceRoutes.route("/service/up/:id").put(async function (req, response){
-    let db_connect = dbo.getDb();
+/*serviceRoutes.route("/service/up/:id").put(async function (req, response){
+    let db_connect = dbo.getDb("services");
     let query = { _id: ObjectId(req.params.id)}
     let newService = {
         $set: {
@@ -77,17 +77,48 @@ serviceRoutes.route("/service/up/:id").put(async function (req, response){
     );
       /*  if(err) throw err;
         response.json(res);
-    });*/
-});
+    })
+});*/
 
-serviceRoutes.route("service/:id").delete((req, response) => {
+/*serviceRoutes.patch("/service/:id", async (request, response) => {
+    try {
+      await foodModel.findByIdAndUpdate(request.params.id, request.body);
+      await foodModel.save();
+      response.send(food);
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  });*/
+
+serviceRoutes.route("/service/:id").post(function (req, response) {
     let db_connect = dbo.getDb();
-    let query = { _id: ObjectId(req.params.id)};
-    db_connect.collection("service").deleteOne(query, function (err, obj){
+    let myquery = { _id: ObjectId( req.params.id )};
+    let newvalues = {
+        $set: {
+            name: req.body.name,
+            type: req.body.type,
+            description: req.body.description,
+            price: req.body.price,
+        },
+    };
+    db_connect
+       .collection("service")
+       .updateOne(myquery, newvalues, function (err, res) {
         if (err) throw err;
-        console.log("1 document deleted");
-        response.json(obj);
+        console.log("1 document updated");
+        response.json(res);
+      });
+  });
+
+
+serviceRoutes.route("/:id").delete((req, response) => {
+    let db_connect = dbo.getDb();
+    let myquery = { _id: ObjectId( req.params.id )};
+    db_connect.collection("records").deleteOne(myquery, function (err, obj) {
+       if (err) throw err;
+       console.log("1 document deleted");
+       response.json(obj);
     });
-});
+  });
 
 module.exports = serviceRoutes;
