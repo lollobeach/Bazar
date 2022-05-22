@@ -51,7 +51,7 @@ serviceRoutes.route("/service/").post(function (req, response){
     });
 });
 
-serviceRoutes.route("/service/:id").post(function (req, response){
+serviceRoutes.route("/service/up/:id").put(async function (req, response){
     let db_connect = dbo.getDb();
     let query = { _id: ObjectId(req.params.id)}
     let newService = {
@@ -62,10 +62,22 @@ serviceRoutes.route("/service/:id").post(function (req, response){
             price: req.body.price,
         },
     }
-    db_connect.collection("services").updateOne(query, newService, function(err, res){
-        if(err) throw err;
+    //db_connect.collection("services").updateOne(query, newService, function(err, res){
+    await db_connect.collection("services").updateOne(
+        { _id: ObjectId(req.params.id)   },
+        {
+            $set: {
+                name: req.body.name,
+                type: req.body.type,
+                description: req.body.description,
+                price: req.body.price,
+            },
+            $currentDate: { lastModified: true }
+        }
+    );
+      /*  if(err) throw err;
         response.json(res);
-    });
+    });*/
 });
 
 serviceRoutes.route("service/:id").delete((req, response) => {
