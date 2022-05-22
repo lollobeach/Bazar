@@ -15,7 +15,7 @@ const dbo = require("../db/conn");
 //utile per convertire gli id da String to ObjectId per _id
 const ObjectId = require("mongodb").ObjectId;
 
-serviceRoutes.route("/service").get(function (req, res){
+/*serviceRoutes.route("/service").get(function (req, res){
     let db_connect = dbo.getDb("services");
     db_connect
     .collection("service")
@@ -24,8 +24,45 @@ serviceRoutes.route("/service").get(function (req, res){
         if (err) throw err;
         res.json(result);
     });
-});
-
+});*/
+//fix post request
+serviceRoutes.route("/service")
+    .get(async (req, res) => {
+        try{
+            let db_connect = dbo.getDb("services");
+            await db_connect
+            .collection("service")
+            .find({})
+            .toArray(function (err, result){
+                if (err) throw err;
+                res.json(result);
+            });
+        }catch(error){
+            res.status(500).send(error)
+            console.log(error)
+        }
+    })
+    .post(async (req, res) => {
+        try{
+            let db_connect = dbo.getDb("services");
+            let myService = {
+                name: req.body.name,
+                type: req.body.type,
+                description: req.body.description,
+                price: req.body.price,
+            };
+            await db_connect
+            .collection("service")
+            .insertOne(myService, function (err, res){
+                if(err) throw err;
+                response.json(res);
+            });
+        }catch(error){
+            res.status(500).send(error)
+            console.log(error)
+        }
+    })
+/*
 serviceRoutes.route("/service/:id").get(function (req, res){
     let db_connect = dbo.getDb("services");
     let query = { _id: ObjectId(req.params.id)};
@@ -35,9 +72,9 @@ serviceRoutes.route("/service/:id").get(function (req, res){
         if(err) throw err;
         res.json(result);
     });
-});
+});*/
 
-serviceRoutes.route("/service/").post(function (req, response){
+/*serviceRoutes.route("/service/").post(function (req, response){
     let db_connect = dbo.getDb("services");
     let myService = {
         name: req.body.name,
@@ -49,7 +86,7 @@ serviceRoutes.route("/service/").post(function (req, response){
         if(err) throw err;
         response.json(res);
     });
-});
+});*/
 
 /*serviceRoutes.route("/service/up/:id").put(async function (req, response){
     let db_connect = dbo.getDb("services");
@@ -89,7 +126,7 @@ serviceRoutes.route("/service/").post(function (req, response){
       response.status(500).send(error);
     }
   });*/
-
+/*
 serviceRoutes.route("/service/:id").post(function (req, response) {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId( req.params.id )};
@@ -119,6 +156,6 @@ serviceRoutes.route("/:id").delete((req, response) => {
        console.log("1 document deleted");
        response.json(obj);
     });
-  });
+  });*/
 
 module.exports = serviceRoutes;
