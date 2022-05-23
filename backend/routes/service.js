@@ -109,9 +109,9 @@ serviceRoutes.route("/service/:service_id")
                console.log("1 document deleted");
                res.json(obj);
                if (obj.acknowledged && obj.deletedCount == 1)
-                    console.log("Deleted Successfully")    // Use your response code
+                    console.log("Deleted Successfully")  
                 else
-                    console.log("Record doesn't exist or already deleted")    // Use your response code
+                    console.log("Record doesn't exist or already deleted")   
             });
         }catch(error){
             res.status(500).send(error)

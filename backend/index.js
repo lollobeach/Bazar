@@ -33,6 +33,7 @@ app.use(session({
 
 //richiamo il file delle route
 app.use(require("./routes/service"));
+app.use(require("./routes/auth"));
 //connessione db
 const dbo = require("./db/conn");
 
@@ -40,8 +41,11 @@ const dbo = require("./db/conn");
 
 app.listen(port, () => {
     //connesiione al db
-    dbo.connectToServer(function (err){
+    /*dbo.connectToServer(function (err){
       if(err) console.error(err);
-    });
+    });*/
+    dbo
+    .connectToServer()
+    .catch(console.error)
     console.log(`Example app listening on port ${port}  `);
 });
