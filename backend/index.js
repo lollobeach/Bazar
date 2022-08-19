@@ -19,25 +19,22 @@ app.use(express.json());
 app.use(helmet())
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: 'pawn420giorgiosldgreenduccispina',
   name: 'sessionId',
-  cookie: {
-    secure: true,
-    //httpOnly: true,
-    //domain: 'example.com', to release in distribuition 
-    //path: 'foo/bar',
-    expires: expiryDate
+        secret: process.env.SESSION_SECRET,
+        saveUninitialized: false,
+        resave: false,
+        cookie: {
+            // settato a true funziona solo con https
+            // secure: true,
+            httpOnly: true
   }
 }))
 
-
-//richiamo il file delle route
-app.use(require("./routes/service"));
-app.use(require("./routes/auth"));
 //connessione db
 const dbo = require("./db/conn");
 
-
+require('./routes/auth')(app)
+require('./routes/user')(app)
 
 app.listen(port, () => {
     //connesiione al db
