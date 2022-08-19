@@ -1,6 +1,6 @@
 module.exports = {
     getUser: () => {
-        const db = require('../db/conn')
+        const db = require('../config/conn')
         return db.getDb().collection('User')
     }
 }

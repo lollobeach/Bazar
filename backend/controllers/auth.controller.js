@@ -1,4 +1,4 @@
-const config = require('../db/auth.config')
+const config = require('../config/auth.config')
 const User = require('../models/user.model')
 const Plan = require('../models/plan.model')
 let jwt = require('jsonwebtoken')

@@ -7,11 +7,11 @@ require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
 //inizio codice per sicurezza header, cookies e sessioni
 //richiamo helmet 
-var helmet = require('helmet')
+let helmet = require('helmet')
 //richiamo express session
-var session = require('express-session')
+let session = require('express-session')
 
-var expiryDate = new Date(Date.now() + 60 * 60 * 1000)
+let expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 ora
 
 app.use(cors());
 app.use(express.json());
@@ -19,18 +19,19 @@ app.use(helmet())
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   name: 'sessionId',
-        secret: process.env.SESSION_SECRET,
-        saveUninitialized: false,
-        resave: false,
-        cookie: {
-            // settato a true funziona solo con https
-            // secure: true,
-            httpOnly: true
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  expires: expiryDate,
+  cookie: {
+    // settato a true funziona solo con https
+    // secure: true,
+    httpOnly: true
   }
 }))
 
 //connessione db
-const dbo = require("./db/conn");
+const dbo = require("./config/conn");
 
 require('./routes/auth')(app)
 require('./routes/user')(app)
@@ -47,10 +48,10 @@ const io = require("socket.io")(httpServer, {
 const crypto = require("crypto");
 const randomId = () => crypto.randomBytes(8).toString("hex");
 
-const { InMemorySessionStore } = require("./middleware/sessionStore");
+const { InMemorySessionStore } = require("./middlewares/middleware_chat/sessionStore");
 const sessionStore = new InMemorySessionStore();
 
-const { InMemoryMessageStore } = require("./middleware/messageStore");
+const { InMemoryMessageStore } = require("./middlewares/middleware_chat/messageStore");
 const messageStore = new InMemoryMessageStore();
 
 io.use((socket, next) => {
@@ -155,6 +156,9 @@ io.on("connection", (socket) => {
 
 const PORT = process.env.PORT || 3000;
 
-httpServer.listen(PORT, () =>
+httpServer.listen(PORT, () =>{
+  dbo
+  .connectToServer()
+  .catch(console.error)
   console.log(`server listening at http://localhost:${PORT}`)
-);
+});

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
-const config = require('../db/auth.config')
-const User = require('../models/user.model')
-const Plans = require('../models/plan.model')
+const config = require('../../config/auth.config')
+const User = require('../../models/user.model')
+const Plans = require('../../models/plan.model')
 
 verifyToken = (req,res,next) => {
     let token = req.session.token

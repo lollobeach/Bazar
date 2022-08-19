@@ -1,5 +1,5 @@
 checkDuplicateUsernameOrEmail = (req,res,next) => { 
-    const User = require('../models/user.model')
+    const User = require('../../models/user.model')
 
     User.getUser().findOne({
         username: req.body.username
@@ -30,7 +30,7 @@ checkDuplicateUsernameOrEmail = (req,res,next) => {
 }
 
 checkPlanExisted = async (req,res,next) => {
-    const Plans = require('../models/plan.model')
+    const Plans = require('../../models/plan.model')
     // const idPlans = Plans.getPlans().find().map(x => x._id).toArray()
     let bool = false
     let plans = await Plans.getPlans().find().map(x => x.type).toArray()
