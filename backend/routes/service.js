@@ -7,7 +7,7 @@ const { response } = require("express");
 const express = require("express");
 
 //usati per definire le route dell'applicazione
-const serviceRoutes = express.Router();
+const serviceRoutes = express.Router(); //oggetto router
 
 //richiamo connessione db
 const dbo = require("../db/conn");

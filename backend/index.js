@@ -1,6 +1,7 @@
 //richiamo express
-const express = require('express');
-const app = express();
+const express = require('express');  //importo express nel progetto, da usare quando aggiungiamo un package al prj, importarlo laddove lo si buole usare
+const app = express(); //crea una nuova applicazione  e assegna il risultati ad app
+
 //richiamo cors service per evitare problemi dipendenze nodejs
 const cors = require("cors");
 //carica da variabili locali moduli da installare o variabili di ambienti da usare
@@ -32,10 +33,11 @@ app.use(session({
 
 
 //richiamo il file delle route
-app.use(require("./routes/service"));
+app.use(require("./routes/offered_services"));
+app.use(require("./routes/required_services"));
 app.use(require("./routes/auth"));
 //connessione db
-const dbo = require("./db/conn");
+
 
 
 
