@@ -23,6 +23,8 @@
                 surname: req.body.surname,
                 email: req.body.email,
                 number: req.body.number,
+                password: req.body.password,
+                username: req.body.username,
             };
             await db_connect
             .collection("user")
@@ -36,4 +38,22 @@
      }
 })
 
+authRoutes.post("/login", async function(req, res){
+    try {
+        let db_connect = dbo.getDb("services");
+        await db_connect
+        .collection("user")
+        .find({})
+        .toArray(function (err, result){
+            if (err) throw err;
+            res.json(result);
+            var email = result.filter(result => result.email === req.body.email);
+            var username = result.filter(result => result.username === req.body.username);
+            var password = result.filter(result => result.password === req.body.password);
+            console.log(email + username + password);
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
 module.exports = authRoutes;
