@@ -6,7 +6,6 @@ authentication = (app) => {
         res.header('Hello')
         next()
     })
-
     app.post('/api/auth/signup',
     [
         verifySignUp.checkDuplicateUsernameOrEmail,
