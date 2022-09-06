@@ -1,141 +1,149 @@
 const express = require("express");
+const RequiredServices = require("../models/required.service");
+const User = require("../models/user.model");
+const authJwt = require("../middlewares/middleware_auth/authJwt");
+const getId = require("../config/getId");
 
-// recordRoutes is an instance of the express router.
-// We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /listings.
 const recordRoutesForRequiredServices = express.Router();
 
-const dbo = require("../config/conn")
-
-//utile per convertire gli id da String to ObjectId per _id
 const ObjectId = require("mongodb").ObjectId;
 
+function handleErr(err,res) {
+  console.log(err);
+  return res.status(500).send('Error');
+}
 
-// This section will help you get a list of all the documents.
-recordRoutesForRequiredServices.route("/listingsRequiredServices").get(async function (req, res) {
-    const dbConnect = dbo.getDb("services");
-  
-    dbConnect
-      .collection("Required Services")
-      .find({}).limit(50)
-      .toArray(function (err, result) {
-        if (err) {
-          res.status(400).send("Error fetching listings!");
-        } else {
-          res.json(result);
-        }
-      });
+recordRoutesForRequiredServices.route("/Bazar/listings-required-services").get(async (req, res) => {
+    await RequiredServices
+    .getRequiredServices()
+    .find()
+    .toArray(async (err, result) => {
+      if (err) handleErr(err,res);
+      const _result = await result;
+      res.status(200).send(_result);
+    });
+})
+
+recordRoutesForRequiredServices.route("/Bazar/listings-required-services/:id").get(async (req,res) => {
+  const user = req.params.id;
+  await User.getUser().findOne({ _id: ObjectId(user) }, async (err,user) => {
+    if (err) handleErr(err,res);
+    const _user = await user;
+    if (!_user) return res.status(404).send('User not found');
+    const idServices = await _user.requiredServices;
+    await RequiredServices.getRequiredServices().find({ _id: { $in: idServices } }).toArray(async (err,result) => {
+      if (err) handleErr(err,res);
+      const _result = await result;
+      res.status(200).send(_result);
+    })
   })
+})
 
-
-  // This section will help you create a new document.
-    .post(function (req, res) {
-    const dbConnect = dbo.getDb("services");
+recordRoutesForRequiredServices.route("/Bazar/add-required-service").post(authJwt.verifyToken, async (req, res) => {
+  const id = await getId.getId(req);
+  await User.getUser().findOne({ _id: ObjectId(id)}, async (err,user) => {
+    if (err) handleErr(err,res);
+    const _user = await user;
+    if (!_user) return res.status(404).send('User not found');
+    const creationDate = new Date();
+    const _creationDate = creationDate.getTime();
+    const requiredDate = new Date(req.body.dataRequired);
+    const _requiredDate = requiredDate.getTime();
+    if (_requiredDate < _creationDate) return res.status(400).send('Data required not valid!');
     const matchDocument = {
-      /*listing_id: req.body.id,
-      last_modified: new Date(),
-      session_id: req.body.session_id,
-      direction: req.body.direction
-      */
-      name: req.body.name,
-      type: req.body.type,
+      title: req.body.title,
       description: req.body.description,
-      price: req.body.price,
-      creation: new Date()
+      place: req.body.place,
+      dataRequired: requiredDate,
+      dataCreation: creationDate,
+      lastUpdate: new Date(),
+      user: id
     };
-  
-    dbConnect
-      .collection("Required Services")
-      .insertOne(matchDocument, function (err, result) {
-        if (err) {
-          res.status(400).send("Error inserting matches!");
-        } else {
-          console.log(`Added a new match with id ${result.insertedId}`);
-          res.status(204).send();
-        }
-      });
-  });
+    await RequiredServices.getRequiredServices().insertOne(matchDocument, async (err,result) => {
+      if (err) handleErr(err,res);
+      const _result = await result;
+      await User.getUser().updateOne({ _id: _user._id}, { $push: { requiredServices: _result.insertedId }})
+    })
+    return res.status(201).send('Post correctly inserted');
+  })
+});
 
-  recordRoutesForRequiredServices.param('service_id', function (req, res, next) {
-    req.queryId = { _id: ObjectId(req.params.service_id)};
-    next()
+recordRoutesForRequiredServices.route("/Bazar/service-required/:service_id").get(async (req, res) => {
+  let query = req.params.service_id;
+  await RequiredServices
+  .getRequiredServices()
+  .findOne({ _id: ObjectId(query) }, async (err, result) => {
+      if(err) handleErr(err,res);
+      const _result = await result;
+      res.status(200).send(_result);
+  });
 })
 
 
-
-
-  recordRoutesForRequiredServices.route("/listingsRequiredServices/:service_id")
-    .get(async function(req, res, next) {
-        try{
-            let db_connect = dbo.getDb("services");
-            let query = req.queryId;
-            await db_connect
-            .collection("Required Services")
-            .findOne(query, function(err, result){
-                if(err) throw err;
-                res.json(result);
-            }); 
-        }catch(error){
-            res.status(500).send(error)
-            console.log(error)
+recordRoutesForRequiredServices.route("/Bazar/update-required-service/:id").patch(authJwt.verifyToken, async function(req, res) {
+  const id = await getId.getId(req);
+  let query = req.params.id;
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
+    if (err) handleErr(err,res);
+    const _user = await user;
+    if (!_user) return res.status(404).send('User not found');
+    const services = await _user.requiredServices.map(x => x.toString());
+    if (!services.includes(query)) return res.status(404).send('Post not found')
+    await RequiredServices.getRequiredServices().findOne({ _id: ObjectId(query) }, async (err,post) => {
+      if (err) handleErr(err,res);
+      const _post = await post;
+      if (!_post) return res.status(404).send('Post not found');
+      let newService = null;
+      if (req.body.dataRequired) {
+        const requiredData = new Date(req.body.dataRequired).getTime();
+        const creationDate = _post.dataCreation.getTime();
+        if (requiredData < creationDate) return res.status(400).send('Required data is not valid');
+        newService = {
+          $set: req.body,
+          $set: {
+            dataRequired: new Date(req.body.dataRequired)
+          },
+          $currentDate: { lastUpdate: true }
         }
-    })
-    .patch(async function(req, res) {
-        try{
-            let db_connect = dbo.getDb("services");
-            let query = req.queryId;
-            let newService = {
-                $set: {
-                    name: req.body.name,
-                    type: req.body.type,
-                    description: req.body.description,
-                    price: req.body.price,
-                },
-                $currentDate: { lastModified: true } //meh
-            }
-            await db_connect
-            .collection("Required Services")
-            .updateOne(query, newService, function (err, result){
-                if (err) throw err;
-                console.log("1 document patched");
-                res.json(result);
-            });
-        }catch(error){
-            res.status(500).send(error)
-            console.log(error)
-        }    
-    })
-    .delete(async function(req, res) {
-      try{
-      let dbConnect = dbo.getDb("services");
-    
-      let query = req.queryId;
-     
-      console.log(req.queryId);
-    
-       
-      await dbConnect
-        .collection("Required Services")
-        .deleteOne(query, function (err, _result) {
-          if (err) {
-            res.status(400).send(`Error deleting listing with id ${query._id}!`);
-          } 
-          else {
-            res.json(_result);
-            if(_result.acknowledged && _result.deletedCount == 1){
-              console.log("Deleted Successfully")
-            }
-            else{
-              console.log("Error in deleting record")
-            }
-          }
-        });
+        await RequiredServices.getRequiredServices().updateOne({ _id: _post._id }, newService, async(err) => {
+          if (err) handleErr(err,res);
+          return res.status(200).send('Post correctly updated');
+        })
+      } else {
+        newService = {
+          $set: req.body,
+          $currentDate: { lastUpdate: true }
+        }
+        await RequiredServices.getRequiredServices().updateOne({ _id: _post._id }, newService, async (err) => {
+          if (err) handleErr(err,res);
+          return res.status(200).send('Post correctly updated');
+        })
       }
-      catch(error){
-        res.status(500).send(error)
-        console.log(error)
-    }
-    });
- 
+    })
+  })
+});   
+
+
+
+recordRoutesForRequiredServices.route("/Bazar/delete-required-service/:id").delete(authJwt.verifyToken, async (req, res) => {
+  const id = await getId.getId(req);
+  let query = req.params.id;
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
+    if (err) handleErr(err);
+    const _user = await user;
+    if (!_user) return res.status(404).send('User not found');
+    const services = await _user.requiredServices.map(x => x.toString());
+    if (!services.includes(query)) return res.status(404).send('-->Post not found');
+    await RequiredServices.getRequiredServices().deleteOne({ _id: ObjectId(query) }, async (err,result) => {
+      if (err) handleErr(err,res);
+      const _result = await result;
+      if (_result.deletedCount !== 1) return res.status(404).send('<--Post not found');
+      await User.getUser().updateOne({ _id: _user._id }, { $pull: { requiredServices: ObjectId(query)  } }, async (err) => {
+        if (err) handleErr(err,res);
+      })
+      return res.status(200).send('Post correctly deleted');
+    })
+  })
+})
 
   module.exports=recordRoutesForRequiredServices; 

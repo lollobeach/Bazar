@@ -1,24 +1,16 @@
-//richiamo express
-const express = require('express');  //importo express nel progetto, da usare quando aggiungiamo un package al prj, importarlo laddove lo si buole usare
-const app = express(); //crea una nuova applicazione  e assegna il risultati ad app
+const express = require('express');
+const app = express();
 
-//richiamo cors service per evitare problemi dipendenze nodejs
 const cors = require("cors");
 
 let bodyParser = require('body-parser')
 
-//carica da variabili locali moduli da installare o variabili di ambienti da usare
 require("dotenv").config({ path: "./config.env" });
-//inizio codice per sicurezza header, cookies e sessioni
-//richiamo helmet 
 let helmet = require('helmet')
-//richiamo express session
 let session = require('express-session')
 
-// parse requests of content type - application/json
 app.use(express.json())
 
-// parse requests of content type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
@@ -41,13 +33,10 @@ app.use(session({
   }
 }))
 
-//connessione db
 const dbo = require("./config/conn");
 
-//inizio codice socket.io
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
-  //serve per far ricevere le richieste solo dal frontend
   cors: {
     origin: "http://localhost:8080",
   },
@@ -63,8 +52,6 @@ const { InMemoryMessageStore } = require("./middlewares/middleware_chat/messageS
 const messageStore = new InMemoryMessageStore();
 
 io.use((socket, next) => {
-  //salva e recupera la sessione di un utente gia loggato
-  //evita la creazione di un utente ad ogni ricarica di pagina
   const sessionID = socket.handshake.auth.sessionID;
   if (sessionID) {
     const session = sessionStore.findSession(sessionID);
@@ -75,7 +62,6 @@ io.use((socket, next) => {
       return next();
     }
   }
-  //registra l'username da togliere dopo che unito con login greendux
   const username = socket.handshake.auth.username;
   if (!username) {
     return next(new Error("invalid username"));
@@ -87,23 +73,19 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  //salva la sessione
   sessionStore.saveSession(socket.sessionID, {
     userID: socket.userID,
     username: socket.username,
     connected: true,
   });
 
-  //dettagli della sessione
   socket.emit("session", {
     sessionID: socket.sessionID,
     userID: socket.userID,
   });
 
-  //unisce due scoet creano un canale
   socket.join(socket.userID);
 
-  // printo tutti gli user esisententi
   const users = [];
   const messagesPerUser = new Map();
   messageStore.findMessagesForUser(socket.userID).forEach((message) => {
@@ -125,7 +107,6 @@ io.on("connection", (socket) => {
   });
   socket.emit("users", users);
 
-  //notifica connessione nuovo utente
   socket.broadcast.emit("user connected", {
     userID: socket.userID,
     username: socket.username,
@@ -133,26 +114,21 @@ io.on("connection", (socket) => {
     messages: [],
   });
 
-  //invio messaffio all'utente richiesto nel frontend
   socket.on("private message", ({ content, to }) => {
     const message = {
       content,
       from: socket.userID,
       to,
     };
-    //salvataggio del messaggio
     socket.to(to).to(socket.userID).emit("private message", message);
     messageStore.saveMessage(message);
   });
 
-  //notifica disconnect
   socket.on("disconnect", async () => {
     const matchingSockets = await io.in(socket.userID).allSockets();
     const isDisconnected = matchingSockets.size === 0;
     if (isDisconnected) {
-      // notify other users
       socket.broadcast.emit("user disconnected", socket.userID);
-      // update the connection status of the session
       sessionStore.saveSession(socket.sessionID, {
         userID: socket.userID,
         username: socket.username,
@@ -178,6 +154,5 @@ app.get('/', (req,res) => {
 require('./routes/auth')(app)
 require('./routes/user')(app)
 
-//richiamo il file delle route
 app.use(require("./routes/Offered_Services"));
 app.use(require("./routes/Required_Services"));

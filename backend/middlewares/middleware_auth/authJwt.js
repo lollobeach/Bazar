@@ -1,72 +1,56 @@
 const jwt = require('jsonwebtoken')
 const config = require('../../config/auth.config')
 const User = require('../../models/user.model')
-const Plans = require('../../models/plan.model')
 
 verifyToken = (req,res,next) => {
-    let token = req.session.token
-    if(!token) return res.status(403).send('No token provided!')
-    jwt.verify(token,config.secret, (err,decoded) => {
-        if (err) return res.status(401).send('Unathorized!')
-        req.userId = decoded.id
-        next()
-    })
+    let token= null
+    if(
+        req.headers.authorization &&
+        req.headers.authorization.startsWith('Bearer')
+    ) {
+        try {
+            token = req.headers.authorization.split(' ')[1]
+            jwt.verify(token, config.secret)
+            next()
+        } catch (err) {
+            res.status(401).send('Not authorized')
+        }
+    }
+    if (token === null) return res.status(401).send('Token not provided')
 }
 
 isFreePlan = (req,res,next) => {
-    User.getUser().findOne({ username: req.params.username }, (err,user) => {
+    User.getUser().findOne({ username: req.params.username }, async (err,user) => {
         if (err) {
             throw err
         }
-        if (!user) return res.status(404).send('User not found!')
-        Plans.getPlans().findOne({ type: user.plan }, (err, plan) => {
-            if (err) res.status(500).send(err)
-            if (plan.type === 'free') {
-                next()
-                return
-            }
-            res.status(401).send('Require Free Plan')
-        })
+        const _user = await user
+        if (!_user) return res.status(404).send('User not found!')
+        if (_user.plan !== 'free') return res.status(401).send('Require Free Plan')
     })
 }
 
 isCheapPlan = (req,res,next) => {
-    User.getUser().findOne({ username: req.params.username }, (err,user) => {
+    User.getUser().findOne({ username: req.params.username }, async (err,user) => {
         if (err) {
             res.status(500).send(err)
             return
         }
-        if (!user) return res.status(404).send('User not found!')
-        Plans.getPlans().findOne({
-            type: user.plan
-        }, (err, plan) => {
-            if (err) res.status(500).send(err)
-            if (plan.type === 'cheap') {
-                next()
-                return
-            }
-            res.status(401).send('Require Cheap Plan')
-        })
+        const _user = await user
+        if (!_user) return res.status(404).send('User not found!')
+        if (_user.plan !== 'free') return res.status(401).send('Require Cheap Plan')
     })
 }
 
 isPremiumPlan = (req,res,next) => {
-    User.getUser().findOne({ username: req.params.username }, (err,user) => {
+    User.getUser().findOne({ username: req.params.username }, async (err,user) => {
         if (err) {
             res.status(500).send(err)
             return
         }
-        if (!user) return res.status(404).send('User not found!')
-        Plans.getPlans().findOne({
-            type: user.plan
-        }, (err, plan) => {
-            if (err) res.status(500).send(err)
-            if (plan.type === 'premium') {
-                next()
-                return
-            }
-            res.status(401).send('Require Premium Plan')
-        })
+        const _user = await user
+        if (!_user) return res.status(404).send('User not found!')
+        if (_user.plan !== 'free') return res.status(401).send('Require Premium Plan')
     })
 }
 

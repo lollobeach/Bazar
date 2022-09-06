@@ -1,138 +1,204 @@
-const { query } = require("express");
-const { authJwt } = require("../middlewares/middleware_auth/modules")
-const OfferedService = require('../models/offered.service')
-const User = require('../models/user.model')
+const authJwt = require("../middlewares/middleware_auth/authJwt");
+const OfferedService = require('../models/offered.service');
+const getId = require('../config/getId');
+const User = require('../models/user.model');
+const Corporate = require('../models/corporate.model');
 const express = require("express");
-const offeredService = require("../models/offered.service");
 
-// recordRoutes is an instance of the express router.
-// We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /listings.
 const recordRoutesforOfferedServices = express.Router();
 
-//utile per convertire gli id da String to ObjectId per _id
 const ObjectId = require("mongodb").ObjectId;
 
+function handleErr (err,res) {
+  console.log(err);
+  return res.status(500).send('Error');
+}
 
-// This section will help you get a list of all the documents.
-recordRoutesforOfferedServices.route("/listings-offered-services").get(async (req, res) => {
-  OfferedService
+recordRoutesforOfferedServices.route("/Bazar/listings-offered-services").get(async (req, res) => {
+  await OfferedService
       .getOfferedServices()
       .find()
-      .toArray((err, result) => {
+      .toArray(async (err, result) => {
         if (err) {
-          res.status(400).send("Error fetching listings!");
+          console.log(err);
+          return res.status(500).send('Error');
         } else {
-          res.json(result);
+          const _result = await result;
+          res.status(200).json(_result);
         }
       });
     })
 
-  // This section will help you create a new document.
-recordRoutesforOfferedServices.route("/:user/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
-  await User.getUser().findOne({ username: req.params.user }, async (err,user) => {
-    if (err) throw err
-    if (!user) {
-      res.status(404).send('User not found!')
-      return
-    }
-    if (user.plan === 'free' && user.posts.length === 0 || user.plan === 'cheap' && user.posts.length < 3 || user.plan === 'premium') {
-      console.log(1)
-      const matchDocument = {
-        title: req.body.title,
-        description: req.body.description,
-        price: req.body.price,
-        place: req.body.place,
-        dataCreation: new Date(),
-        lastUpdate: new Date(),
-        user: req.params.user
-      };
-    
-      OfferedService
-      .getOfferedServices()
-      .insertOne(matchDocument, async (err, result) => {
-        if (err) throw err
-        else {
-          console.log(`Added a new match with id ${result.insertedId}`);
-        }
+recordRoutesforOfferedServices.route("/Bazar/listings-offered-services/:id").get(async (req,res) => {
+  const _user = req.params.id;
+  await User.getUser().findOne({ _id: ObjectId(_user) }, async (err,user) => {
+    if (err) handleErr(err,res);
+    const us = await user;
+    let idServices = [];
+    if (us === null) {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(_user) }, async (err,corporate) => {
+        if (err) handleErr(err,res);
+        const _corp = await corporate;
+        if (_corp === null) return res.status(404).send('User not found');
+        idServices = await _corp.offeredServices;    
+        OfferedService.getOfferedServices().find({ _id: { $in: idServices } }).toArray(async (err,result) => {
+          if (err) handleErr(err,res);
+          const _result = await result;
+          res.status(200).send(_result);
+        })
       })
-
-      
-      res.status(200).send('Post correctly inserted')
-      return
     } else {
-      res.status(401).send('You do not have the right plan. Remember:\n-free plan => one post\n-cheap plan => three posts\npremium plan => unlimited posts')
-      return
+      idServices = await us.offeredServices;    
+      OfferedService.getOfferedServices().find({ _id: { $in: idServices } }).toArray(async (err,result) => {
+        if (err) handleErr(err,res);
+        const _result = await result;
+        res.status(200).send(_result);
+      })
     }
   })
 })
 
-recordRoutesforOfferedServices.param('service_id', (req, res, next) => {
-  req.queryid = { _id: ObjectId(req.params.service_id)};
-    next()
-  })
+recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
+  const id = await getId.getId(req);
+  const matchDocument = {
+    title: req.body.title,
+    description: req.body.description,
+    price: req.body.price,
+    place: req.body.place,
+    dataCreation: new Date(),
+    lastUpdate: new Date(),
+    user: id
+  };
 
-recordRoutesforOfferedServices.route("/listings-offered-services/:service_id")
-    .get(async (req, res) => {
-        try{
-            let query = req.queryid;
-            await OfferedService
-            .getOfferedServices()
-            .findOne(query, (err, result) => {
-                if(err) throw err;
-                if (!result) return res.status(404).send('Post not found')
-                res.json(result);
-            }); 
-        } catch(error) {
-            console.log(error)
-            return res.status(500).send(error)
-        }
-    })
-    
-    .patch(async (req, res) => {
-        try{
-            let query = req.queryid;
-            console.log(query);
-            let newService = {
-                $set: {
-                    name: req.body.name,
-                    type: req.body.type,
-                    description: req.body.description,
-                    price: req.body.price,
-                },
-                $currentDate: { lastModified: true } 
-            }
-            await offeredService
-            .getOfferedServices()
-            .updateOne(query, newService, function (err, result){
-                if (err) throw err;
-                console.log("1 document patched");
-                return res.json(result);
-            });
-        }catch(error){
-            console.log(error)
-            return res.status(500).send(error)
-        }    
-    })
-
-    .delete(async function(req, res) {
-      try{
-        let query = req.queryid;
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
+    if (err) handleErr(err,res);
+    const _user = await user;
+    if (_user === null) {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corp) => {
+        if (err) handleErr(err,res);
+        const _corp = await corp;
+        if (_corp === null) return res.status(404).send('User not found');
         await OfferedService
         .getOfferedServices()
-        .deleteOne(query, async (err, _result) => {
-          if (err) return res.status(400).send(`Error deleting listing with id ${query._id}!`);
-          const result = await _result
-          if (result.acknowledged && result.deletedCount == 1) {
-            return res.status(200).send("Deleted Successfully")
-          }
-          if (result.deletedCount !== 1) return res.status(404).send("Post not found")
-        });
+        .insertOne(matchDocument, async (err, result) => {
+          if (err) handleErr(err,res);
+          const _result = await result;
+          await Corporate.getCorporates().updateOne(
+            { _id: ObjectId(id) },
+            { $push: { offeredServices: _result.insertedId } })
+            return res.status(201).send('Post correctly inserted');
+        })
+      })
+    } else {
+      if (_user.plan === 'free' && _user.offeredServices.length === 0 || _user.plan === 'cheap' && _user.offeredServices.length < 3 || _user.plan === 'premium') {
+        OfferedService
+        .getOfferedServices()
+        .insertOne(matchDocument, async (err, result) => {
+          if (err) handleErr(err,res);
+          const _result = await result;
+          await User.getUser().updateOne(
+            { _id: ObjectId(id) },
+            { $push: { offeredServices: _result.insertedId } })
+        })
+        return res.status(201).send('Post correctly inserted');
+      } else {
+        return res.status(401).send('You do not have the right plan. Remember:\n-free plan => one post\n-cheap plan => three posts\npremium plan => unlimited posts');
       }
-      catch(error){
-        res.status(500).send(error)
     }
+  })
+})
+
+recordRoutesforOfferedServices.route("/Bazar/service-offered/:service_id").get(async (req, res) => {
+  let query = req.params.service_id;
+  await OfferedService
+  .getOfferedServices()
+  .findOne({ _id: ObjectId(query) }, async (err, result) => {
+      if(err) throw err;
+      const _result = await result;
+      if (!_result) return res.status(404).send('Post not found')
+      res.json(_result);
   });
+})
+
+recordRoutesforOfferedServices.route("/Bazar/update-offered-service/:id").patch(authJwt.verifyToken, async (req, res) => {
+  let query = req.params.id;
+  let newService = {
+      $set: req.body,
+      $currentDate: { lastUpdate: true } 
+  }
+  const id = await getId.getId(req);
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
+    if (err) handleErr(err,res);
+    const _user = await user;
+    let services = [];
+    if (_user === null) {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corporates) => {
+        if (err) handleErr(err,res);
+        const _corporate = await corporates;
+        if (_corporate === null) return res.status(404).send('User not found!');
+        services = await _corporate.offeredServices.map(x => x.toString());
+        if (!services.includes(query)) return res.status(404).send('Post not found');
+        await OfferedService.getOfferedServices().updateOne({ _id: ObjectId(query) }, newService, async (err,result) => {
+          if (err) handleErr(err,res);
+          const _result = await result;
+          if (_result.modifiedCount !== 1) return res.status(404).send('Post not found');
+          return res.status(200).send('Post updated!');
+        })
+      })
+    } else {
+      services = await _user.offeredServices.map(x => x.toString());
+      if (!services.includes(query)) return res.status(404).send('Post not found');
+      await OfferedService.getOfferedServices().updateOne({ _id: ObjectId(query) }, newService, async (err,result) => {
+        if (err) handleErr(err,res);
+        const _result = await result;
+        if (_result.modifiedCount !== 1) return res.status(404).send('Post not found');
+        return res.status(200).send('Post updated!');
+      }) 
+    }  
+  })
+})
+
+recordRoutesforOfferedServices.route('/Bazar/delete-offered-service/:id').delete(authJwt.verifyToken, async function(req, res) {
+  const id = await getId.getId(req);
+  let query = req.params.id;
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
+    if (err) handleErr(err,res);
+    const _user = await user;
+    let services = [];
+    if (_user === null) {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corporate) => {
+        if (err) handleErr(err,res);
+        const _corporate = await corporate;
+        if (_corporate === null) return res.status(404).send('User not found');
+        services = await _corporate.offeredServices.map(x => x.toString());
+        console.log(services)
+        if (!services.includes(query)) return res.status(404).send('Post not found!');
+        await OfferedService.getOfferedServices().deleteOne({ _id: ObjectId(query) }, async (err,result) => {
+          if (err) handleErr(err,res);
+          const _result = await result;
+          if (_result.deletedCount !== 1) return res.status(404).send('Post not found');
+          await Corporate.getCorporates().updateOne({ _id: _corporate._id }, { $pull: { offeredServices: ObjectId(query)} }, async (err) => {
+            if (err) handleErr(err,res);
+          })
+          return res.status(200).send('Post deleted');
+        })
+      })
+    }
+    else {
+      services = await _user.offeredServices.map(x => x.toString());
+      if (!services.includes(query)) return res.status(404).send('Post not found!');
+      await OfferedService.getOfferedServices().deleteOne({ _id: ObjectId(query) }, async (err,result) => {
+        if (err) handleErr(err,res);
+        const _result = await result;
+        if (_result.deletedCount !== 1) return res.status(404).send('Post not found');
+        await User.getUser().updateOne({ _id: _user._id }, { $pull: { offeredServices: ObjectId(query) } }, async (err) => {
+          if (err) handleErr(err,res);
+        })
+        return res.status(200).send('Post deleted!');
+      })
+    }
+  })
+});
 
   module.exports = recordRoutesforOfferedServices; 
   

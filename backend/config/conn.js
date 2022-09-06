@@ -1,6 +1,5 @@
 const {MongoClient} = require("mongodb");
 require('dotenv').config({path: "../config.env"})
-//connection url
 const Db =  process.env.ATLAS_DB;
 const client = new MongoClient(Db, {
     useNewUrlParser: true,
@@ -8,15 +7,6 @@ const client = new MongoClient(Db, {
 });
 
 let _db;
-
-function createPlan(db) {
-    db.collection('Plan')
-        .insertMany([
-            { type: 'free' },
-            { type: 'cheap' },
-            { type: 'premium' }
-        ])
-}
 
 function createOfferedService(db) {
     db.createCollection('Offered_Service', {
@@ -29,13 +19,49 @@ function createOfferedService(db) {
                         bsonType: 'string'
                     },
                     description: {
-                        bsonType: 'string'
+                        bsonType: 'string',
+                        maxLength: 500
                     },
                     price: {
-                        bsonType: 'double'
+                        bsonType: 'string',
                     },
                     place: {
                         bsonType: 'string'
+                    },
+                    dataCreation: {
+                        bsonType: 'date'
+                    },
+                    lastUpdate: {
+                        bsonType: 'date'
+                    },
+                    user: {
+                        bsonType: 'string'
+                    }
+                }
+            }
+        }
+    })
+}
+
+function createRequiredService(db) {
+    db.createCollection('Required_Service', {
+        validator: {
+            $jsonSchema: {
+                bsonType: 'object',
+                required: ['title', 'description', 'place', 'dataRequired','dataCreation', 'lastUpdate', 'user'],
+                properties: {
+                    title: {
+                        bsonType: 'string'
+                    },
+                    description: {
+                        bsonType: 'string',
+                        maxLength: 500
+                    },
+                    place: {
+                        bsonType: 'string'
+                    },
+                    dataRequired: {
+                        bsonType: 'date'
                     },
                     dataCreation: {
                         bsonType: 'date'
@@ -57,7 +83,7 @@ function createUser(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'posts'],
+                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'offeredServices', 'requiredServices'],
                 properties: {
                     name: {
                         bsonType: 'string'
@@ -76,13 +102,16 @@ function createUser(db) {
                         pattern: '^\\w+([\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$'
                     },
                     password: {
-                        bsonType: 'string'
-                        
+                        bsonType: 'string',
+                        pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$'
                     },
                     plan: {
                         bsonType: 'string'
                     },
-                    posts: {
+                    offeredServices: {
+                        bsonType: 'array'
+                    },
+                    requiredServices: {
                         bsonType: 'array'
                     }
                 }
@@ -96,16 +125,30 @@ function createCorporate(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'email', 'password'],
+                required: ['name', 'countryOfResidence', 'address', 'iva', 'email', 'password', 'offeredServices'],
                 properties: {
                     name: {
                         bsonType: 'string'
                     },
-                    email: {
+                    countryOfResidence: {
                         bsonType: 'string'
                     },
-                    password: {
+                    address: {
                         bsonType: 'string'
+                    },
+                    iva: {
+                        bsonType: 'string'
+                    },
+                    email: {
+                        bsonType: 'string',
+                        pattern: '^\\w+([\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$'
+                    },
+                    password: {
+                        bsonType: 'string',
+                        pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$'
+                    },
+                    offeredServices: {
+                        bsonType: 'array'
                     }
                 }
             }
@@ -117,13 +160,11 @@ module.exports = {
     connectToServer: async function main() {
         client.connect( async (err, db) => {
             if(db){
-                // Remember to delete this line
-                //db.runCommand({ "dropDatabase": 1 })
                 _db = db.db(process.env.DB_NAME);
                 let collection = await _db.listCollections().map(x => x.name).toArray()
-                if (!(collection.includes('User') && collection.includes('Plan') && collection.includes('Corporate') && collection.includes('Offered_Service'))) {
-                    createPlan(_db)
+                if (!(collection.includes('User') && collection.includes('Required_Service') && collection.includes('Corporate') && collection.includes('Offered_Service'))) {
                     createOfferedService(_db)
+                    createRequiredService(_db)
                     createCorporate(_db)
                     createUser(_db)
                     console.log('Collections succesfully created')
@@ -138,5 +179,5 @@ module.exports = {
 
     getDb: function(){
         return _db;
-    },
+    }
 };

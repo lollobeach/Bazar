@@ -3,7 +3,7 @@ const Corporate = require('../models/corporate.model');
 let jwt = require('jsonwebtoken');
 let bcrpyt = require('bcryptjs');
 
-exports.signUp = async (req,res) => {
+exports.corporateSignUp = async (req,res) => {
     let name = req.body.name;
     if (!name.match(/^[a-zA-z0-9_&]+$/)) return res.status(406).send('Name format not correct');
     let iva = req.body.iva;
@@ -31,7 +31,7 @@ exports.signUp = async (req,res) => {
     })
 };
 
-function passwordValidation(req,res,corporate) {
+function corporatePasswordValidation(req,res,corporate) {
     let passwordIsValid = bcrpyt.compareSync(
         req.body.password,
         corporate.password
@@ -50,7 +50,7 @@ function passwordValidation(req,res,corporate) {
     });
 };
 
-exports.signIn = async (req,res) => {
+exports.corporateSignIn = async (req,res) => {
     await Corporate.getCorporates().findOne({ name: req.body.name }, async (err,corporate) => {
         if (err) {
             console.log(err);
@@ -66,11 +66,11 @@ exports.signIn = async (req,res) => {
                     }
                     const _email = await email;
                     if (!_email) return res.status(404).send('Email not found!');
-                    passwordValidation(req,res,email);
+                    corporatePasswordValidation(req,res,email);
                 })
             } else return res.status(404).send('Corporate not found!');
         }
-        passwordValidation(req,res,corporate);
+        corporatePasswordValidation(req,res,corporate);
     })
 };
 
@@ -83,7 +83,7 @@ exports.signOut = async (req,res) => {
             }
             const _corporate = await corporate;
             if (!_corporate) return res.status(404).send('Corporate not found!');
-            req.session.token = null;
+            req.headers.token = null;
             return res.status(200).send('Logout!');
         })
     } catch (err) {
@@ -92,7 +92,7 @@ exports.signOut = async (req,res) => {
 };
 
 exports.deleteAccount = (req,res) => {
-    User.getUser().deleteOne({ name: req.params.corporate }, async (err,_result) => {
+    Corporate.getCorporates().deleteOne({ name: req.params.corporate }, async (err,_result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Error');
