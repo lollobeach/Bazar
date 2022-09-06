@@ -1,15 +1,26 @@
-const express = require('express');
-const app = express();
+//richiamo express
+const express = require('express');  //importo express nel progetto, da usare quando aggiungiamo un package al prj, importarlo laddove lo si buole usare
+const app = express(); //crea una nuova applicazione  e assegna il risultati ad app
 
+//richiamo cors service per evitare problemi dipendenze nodejs
 const cors = require("cors");
+
+let bodyParser = require('body-parser')
+
 //carica da variabili locali moduli da installare o variabili di ambienti da usare
 require("dotenv").config({ path: "./config.env" });
-const port = process.env.PORT || 5000;
 //inizio codice per sicurezza header, cookies e sessioni
 //richiamo helmet 
 let helmet = require('helmet')
 //richiamo express session
 let session = require('express-session')
+
+// parse requests of content type - application/json
+app.use(express.json())
+
+// parse requests of content type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+
 
 let expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 ora
 
@@ -32,9 +43,6 @@ app.use(session({
 
 //connessione db
 const dbo = require("./config/conn");
-
-require('./routes/auth')(app)
-require('./routes/user')(app)
 
 //inizio codice socket.io
 const httpServer = require("http").createServer(app);
@@ -156,9 +164,20 @@ io.on("connection", (socket) => {
 
 const PORT = process.env.PORT || 3000;
 
-httpServer.listen(PORT, () =>{
+httpServer.listen(PORT, () => {
   dbo
   .connectToServer()
   .catch(console.error)
   console.log(`server listening at http://localhost:${PORT}`)
 });
+
+app.get('/', (req,res) => {
+  res.json({ message: 'Welcome to Bazar web site'})
+})
+
+require('./routes/auth')(app)
+require('./routes/user')(app)
+
+//richiamo il file delle route
+app.use(require("./routes/Offered_Services"));
+app.use(require("./routes/Required_Services"));

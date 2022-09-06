@@ -9,7 +9,7 @@ const client = new MongoClient(Db, {
 
 let _db;
 
-function createPlans(db) {
+function createPlan(db) {
     db.collection('Plan')
         .insertMany([
             { type: 'free' },
@@ -18,12 +18,46 @@ function createPlans(db) {
         ])
 }
 
+function createOfferedService(db) {
+    db.createCollection('Offered_Service', {
+        validator: {
+            $jsonSchema: {
+                bsonType: 'object',
+                required: ['title', 'description', 'place', 'price', 'dataCreation', 'lastUpdate', 'user'],
+                properties: {
+                    title: {
+                        bsonType: 'string'
+                    },
+                    description: {
+                        bsonType: 'string'
+                    },
+                    price: {
+                        bsonType: 'double'
+                    },
+                    place: {
+                        bsonType: 'string'
+                    },
+                    dataCreation: {
+                        bsonType: 'date'
+                    },
+                    lastUpdate: {
+                        bsonType: 'date'
+                    },
+                    user: {
+                        bsonType: 'string'
+                    }
+                }
+            }
+        }
+    })
+}
+
 function createUser(db) {
     db.createCollection('User', {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan'],
+                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'posts'],
                 properties: {
                     name: {
                         bsonType: 'string'
@@ -47,6 +81,9 @@ function createUser(db) {
                     },
                     plan: {
                         bsonType: 'string'
+                    },
+                    posts: {
+                        bsonType: 'array'
                     }
                 }
             }
@@ -84,8 +121,9 @@ module.exports = {
                 //db.runCommand({ "dropDatabase": 1 })
                 _db = db.db(process.env.DB_NAME);
                 let collection = await _db.listCollections().map(x => x.name).toArray()
-                if (!(collection.includes('User') && collection.includes('Plan') && collection.includes('Corporate'))) {
-                    createPlans(_db)
+                if (!(collection.includes('User') && collection.includes('Plan') && collection.includes('Corporate') && collection.includes('Offered_Service'))) {
+                    createPlan(_db)
+                    createOfferedService(_db)
                     createCorporate(_db)
                     createUser(_db)
                     console.log('Collections succesfully created')

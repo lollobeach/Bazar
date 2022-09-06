@@ -1,7 +1,7 @@
 const { verifySignUp } = require ('../middlewares/middleware_auth/modules')
 const controller = require('../controllers/auth.controller')
 
-authentication = (app) => {
+module.exports = (app) => {
     app.use((req,res,next) => {
         res.header('Hello')
         next()
@@ -17,5 +17,3 @@ authentication = (app) => {
     app.post('/api/auth/signin', controller.signIn)
     app.post('/api/auth/signout', controller.signOut)
 }
-
-module.exports = authentication

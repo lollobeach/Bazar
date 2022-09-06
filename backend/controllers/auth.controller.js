@@ -17,7 +17,8 @@ exports.signUp = async (req,res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrpyt.hashSync(req.body.password, 12),
-        plan: req.body.plan
+        plan: req.body.plan,
+        posts: []
     }
 
     User.getUser().insertOne(newUser, async (err) => {
@@ -81,7 +82,7 @@ exports.signIn = (req,res) => {
 
 exports.signOut = async (req,res) => {
     try {
-        req.session = null
+        req.session.token = null
         return res.status(200).send('Logout!')
     } catch (err) {
         this.next(err)

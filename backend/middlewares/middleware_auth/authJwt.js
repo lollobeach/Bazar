@@ -25,7 +25,7 @@ isFreePlan = (req,res,next) => {
                 next()
                 return
             }
-            res.status(403).send('Require Free Plan')
+            res.status(401).send('Require Free Plan')
         })
     })
 }
@@ -45,7 +45,7 @@ isCheapPlan = (req,res,next) => {
                 next()
                 return
             }
-            res.status(403).send('Require Cheap Plan')
+            res.status(401).send('Require Cheap Plan')
         })
     })
 }
@@ -65,7 +65,7 @@ isPremiumPlan = (req,res,next) => {
                 next()
                 return
             }
-            res.status(403).send('Require Premium Plan')
+            res.status(401).send('Require Premium Plan')
         })
     })
 }
