@@ -1,21 +1,24 @@
-const { verifySignUp } = require ('../middlewares/modules')
+const verify = require ('../middlewares/middleware_auth/modules')
 const controller = require('../controllers/auth.controller')
 
-authentication = (app) => {
+module.exports = (app) => {
     app.use((req,res,next) => {
         res.header('Hello')
         next()
     })
-    app.post('/api/auth/signup',
+    app.post('/Bazar/user/signup',
     [
-        verifySignUp.checkDuplicateUsernameOrEmail,
-        verifySignUp.checkPlanExisted
+        verify.verifySignUp.checkDuplicateUsernameOrEmail,
+        verify.verifySignUp.checkPlanExisted
     ],
-    controller.signUp
+    controller.userSignUp
     )
 
-    app.post('/api/auth/signin', controller.signIn)
-    app.post('/api/auth/signout', controller.signOut)
-}
+    app.post('/Bazar/corporate/signup', verify.verifySignUp.checkDuplicateCorporate, controller.corporateSignUp)
 
-module.exports = authentication
+    app.post('/Bazar/user/login', controller.userSignIn)
+    app.post('/Bazar/corporate/login', controller.corporateSignIn)
+
+    app.post('/Bazar/logout', verify.authJwt.verifyToken, controller.signOut)
+    app.delete('/Bazar/delete_account', verify.authJwt.verifyToken, controller.deleteAccount)
+}
