@@ -14,7 +14,7 @@ function handleErr (err,res) {
   return res.status(500).send('Error');
 }
 
-recordRoutesforOfferedServices.route("/Bazar/listings-offered-services").get(async (req, res) => {
+recordRoutesforOfferedServices.route("/listings-offered-services").get(async (req, res) => {
   await OfferedService
       .getOfferedServices()
       .find()
@@ -29,7 +29,7 @@ recordRoutesforOfferedServices.route("/Bazar/listings-offered-services").get(asy
       });
     })
 
-recordRoutesforOfferedServices.route("/Bazar/listings-offered-services/:id").get(async (req,res) => {
+recordRoutesforOfferedServices.route("/listings-offered-services/:id").get(async (req,res) => {
   const _user = req.params.id;
   await User.getUser().findOne({ _id: ObjectId(_user) }, async (err,user) => {
     if (err) handleErr(err,res);
@@ -58,7 +58,7 @@ recordRoutesforOfferedServices.route("/Bazar/listings-offered-services/:id").get
   })
 })
 
-recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
+recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
   const id = await getId.getId(req);
   const matchDocument = {
     title: req.body.title,
@@ -108,7 +108,7 @@ recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.
   })
 })
 
-recordRoutesforOfferedServices.route("/Bazar/service-offered/:service_id").get(async (req, res) => {
+recordRoutesforOfferedServices.route("/service-offered/:service_id").get(async (req, res) => {
   let query = req.params.service_id;
   await OfferedService
   .getOfferedServices()
@@ -120,7 +120,7 @@ recordRoutesforOfferedServices.route("/Bazar/service-offered/:service_id").get(a
   });
 })
 
-recordRoutesforOfferedServices.route("/Bazar/update-offered-service/:id").patch(authJwt.verifyToken, async (req, res) => {
+recordRoutesforOfferedServices.route("/update-offered-service/:id").patch(authJwt.verifyToken, async (req, res) => {
   let query = req.params.id;
   let newService = {
       $set: req.body,
@@ -158,7 +158,7 @@ recordRoutesforOfferedServices.route("/Bazar/update-offered-service/:id").patch(
   })
 })
 
-recordRoutesforOfferedServices.route('/Bazar/delete-offered-service/:id').delete(authJwt.verifyToken, async function(req, res) {
+recordRoutesforOfferedServices.route('/delete-offered-service/:id').delete(authJwt.verifyToken, async function(req, res) {
   const id = await getId.getId(req);
   let query = req.params.id;
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {

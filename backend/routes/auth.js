@@ -6,7 +6,7 @@ module.exports = (app) => {
         res.header('Hello')
         next()
     })
-    app.post('/Bazar/user/signup',
+    app.post('/user/signup',
     [
         verify.verifySignUp.checkDuplicateUsernameOrEmail,
         verify.verifySignUp.checkPlanExisted
@@ -14,11 +14,11 @@ module.exports = (app) => {
     controller.userSignUp
     )
 
-    app.post('/Bazar/corporate/signup', verify.verifySignUp.checkDuplicateCorporate, controller.corporateSignUp)
+    app.post('/corporate/signup', verify.verifySignUp.checkDuplicateCorporate, controller.corporateSignUp)
 
-    app.post('/Bazar/user/login', controller.userSignIn)
-    app.post('/Bazar/corporate/login', controller.corporateSignIn)
+    app.post('/user/login', controller.userSignIn)
+    app.post('/corporate/login', controller.corporateSignIn)
 
-    app.post('/Bazar/logout', verify.authJwt.verifyToken, controller.signOut)
-    app.delete('/Bazar/delete_account', verify.authJwt.verifyToken, controller.deleteAccount)
+    app.post('/logout', verify.authJwt.verifyToken, controller.signOut)
+    app.delete('/delete_account', verify.authJwt.verifyToken, controller.deleteAccount)
 }
