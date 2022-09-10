@@ -11,11 +11,6 @@ body {
   background-image: linear-gradient(to right, rgb(0, 140, 255),blue);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .container {
   display: flex;
 }
