@@ -9,10 +9,12 @@ const SideDrawer = () => {
             display={"flex"}
             justifyContent="space-between"
             alignItems={"center"}
-            bg="white"
+            bgGradient="linear(to-r, blue.500, purple.200)"
             w="100%"
             p="5px 10px 5px 10px"
             borderWidth={"5px"}
+            borderColor="00FFFF"
+            boxShadow='dark-lg'
         >
         <Tooltip label="Search User" hasArrow placement='bottom-end'>
           <Button variant={"ghost"} >
@@ -22,7 +24,7 @@ const SideDrawer = () => {
               </Text>
           </Button>
         </Tooltip>
-        <Text fontSize={"2xl"} fontFamily="Work sans">
+        <Text fontSize={"4xl"} fontFamily="fantasy">
           Bazar
         </Text>
         <div>

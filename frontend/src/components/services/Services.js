@@ -5,12 +5,11 @@ const Services = (props) => {
     const [posts, setPosts] = React.useState([])
 
     React.useEffect(() => {
-        setPosts(props.service)
-    },[])
+        setPosts(props.services)
+    },[props.services])
 
     const services = posts.map(item => (
-    <div key={item._id} className='services'>
-        <p>
+    <div key={item._id} className='service'>
         <h2>{item.title}</h2>
         <h3>{item.description}</h3>
         <p>Where: {item.place}</p>
@@ -18,7 +17,6 @@ const Services = (props) => {
         (<p>Price: {item.price}€</p>) :
         (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
         <p>Data creation: {item.dataCreation.split('T')[0]}</p>
-        </p>
         </div>
     ))  
 

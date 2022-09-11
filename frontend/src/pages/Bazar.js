@@ -1,14 +1,27 @@
 import React from 'react'
-import Services from '../components/Services'
+import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import axios from 'axios'
 
-const Bazar = async () => {
+const Bazar = () => {
 
-    const dataRequired = await axios.get('/listings-required-services')
-    const dataOffered = await axios.get('/listings-offered-services')
+    const [offeredServices, setOfferedServices] = React.useState([])
+    const [requiredServices, setRequiredServices] = React.useState([])
 
-    console.log(dataOffered.data)
+    async function fetchOfferedServices() {
+        const data = await axios.get('/listings-offered-services')
+        setOfferedServices(data.data)
+    }
+
+    async function fetchRequiredServices() {
+        const data = await axios.get('/listings-required-services')
+        setRequiredServices(data.data)
+    }
+
+    React.useEffect(() => {
+        fetchOfferedServices()
+        fetchRequiredServices()
+    },[])
 
     return (
     <div stye={{ width: "100% "}}>
@@ -16,11 +29,11 @@ const Bazar = async () => {
         <div className='container'>
             <div>
                 <h1>Offered Services</h1>
-                <Services service={dataOffered.data}/>
+                <Services services={offeredServices}/>
             </div>
             <div>
                 <h1>Required Services</h1>
-                <Services service={dataRequired.data} />
+                <Services services={requiredServices} />
             </div>
         </div>
     </div>
