@@ -1,6 +1,7 @@
 import React from 'react'
 import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { Link } from 'react-router-dom'
 
 const SideDrawer = () => {
   return (
@@ -24,9 +25,11 @@ const SideDrawer = () => {
               </Text>
           </Button>
         </Tooltip>
-        <Text fontSize={"4xl"} fontFamily="fantasy">
-          Bazar
-        </Text>
+        <Link to="/">
+          <Text as='button' fontSize={"2xl"} fontFamily="Work sans">
+            Bazar
+          </Text>
+        </Link>
         <div>
           <Menu>
             <MenuButton p={1}> 

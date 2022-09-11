@@ -13,7 +13,7 @@ const AuthenticationPage = () => {
       bg={"white"}
       w="100%"
       m="40px 0 15px 0"
-      borderRadius="1g"
+      borderRadius="lg"
       borderWidth="1px"
     >
       <Text fontSize="4xl" fontFamily="Work sans">Bazar Auth</Text>
