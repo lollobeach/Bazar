@@ -1,7 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
-import { Link } from 'react-router-dom'
 
 const SideDrawer = () => {
   return (
@@ -43,6 +43,10 @@ const SideDrawer = () => {
             </MenuButton>
             <MenuList>
                 <MenuItem>My Profile</MenuItem>
+              <MenuDivider />
+                <Link to='/services'>
+                  <MenuItem>Services</MenuItem>
+                </Link>
               <MenuDivider />
               <MenuItem>Logout</MenuItem>
             </MenuList>
