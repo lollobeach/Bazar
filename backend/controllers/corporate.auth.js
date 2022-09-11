@@ -4,8 +4,6 @@ let jwt = require('jsonwebtoken');
 let bcrpyt = require('bcryptjs');
 
 exports.corporateSignUp = async (req,res) => {
-    let name = req.body.name;
-    if (!name.match(/^[a-zA-z0-9_&]+$/)) return res.status(406).send('Name format not correct');
     let iva = req.body.iva;
     if (!iva.match(/^[A-Z]{2}[0-9]{11}$/)) return res.status(406).send('IVA format not correct');
     let email = req.body.email;

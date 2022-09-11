@@ -12,11 +12,27 @@ const SignUp = () => {
     const [password, setPassword] = React.useState();
     const [confirmpassword, setConfirmpassword] = React.useState();
     const [pic, setPic] = React.useState();
-    const [plan, setPlan] = React.useState()
-    const [loading, setLoading] = React.useState(false)
+    const [plan, setPlan] = React.useState();
+    const [iva,setIva] = React.useState();
+    const [loading, setLoading] = React.useState(false);
 
     const handleClickPass = () => setShowPass(!showPass)
     const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPass)
+    
+    const validEmail = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+    const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\[-`{-~]).{6,64}$')
+    const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
+
+    const validateUser = () => {
+      if (!validEmail.test(email)) return
+      if (!validPassword.test(password)) return
+    }
+
+    const validateCorporate = () => {
+      if (!validEmail.test(email)) return
+      if (!validPassword.test(password)) return
+      if (!validIva.test(iva)) return
+    }
 
     const userForm = (<>
                       <FormControl id='first-name' isRequired>
