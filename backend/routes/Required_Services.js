@@ -13,7 +13,7 @@ function handleErr(err,res) {
   return res.status(500).send('Error');
 }
 
-recordRoutesForRequiredServices.route("/Bazar/listings-required-services").get(async (req, res) => {
+recordRoutesForRequiredServices.route("/listings-required-services").get(async (req, res) => {
     await RequiredServices
     .getRequiredServices()
     .find()
@@ -24,7 +24,7 @@ recordRoutesForRequiredServices.route("/Bazar/listings-required-services").get(a
     });
 })
 
-recordRoutesForRequiredServices.route("/Bazar/listings-required-services/:id").get(async (req,res) => {
+recordRoutesForRequiredServices.route("/listings-required-services/:id").get(async (req,res) => {
   const user = req.params.id;
   await User.getUser().findOne({ _id: ObjectId(user) }, async (err,user) => {
     if (err) handleErr(err,res);
@@ -39,7 +39,7 @@ recordRoutesForRequiredServices.route("/Bazar/listings-required-services/:id").g
   })
 })
 
-recordRoutesForRequiredServices.route("/Bazar/add-required-service").post(authJwt.verifyToken, async (req, res) => {
+recordRoutesForRequiredServices.route("/add-required-service").post(authJwt.verifyToken, async (req, res) => {
   const id = await getId.getId(req);
   await User.getUser().findOne({ _id: ObjectId(id)}, async (err,user) => {
     if (err) handleErr(err,res);
@@ -68,7 +68,7 @@ recordRoutesForRequiredServices.route("/Bazar/add-required-service").post(authJw
   })
 });
 
-recordRoutesForRequiredServices.route("/Bazar/service-required/:service_id").get(async (req, res) => {
+recordRoutesForRequiredServices.route("/service-required/:service_id").get(async (req, res) => {
   let query = req.params.service_id;
   await RequiredServices
   .getRequiredServices()
@@ -80,7 +80,7 @@ recordRoutesForRequiredServices.route("/Bazar/service-required/:service_id").get
 })
 
 
-recordRoutesForRequiredServices.route("/Bazar/update-required-service/:id").patch(authJwt.verifyToken, async function(req, res) {
+recordRoutesForRequiredServices.route("/update-required-service/:id").patch(authJwt.verifyToken, async function(req, res) {
   const id = await getId.getId(req);
   let query = req.params.id;
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
@@ -125,7 +125,7 @@ recordRoutesForRequiredServices.route("/Bazar/update-required-service/:id").patc
 
 
 
-recordRoutesForRequiredServices.route("/Bazar/delete-required-service/:id").delete(authJwt.verifyToken, async (req, res) => {
+recordRoutesForRequiredServices.route("/delete-required-service/:id").delete(authJwt.verifyToken, async (req, res) => {
   const id = await getId.getId(req);
   let query = req.params.id;
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
