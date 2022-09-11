@@ -1,20 +1,27 @@
 import React from 'react'
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast, Checkbox, Stack, RadioGroup, Radio } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast, Stack, RadioGroup, Radio } from '@chakra-ui/react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
 
     const [value, setValue] = React.useState('1')
-    const [showPass, setShowPass] = React.useState(false);
-    const [showConfirmPass, setShowConfirmPass] = React.useState(false);
     const [name, setName] = React.useState();
     const [lastName, setLastName] = React.useState();
+    const [birthday, setBirthday] = React.useState()
+    const [username, setUsername] = React.useState()
     const [email, setEmail] = React.useState();
     const [password, setPassword] = React.useState();
+    const [showPass, setShowPass] = React.useState(false);
     const [confirmpassword, setConfirmpassword] = React.useState();
-    const [pic, setPic] = React.useState();
-    const [plan, setPlan] = React.useState();
     const [iva,setIva] = React.useState();
-    const [loading, setLoading] = React.useState(false);
+    const [showConfirmPass, setShowConfirmPass] = React.useState(false);
+    const [plan, setPlan] = React.useState()
+    const [pic, setPic] = React.useState();
+    const [loading, setLoading] = React.useState(false)
+
+    const toast = useToast()
+    const navigate = useNavigate()
 
     const handleClickPass = () => setShowPass(!showPass)
     const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPass)
@@ -34,6 +41,77 @@ const SignUp = () => {
       if (!validIva.test(iva)) return
     }
 
+    const submitUser = async () => {
+      setLoading(true)
+      if(!name || !lastName || !birthday || !username || !email || !password || !confirmpassword || !plan){
+        toast({
+          title: "Please fill all the fields",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      //controllo regex
+      if(password !== confirmpassword){
+        toast({
+          title: "Password do not match",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      try {
+        const config = {
+          headers: {
+            "Content-type":"application/json",
+          },
+        }
+        const {data} = await axios.post(
+          "/user/signup",
+          {name, lastName, birthday, username, email, password, plan},
+          config
+        )
+        toast({
+          title: "Registration Successful",
+          status: "succes",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })  
+        localStorage.setItem('userInfo', JSON.stringify(data))
+        setLoading(false)
+        navigate('/')
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+      }
+    }
+    
+    const submitCorporate = async () => {
+      
+    }
+
+    const submitHandler = () => {
+      {value === '1' ?
+        submitUser()
+      :
+        submitCorporate()
+      }
+    }
+
     const userForm = (<>
                       <FormControl id='first-name' isRequired>
                         <FormLabel>Name</FormLabel>
@@ -48,6 +126,22 @@ const SignUp = () => {
                           <Input 
                             placeholder='Enter your lastname'
                             onChange={(e) => setLastName(e.target.value) }
+                          />
+                      </FormControl>
+
+                      <FormControl id='username' isRequired>
+                        <FormLabel>Username</FormLabel>
+                          <Input 
+                            placeholder='Enter your username'
+                            onChange={(e) => setUsername(e.target.value) }
+                          />
+                      </FormControl>
+
+                      <FormControl id='birthday' isRequired>
+                        <FormLabel>Birthday</FormLabel>
+                          <Input 
+                            placeholder='Enter your birthday'
+                            onChange={(e) => setBirthday(e.target.value) }
                           />
                       </FormControl>
 
@@ -95,9 +189,9 @@ const SignUp = () => {
                         <FormLabel>Choose your plan</FormLabel>
                         <RadioGroup onChange={setPlan} value={plan}>
                           <Stack direction='row'>
-                            <Radio value='1'>Free</Radio>
-                            <Radio value='2'>Cheap</Radio>
-                            <Radio value='3'>Premium</Radio>
+                            <Radio value='free'>Free</Radio>
+                            <Radio value='cheap'>Cheap</Radio>
+                            <Radio value='premium'>Premium</Radio>
                           </Stack>
                         </RadioGroup>
                       </FormControl>
@@ -199,13 +293,13 @@ const SignUp = () => {
         </RadioGroup>
       </FormControl>
       
-      {/*provare a mettere su una const*/}
-      {value == 1 ? (userForm) : (corporateForm)}      
+      {value === '1' ? (userForm) : (corporateForm)}      
 
       <Button
         colorScheme={"blue"}
         width={"100%"}
         style={{marginTop: 15}}
+        onClick={submitHandler}
         isLoading={loading}
       >
         Sign Up
