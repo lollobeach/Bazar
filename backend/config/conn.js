@@ -83,7 +83,7 @@ function createUser(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'offeredServices', 'requiredServices'],
+                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'picture', 'offeredServices', 'requiredServices'],
                 properties: {
                     name: {
                         bsonType: 'string'
@@ -108,6 +108,9 @@ function createUser(db) {
                     plan: {
                         bsonType: 'string'
                     },
+                    picture: {
+                        bsonType: 'string'
+                    },
                     offeredServices: {
                         bsonType: 'array'
                     },
@@ -125,7 +128,7 @@ function createCorporate(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'countryOfResidence', 'address', 'iva', 'email', 'password', 'offeredServices'],
+                required: ['name', 'countryOfResidence', 'address', 'iva', 'email', 'password', 'picture', 'offeredServices'],
                 properties: {
                     name: {
                         bsonType: 'string'
@@ -146,6 +149,9 @@ function createCorporate(db) {
                     password: {
                         bsonType: 'string',
                         pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$'
+                    },
+                    picuture: {
+                        bsonType: 'string'
                     },
                     offeredServices: {
                         bsonType: 'array'
