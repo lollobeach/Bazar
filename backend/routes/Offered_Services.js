@@ -27,14 +27,14 @@ recordRoutesforOfferedServices.route("/listings-offered-services").get(async (re
       });
     })
 
-recordRoutesforOfferedServices.route("/listings-offered-services/:id").get(async (req,res) => {
-  const _user = req.params.id;
-  await User.getUser().findOne({ _id: ObjectId(_user) }, async (err,user) => {
+recordRoutesforOfferedServices.route("/listings-offered-services-user").get(authJwt.verifyToken, async (req,res) => {
+  const id = await getId.getId(req);
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
     if (err) handleErr(err,res);
     const us = await user;
     let idServices = [];
     if (us === null) {
-      await Corporate.getCorporates().findOne({ _id: ObjectId(_user) }, async (err,corporate) => {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corporate) => {
         if (err) handleErr(err,res);
         const _corp = await corporate;
         if (_corp === null) return res.status(404).send('User not found');
@@ -55,6 +55,8 @@ recordRoutesforOfferedServices.route("/listings-offered-services/:id").get(async
     }
   })
 })
+
+
 
 recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
   const id = await getId.getId(req);
