@@ -53,8 +53,6 @@ body {
   margin: 1rem;
 }
 
-<<<<<<< HEAD
-=======
 .box{
 box-sizing: border-box;
 width: 500px;
@@ -63,4 +61,3 @@ width: 500px;
 .box > h2 .box>{
   font-weight: bold;
 }
->>>>>>> 8462c084b42c1a0b2b459e49e16587d3a48575a8
