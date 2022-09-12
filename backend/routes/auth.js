@@ -2,10 +2,6 @@ const verify = require ('../middlewares/middleware_auth/modules')
 const controller = require('../controllers/auth.controller')
 
 module.exports = (app) => {
-    app.use((req,res,next) => {
-        res.header('Hello')
-        next()
-    })
     app.post('/user/signup',
     [
         verify.verifySignUp.checkDuplicateUsernameOrEmail,

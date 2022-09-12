@@ -2,20 +2,22 @@ import React from 'react'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast, Stack, RadioGroup, Radio } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const SignUp = () => {
 
     const [value, setValue] = React.useState('1')
 
     const [lastName, setLastName] = React.useState();
-    const [birthday, setBirthday] = React.useState()
+    const [birthDate, setBirthDate] = React.useState()
     const [username, setUsername] = React.useState()
     const [plan, setPlan] = React.useState()
 
     const [name, setName] = React.useState();
     const [email, setEmail] = React.useState();
     const [password, setPassword] = React.useState();
-    const [pic, setPic] = React.useState();
+    const [picture, setPicture] = React.useState();
 
     const [iva, setIva] = React.useState();
     const [residence, setResidence] = React.useState();
@@ -31,6 +33,50 @@ const SignUp = () => {
 
     const handleClickPass = () => setShowPass(!showPass)
     const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPass)
+
+    const postDetails = async (pics) => {
+      setLoading(true)
+      if (pics === undefined) {
+        toast({
+          title: 'Please Select an Image!',
+          status: 'warning',
+          duration: 5000,
+          position: 'bottom'
+        })
+        setLoading(false)
+        return
+      }
+      
+      if(pics.type === "image/jpg" || pics.type === "image/png" || pics.type === "image/jpeg") {
+        const data = new FormData()
+        data.append("file", pics)
+        data.append("upload_preset", "bazar_")
+        data.append("cloud_name", "paw2022")
+        fetch("https://api.cloudinary.com/v1_1/paw2022/image/upload", {
+          method: 'post',
+          body: data,
+        }).then((res) => res.json())
+          .then(data => {
+            setPicture(data.url.toString())
+            setLoading(false)
+          })
+          .catch((err) => {
+            console.log(err)
+            setLoading(false)
+          })
+      } 
+      // else {
+      //   toast({
+      //     title: "Please select an image!",
+      //     status: "warning",
+      //     duration: 5000,
+      //     isClosable: true,
+      //     position: "bottom",
+      //   })
+      //   setLoading(false)
+      //   return
+      // }
+    }
     
     const validEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')
     const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$')
@@ -64,7 +110,7 @@ const SignUp = () => {
         setLoading(false)
         return
       }
-      if(!name || !lastName || !birthday || !username || !email || !password || !confirmpassword || !plan){
+      if(!name || !lastName || !birthDate || !username || !email || !password || !confirmpassword || !plan){
         toast({
           title: "Please fill all the fields",
           status: "warning",
@@ -116,7 +162,7 @@ const SignUp = () => {
         }
         await axios.post(
           "/user/signup",
-          {name, lastName, birthday, username, email, password, plan},
+          {name, lastName, birthDate, username, email, password, plan, picture},
           config
         )
         toast({
@@ -125,13 +171,13 @@ const SignUp = () => {
           duration: 5000,
           isClosable: true,
           position: "bottom",
-        })  
+        })
         setLoading(false)
         navigate('/')
       } catch (error) {
         toast({
           title: "Error Occured!",
-          description: error.response.data.message,
+          description: error.response.data,
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -253,7 +299,7 @@ const SignUp = () => {
           duration: 5000,
           isClosable: true,
           position: "bottom",
-        })  
+        })
         setLoading(false)
         navigate('/')
       } catch (error) {
@@ -304,10 +350,11 @@ const SignUp = () => {
 
                       <FormControl id='birthday' isRequired>
                         <FormLabel>Birthday</FormLabel>
-                          <Input 
-                            placeholder='Enter your birthday'
-                            onChange={(e) => setBirthday(e.target.value) }
-                          />
+                          <DatePicker 
+                          selected={birthDate} 
+                          onChange={date => setBirthDate(date)}
+                          dateFormat='dd/MM/yyyy'
+                          maxDate={new Date()} />
                       </FormControl>
 
                       <FormControl id='email' isRequired>
@@ -367,7 +414,7 @@ const SignUp = () => {
                             type={"file"}
                             p={1.5}
                             accept="image/*"
-                            //onChange={(e) => postDetails(e.target.files[0]) }
+                            onChange={(e) => postDetails(e.target.files[0]) }
                           />
                       </FormControl>
                       </>)
