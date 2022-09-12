@@ -114,7 +114,7 @@ const SignUp = () => {
             "Content-type":"application/json",
           },
         }
-        const {data} = await axios.post(
+        await axios.post(
           "/user/signup",
           {name, lastName, birthday, username, email, password, plan},
           config
@@ -126,7 +126,6 @@ const SignUp = () => {
           isClosable: true,
           position: "bottom",
         })  
-        localStorage.setItem('userInfo', JSON.stringify(data))
         setLoading(false)
         navigate('/')
       } catch (error) {
@@ -243,7 +242,7 @@ const SignUp = () => {
             "Content-type":"application/json",
           },
         }
-        const {data} = await axios.post(
+        await axios.post(
           "/corporate/signup",
           {name, residence, address, iva, email, password},
           config
@@ -255,13 +254,12 @@ const SignUp = () => {
           isClosable: true,
           position: "bottom",
         })  
-        localStorage.setItem('userInfo', JSON.stringify(data))
         setLoading(false)
         navigate('/')
       } catch (error) {
         toast({
           title: "Error Occured!",
-          description: error.response.data.message,
+          description: error.response.data,
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -272,11 +270,11 @@ const SignUp = () => {
     }
 
     const submitHandler = () => {
-      {value === '1' ?
-      submitUser()
-      :
-      submitCorporate()
+      if(value === '1'){
+        submitUser()
+        return
       }
+      submitCorporate()
     }
 
     const userForm = (<>
@@ -369,7 +367,7 @@ const SignUp = () => {
                             type={"file"}
                             p={1.5}
                             accept="image/*"
-                            onChange={(e) => postDetails(e.target.files[0]) }
+                            //onChange={(e) => postDetails(e.target.files[0]) }
                           />
                       </FormControl>
                       </>)
