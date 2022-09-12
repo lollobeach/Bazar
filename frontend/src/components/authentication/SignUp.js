@@ -314,11 +314,11 @@ const SignUp = () => {
     }
 
     const submitHandler = () => {
-      {value === '1' ?
-      submitUser()
-      :
-      submitCorporate()
+      if(value === '1'){
+        submitUser()
+        return
       }
+      submitCorporate()
     }
 
     const userForm = (<>

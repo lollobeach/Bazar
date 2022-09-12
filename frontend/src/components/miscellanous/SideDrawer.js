@@ -1,9 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Avatar, Box, Button, /*Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, */Menu, MenuButton, MenuDivider, MenuItem, MenuList, /*Spinner,*/ Text, Tooltip/*, useDisclosure, useToast */} from '@chakra-ui/react'
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
 
 const SideDrawer = () => {
+
+  const navigate = useNavigate()
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo")
+    navigate('/')
+  } 
+
   return (
     <>
         <Box
@@ -48,7 +56,7 @@ const SideDrawer = () => {
                   <MenuItem>Services</MenuItem>
                 </Link>
               <MenuDivider />
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
