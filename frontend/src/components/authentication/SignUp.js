@@ -2,8 +2,6 @@ import React from 'react'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast, Stack, RadioGroup, Radio } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
 
 const SignUp = () => {
 
@@ -64,18 +62,7 @@ const SignUp = () => {
             console.log(err)
             setLoading(false)
           })
-      } 
-      // else {
-      //   toast({
-      //     title: "Please select an image!",
-      //     status: "warning",
-      //     duration: 5000,
-      //     isClosable: true,
-      //     position: "bottom",
-      //   })
-      //   setLoading(false)
-      //   return
-      // }
+      }
     }
     
     const validEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')
@@ -350,11 +337,11 @@ const SignUp = () => {
 
                       <FormControl id='birthday' isRequired>
                         <FormLabel>Birthday</FormLabel>
-                          <DatePicker 
-                          selected={birthDate} 
-                          onChange={date => setBirthDate(date)}
-                          dateFormat='dd/MM/yyyy'
-                          maxDate={new Date()} />
+                        <Input 
+                        placeholder='Enter your bithdate'
+                        type='date'
+                        onChange={(e) => setBirthDate(e.target.value)}
+                        />
                       </FormControl>
 
                       <FormControl id='email' isRequired>
