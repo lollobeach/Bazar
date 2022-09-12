@@ -58,6 +58,6 @@ box-sizing: border-box;
 width: 500px;
 }
 
-.box > h2 .box>{
+.box > h2{
   font-weight: bold;
 }
