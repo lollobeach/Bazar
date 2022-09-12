@@ -24,9 +24,9 @@ recordRoutesForRequiredServices.route("/listings-required-services").get(async (
     });
 })
 
-recordRoutesForRequiredServices.route("/listings-required-services/:id").get(async (req,res) => {
-  const user = req.params.id;
-  await User.getUser().findOne({ _id: ObjectId(user) }, async (err,user) => {
+recordRoutesForRequiredServices.route("/listings-required-services-user").get(authJwt.verifyToken, async (req,res) => {
+  const id = await getId.getId(req);
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
     if (err) handleErr(err,res);
     const _user = await user;
     if (!_user) return res.status(404).send('User not found');
