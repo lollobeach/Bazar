@@ -2,6 +2,8 @@ import React from 'react'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast, Stack, RadioGroup, Radio } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const SignUp = () => {
 
@@ -348,10 +350,11 @@ const SignUp = () => {
 
                       <FormControl id='birthday' isRequired>
                         <FormLabel>Birthday</FormLabel>
-                          <Input 
-                            placeholder='Enter your birthday'
-                            onChange={(e) => setBirthDate(e.target.value) }
-                          />
+                          <DatePicker 
+                          selected={birthDate} 
+                          onChange={date => setBirthDate(date)}
+                          dateFormat='dd/MM/yyyy'
+                          maxDate={new Date()} />
                       </FormControl>
 
                       <FormControl id='email' isRequired>
