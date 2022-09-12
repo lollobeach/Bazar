@@ -24,7 +24,7 @@ exports.userSignUp = async (req,res) => {
     const newUser = {
         name: req.body.name,
         lastName: req.body.lastName,
-        birthDate: new Date(req.body.birth),
+        birthDate: new Date(req.body.birthDate),
         username: req.body.username,
         email: _email,
         password: bcrpyt.hashSync(_password, 12),
@@ -85,9 +85,6 @@ function userPasswordValidation(req,res,user) {
     req.headers.token = token
     res.status(200).send({
         id: user._id,
-        username: user.username,
-        email: user.email,
-        plan: user.plan.type,
         token
     })
 }
@@ -123,8 +120,6 @@ function corporatePasswordValidation(req,res,corporate) {
     req.headers.token = token;
     res.status(200).send({
         id: corporate._id,
-        name: corporate.name,
-        email: corporate.email,
         token
     })
 }

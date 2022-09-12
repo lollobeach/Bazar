@@ -1,9 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Avatar, Box, Button, /*Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, */Menu, MenuButton, MenuDivider, MenuItem, MenuList, /*Spinner,*/ Text, Tooltip/*, useDisclosure, useToast */} from '@chakra-ui/react'
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
 
 const SideDrawer = () => {
+
+  const navigate = useNavigate()
+
+  const user = JSON.parse(localStorage.getItem("userInfo"))
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo")
+    navigate('/')
+  } 
+
   return (
     <>
         <Box
@@ -21,7 +31,7 @@ const SideDrawer = () => {
           <Button variant={"ghost"} >
             <i className="fas fa-search"></i>
               <Text d={{base: "none", md: "flex"}} px="4">
-                Search User
+                Search Service
               </Text>
           </Button>
         </Tooltip>
@@ -37,9 +47,10 @@ const SideDrawer = () => {
             </MenuButton>
             {/* <MenuList></MenuList> */}
           </Menu>
+          {user ? (
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <Avatar size={'sm'} cursor='pointer' />
+            <Avatar size={'sm'} cursor='pointer' name={user.name} src={user.pic} />
             </MenuButton>
             <MenuList>
                 <MenuItem>My Profile</MenuItem>
@@ -48,9 +59,26 @@ const SideDrawer = () => {
                   <MenuItem>Services</MenuItem>
                 </Link>
               <MenuDivider />
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
+          ):(
+            <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <Avatar size={'sm'} cursor='pointer' />
+            </MenuButton>
+            <MenuList>
+              <Link to='/auth'>
+                  <MenuItem>Registrati</MenuItem>
+              </Link>
+              <MenuDivider />
+              <Link to='/auth'>
+                <MenuItem>Accedi</MenuItem>
+              </Link>
+              <MenuDivider />
+            </MenuList>
+          </Menu>
+          )}
         </div>
       </Box>
     </>
