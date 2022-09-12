@@ -1,5 +1,6 @@
 import React from 'react'
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
+import { Avatar, Box, Button, /*Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, */Menu, MenuButton, MenuDivider, MenuItem, MenuList, /*Spinner,*/ Text, Tooltip/*, useDisclosure, useToast */} from '@chakra-ui/react'
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
 
 const SideDrawer = () => {
@@ -24,9 +25,11 @@ const SideDrawer = () => {
               </Text>
           </Button>
         </Tooltip>
-        <Text fontSize={"4xl"} fontFamily="fantasy">
-          Bazar
-        </Text>
+        <Link to="/">
+          <Text as='button' fontSize={"2xl"} fontFamily="Work sans">
+            Bazar
+          </Text>
+        </Link>
         <div>
           <Menu>
             <MenuButton p={1}> 
@@ -40,6 +43,10 @@ const SideDrawer = () => {
             </MenuButton>
             <MenuList>
                 <MenuItem>My Profile</MenuItem>
+              <MenuDivider />
+                <Link to='/services'>
+                  <MenuItem>Services</MenuItem>
+                </Link>
               <MenuDivider />
               <MenuItem>Logout</MenuItem>
             </MenuList>

@@ -19,10 +19,8 @@ recordRoutesforOfferedServices.route("/listings-offered-services").get(async (re
       .getOfferedServices()
       .find()
       .toArray(async (err, result) => {
-        if (err) {
-          console.log(err);
-          return res.status(500).send('Error');
-        } else {
+        if (err) handleErr(err,res);
+        else {
           const _result = await result;
           res.status(200).json(_result);
         }
