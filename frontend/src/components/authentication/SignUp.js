@@ -6,17 +6,24 @@ import { useNavigate } from 'react-router-dom'
 const SignUp = () => {
 
     const [value, setValue] = React.useState('1')
-    const [name, setName] = React.useState();
+
     const [lastName, setLastName] = React.useState();
     const [birthday, setBirthday] = React.useState()
     const [username, setUsername] = React.useState()
+    const [plan, setPlan] = React.useState()
+
+    const [name, setName] = React.useState();
     const [email, setEmail] = React.useState();
     const [password, setPassword] = React.useState();
+    const [pic, setPic] = React.useState();
+
+    const [iva, setIva] = React.useState();
+    const [residence, setResidence] = React.useState();
+    const [address, setAddress] = React.useState();
+
     const [showPass, setShowPass] = React.useState(false);
     const [confirmpassword, setConfirmpassword] = React.useState();
     const [showConfirmPass, setShowConfirmPass] = React.useState(false);
-    const [plan, setPlan] = React.useState()
-    const [pic, setPic] = React.useState();
     const [loading, setLoading] = React.useState(false)
 
     const toast = useToast()
@@ -24,9 +31,39 @@ const SignUp = () => {
 
     const handleClickPass = () => setShowPass(!showPass)
     const handleClickConfirmPass = () => setShowConfirmPass(!showConfirmPass)
+    
+    const validEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')
+    const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$')
+    const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
 
     const submitUser = async () => {
       setLoading(true)
+      const data = await axios.get('/list-users')
+      const users = data.data
+      const usernames = users.map(item => item.username)
+      const emails = users.map(item => item.email)
+      if (usernames.includes(username)) {
+        toast({
+          title: "Username is already in use",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      else if (emails.includes(email)) {
+        toast({
+          title: "Email is already in use",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
       if(!name || !lastName || !birthday || !username || !email || !password || !confirmpassword || !plan){
         toast({
           title: "Please fill all the fields",
@@ -38,7 +75,28 @@ const SignUp = () => {
         setLoading(false)
         return
       }
-      //controllo regex
+      if (!validEmail.test(email)) {
+        toast({
+          title: "Email format not correct",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
+      if (!validPassword.test(password)) {
+        toast({
+          title: "Password format not correct, is required - minimum length 6 characters:\n - at least 1 capital character\n - at least 1 lower character\n - at least 11 number\n - at least 1 special character ",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
       if(password !== confirmpassword){
         toast({
           title: "Password do not match",
@@ -63,7 +121,7 @@ const SignUp = () => {
         )
         toast({
           title: "Registration Successful",
-          status: "succes",
+          status: "success",
           duration: 5000,
           isClosable: true,
           position: "bottom",
@@ -85,14 +143,139 @@ const SignUp = () => {
     }
     
     const submitCorporate = async () => {
-      
+      setLoading(true)
+      const data = await axios.get('/list-corporates')
+      const corporates = data.data
+      const names = corporates.map(item => item.name)
+      const emails = corporates.map(item => item.email)
+      const ivas = corporates.map(item => item.iva)
+      if (names.includes(name)) {
+        toast({
+          title: "Name is already in use",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      else if (ivas.includes(iva)) {
+        toast({
+          title: "IVA is already in use",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      else if (emails.includes(email)) {
+        toast({
+          title: "Email is already in use",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      if(!name || !residence || !address || !iva || !email || !password || !confirmpassword){
+        toast({
+          title: "Please fill all the fields",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      if (!validIva.test(iva)) {
+        toast ({
+          title: "IVA format not correct",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
+      if (!validEmail.test(email)) {
+        toast({
+          title: "Email format not correct",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
+      if (!validPassword.test(password)) {
+        toast({
+          title: "Password format not correct, is required - minimum length 6 characters:\n - at least 1 capital character\n - at least 1 lower character\n - at least 11 number\n - at least 1 special character ",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
+      if(password !== confirmpassword){
+        toast({
+          title: "Password do not match",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+      try {
+        const config = {
+          headers: {
+            "Content-type":"application/json",
+          },
+        }
+        const {data} = await axios.post(
+          "/corporate/signup",
+          {name, residence, address, iva, email, password},
+          config
+        )
+        toast({
+          title: "Registration Successful",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })  
+        localStorage.setItem('userInfo', JSON.stringify(data))
+        setLoading(false)
+        navigate('/')
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+      }
     }
 
     const submitHandler = () => {
       {value === '1' ?
-        submitUser()
+      submitUser()
       :
-        submitCorporate()
+      submitCorporate()
       }
     }
 
@@ -186,7 +369,7 @@ const SignUp = () => {
                             type={"file"}
                             p={1.5}
                             accept="image/*"
-                            /*onChange={(e) => postDetails(e.target.files[0]) }*/
+                            onChange={(e) => postDetails(e.target.files[0]) }
                           />
                       </FormControl>
                       </>)
@@ -204,7 +387,7 @@ const SignUp = () => {
                             <FormLabel>Country of residence</FormLabel>
                             <Input 
                               placeholder='Enter the country of residence'
-                              onChange={(e) => setName(e.target.value) }
+                              onChange={(e) => setResidence(e.target.value) }
                             />
                           </FormControl>
 
@@ -212,7 +395,7 @@ const SignUp = () => {
                             <FormLabel>Address</FormLabel>
                             <Input 
                               placeholder='Enter the address'
-                              onChange={(e) => setName(e.target.value) }
+                              onChange={(e) => setAddress(e.target.value) }
                             />
                           </FormControl>
 
@@ -220,7 +403,7 @@ const SignUp = () => {
                             <FormLabel>IVA</FormLabel>
                             <Input 
                               placeholder='Enter the iva'
-                              onChange={(e) => setName(e.target.value) }
+                              onChange={(e) => setIva(e.target.value) }
                             />
                           </FormControl>
 

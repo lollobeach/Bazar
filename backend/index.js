@@ -152,7 +152,8 @@ app.get('/', (req,res) => {
 })
 
 require('./routes/auth')(app)
-require('./routes/user')(app)
 
 app.use(require("./routes/Offered_Services"));
 app.use(require("./routes/Required_Services"));
+
+app.use(require("./routes/user_corporate"))
