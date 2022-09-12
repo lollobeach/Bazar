@@ -59,13 +59,15 @@ const Login = () => {
         "/user/login",
         {username, password},
         config
-      )}else{
+        )
+      }else{
         const email = username
         data = await axios.post(
           "/user/login",
           {email, password},
           config
-      )}
+          )
+        }
       toast({
         title: "Login Successful",
         status: "success",

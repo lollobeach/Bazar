@@ -18,6 +18,11 @@ const UserSerevicesPage = () => {
         setRequiredServices(data.data)
     }
 
+    React.useEffect(() => {
+        fetchOfferedServices()
+        fetchRequiredServices()
+    },[])
+
   return (
     <div stye={{ width: "100% "}}>
     <SideDrawer/>
