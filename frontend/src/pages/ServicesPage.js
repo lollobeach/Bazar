@@ -6,8 +6,7 @@ const ServicesPage = () => {
     <div>
         <SideDrawer />
         <div className='container'>
-            <h1>Hi</h1>
-            <h1>Mario</h1>
+           
         </div>
     </div>
   )

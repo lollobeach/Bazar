@@ -29,7 +29,7 @@ exports.userSignUp = async (req,res) => {
         email: _email,
         password: bcrpyt.hashSync(_password, 12),
         plan: _plan,
-        picutre: _picture,
+        picture: _picture,
         offeredServices: [],
         requiredServices: [],
     }

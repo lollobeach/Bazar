@@ -27,11 +27,11 @@ const Bazar = () => {
     <div stye={{ width: "100% "}}>
         <SideDrawer/>
         <div className='container'>
-            <div>
+            <div className='offered-services-column'>
                 <h1>Offered Services</h1>
                 <Services services={offeredServices}/>
             </div>
-            <div>
+            <div className='required-services-column'>
                 <h1>Required Services</h1>
                 <Services services={requiredServices} />
             </div>
