@@ -1,6 +1,4 @@
 
-
-
 body {
   margin: 0;
   padding: 1rem;
@@ -21,11 +19,7 @@ body {
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
   
 }
-/*.offered-services-column{
-  border: 5px solid rgb(0, 0, 0);
 
-}
-*/
 
 .offered-services-column>h1{
   border: 5px solid rgb(0, 0, 0);
@@ -37,11 +31,7 @@ body {
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
 
-/*.required-services-column{
-  border: 5px solid rgb(0, 0, 0);
 
-}
-*/
 
 .required-services-column>h1{
   border: 5px solid rgb(0, 0, 0);
@@ -67,6 +57,7 @@ body {
 box-sizing: border-box;
 width: 500px;
 }
+
 .box > h2 .box>{
   font-weight: bold;
 }
