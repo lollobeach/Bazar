@@ -2,45 +2,41 @@ const express = require('express');
 const app = express();
 
 const cors = require("cors");
-//carica da variabili locali moduli da installare o variabili di ambienti da usare
-require("dotenv").config({ path: "./config.env" });
-const port = process.env.PORT || 5000;
-//inizio codice per sicurezza header, cookies e sessioni
-//richiamo helmet 
-var helmet = require('helmet')
-//richiamo express session
-var session = require('express-session')
 
-var expiryDate = new Date(Date.now() + 60 * 60 * 1000)
+let bodyParser = require('body-parser')
+
+require("dotenv").config({ path: "./config.env" });
+let helmet = require('helmet')
+let session = require('express-session')
+
+app.use(express.json())
+
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
+let expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 ora
 
 app.use(cors());
 app.use(express.json());
 app.use(helmet())
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: 'pawn420giorgiosldgreenduccispina',
   name: 'sessionId',
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  expires: expiryDate,
   cookie: {
-    secure: true,
-    //httpOnly: true,
-    //domain: 'example.com', to release in distribuition 
-    //path: 'foo/bar',
-    expires: expiryDate
+    // settato a true funziona solo con https
+    // secure: true,
+    httpOnly: true
   }
 }))
 
+const dbo = require("./config/conn");
 
-//richiamo il file delle route
-app.use(require("./routes/service"));
-app.use(require("./routes/auth"));
-//connessione db
-const dbo = require("./db/conn");
-
-
-//inizio codice socket.io
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
-  //serve per far ricevere le richieste solo dal frontend
   cors: {
     origin: "http://localhost:8080",
   },
@@ -49,15 +45,13 @@ const io = require("socket.io")(httpServer, {
 const crypto = require("crypto");
 const randomId = () => crypto.randomBytes(8).toString("hex");
 
-const { InMemorySessionStore } = require("./middleware/sessionStore");
+const { InMemorySessionStore } = require("./middlewares/middleware_chat/sessionStore");
 const sessionStore = new InMemorySessionStore();
 
-const { InMemoryMessageStore } = require("./middleware/messageStore");
+const { InMemoryMessageStore } = require("./middlewares/middleware_chat/messageStore");
 const messageStore = new InMemoryMessageStore();
 
 io.use((socket, next) => {
-  //salva e recupera la sessione di un utente gia loggato
-  //evita la creazione di un utente ad ogni ricarica di pagina
   const sessionID = socket.handshake.auth.sessionID;
   if (sessionID) {
     const session = sessionStore.findSession(sessionID);
@@ -68,7 +62,6 @@ io.use((socket, next) => {
       return next();
     }
   }
-  //registra l'username da togliere dopo che unito con login greendux
   const username = socket.handshake.auth.username;
   if (!username) {
     return next(new Error("invalid username"));
@@ -80,23 +73,19 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  //salva la sessione
   sessionStore.saveSession(socket.sessionID, {
     userID: socket.userID,
     username: socket.username,
     connected: true,
   });
 
-  //dettagli della sessione
   socket.emit("session", {
     sessionID: socket.sessionID,
     userID: socket.userID,
   });
 
-  //unisce due scoet creano un canale
   socket.join(socket.userID);
 
-  // printo tutti gli user esisententi
   const users = [];
   const messagesPerUser = new Map();
   messageStore.findMessagesForUser(socket.userID).forEach((message) => {
@@ -118,7 +107,6 @@ io.on("connection", (socket) => {
   });
   socket.emit("users", users);
 
-  //notifica connessione nuovo utente
   socket.broadcast.emit("user connected", {
     userID: socket.userID,
     username: socket.username,
@@ -126,26 +114,21 @@ io.on("connection", (socket) => {
     messages: [],
   });
 
-  //invio messaffio all'utente richiesto nel frontend
   socket.on("private message", ({ content, to }) => {
     const message = {
       content,
       from: socket.userID,
       to,
     };
-    //salvataggio del messaggio
     socket.to(to).to(socket.userID).emit("private message", message);
     messageStore.saveMessage(message);
   });
 
-  //notifica disconnect
   socket.on("disconnect", async () => {
     const matchingSockets = await io.in(socket.userID).allSockets();
     const isDisconnected = matchingSockets.size === 0;
     if (isDisconnected) {
-      // notify other users
       socket.broadcast.emit("user disconnected", socket.userID);
-      // update the connection status of the session
       sessionStore.saveSession(socket.sessionID, {
         userID: socket.userID,
         username: socket.username,
@@ -157,6 +140,22 @@ io.on("connection", (socket) => {
 
 const PORT = process.env.PORT || 3000;
 
-httpServer.listen(PORT, () =>
+httpServer.listen(PORT, () => {
+  dbo
+  .connectToServer()
+  .catch(console.error)
   console.log(`server listening at http://localhost:${PORT}`)
-);
+});
+
+app.get('/', (req,res) => {
+  res.json('Welcome to Bazar web site!')
+})
+
+require('./routes/auth')(app)
+
+app.use(require("./routes/Offered_Services"));
+app.use(require("./routes/Required_Services"));
+
+app.use(require("./routes/Unauthorised"))
+
+app.use(require("./routes/user_corporate"))
