@@ -7,20 +7,36 @@ const Services = (props) => {
     React.useEffect(() => {
         setPosts(props.services)
     },[props.services])
-
-    const services = posts.map(item => (
+//riga sotto service class ci andra l immagine
+    /*const services = posts.map(item => (
     <div key={item._id} className='service'>
-        <div className='box'>
-        <h2>{item.title}</h2>
-        <h3>{item.description}</h3>
-        <p>Where: {item.place}</p>
-        {item.price ? 
-        (<p>Price: {item.price}€</p>) :
-        (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
-        <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+        <div className='serviceImage'>
+        <div className='box'> 
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+            <p>Where: {item.place}</p>
+            {item.price ? 
+            (<p className='servicePrice'>Price: {item.price}€</p>) :
+            (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
+            <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+            </div>
          </div>
     </div>
     ))  
+    */
+    const services = posts.map(item => (
+        <div key={item._id} className='service'>
+            <div className='serviceImage'></div>
+            <div className='box'> 
+                <h2 className='serviceTitle'>{item.title}</h2>
+                <p>Where: {item.place}</p>
+                <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+                <a href=''>READ MORE</a>
+                </div>
+         
+        </div>
+        ))  
+    
 
     return (
     <div>
