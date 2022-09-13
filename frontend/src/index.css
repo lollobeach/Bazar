@@ -13,13 +13,13 @@ body {
 
 .container {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap:wrap;
   justify-content: space-between;
   padding: 100px;
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
   
+  
 }
-
 
 .offered-services-column>h1{
   border: 5px solid rgb(0, 0, 0);
@@ -31,8 +31,6 @@ body {
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
 
-
-
 .required-services-column>h1{
   border: 5px solid rgb(0, 0, 0);
   padding: 60px;
@@ -42,8 +40,9 @@ body {
   font-size: 30px;
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
-.service {
+/*.service {
 
+>>>>>>> 665f493c08b71cc85ff50b16516918e6c42657ce
   flex-shrink: 0;
   flex-basis: 40%;
   background-color: aliceblue;
@@ -52,12 +51,48 @@ body {
   border: 10px solid rgb(0, 140, 255);
   margin: 1rem;
 }
+*/
+.service{
+  background: white;
+  width: 500px;
+  height: 400px;
+  margin: 10px;
+  border-radius: 15px;
+  flex-wrap: nowrap;
+  
+}
+
+
+.serviceImage{
+  background-color: aqua;
+  height: 150px;
+  margin-bottom: 15px;
+  background-size: cover;
+  border-radius: 15px 15px 0 0;
+}
 
 .box{
 box-sizing: border-box;
 width: 500px;
 }
 
+
 .box > h2{
   font-weight: bold;
+  padding: 12px;
+  
+}
+
+.box > p{
+  padding: 5px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.box a {
+  background-color: black;
+  color:white;
+  padding: 10px 10px;
+  display:block;
+  margin: 50px 170px;
+  
 }
