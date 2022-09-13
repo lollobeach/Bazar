@@ -21,13 +21,7 @@ body {
   
 }
 
-
-<<<<<<< HEAD
-.offered-services-column>h1, .required-services-column>h1{
-=======
-
 .offered-services-column>h1{
->>>>>>> 665f493c08b71cc85ff50b16516918e6c42657ce
   border: 5px solid rgb(0, 0, 0);
   padding: 60px;
   text-align: center;
@@ -36,11 +30,6 @@ body {
   font-size: 30px;
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
-
-<<<<<<< HEAD
-.service {
-=======
-
 
 .required-services-column>h1{
   border: 5px solid rgb(0, 0, 0);
