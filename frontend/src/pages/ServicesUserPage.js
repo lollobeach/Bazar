@@ -2,14 +2,15 @@ import React from 'react'
 import axios from 'axios'
 import UserServices from '../components/services/UserServices'
 import SideDrawer from '../components/miscellanous/SideDrawer'
+import ErrorPage from './ErrorPage'
 
 const ServicesUserPage = () => {
 
     const [offeredServices, setOfferedServices] = React.useState()
     const [requiredServices, setRequiredServices] = React.useState()
 
-    function getToken() {
-        const user = JSON.parse(localStorage.getItem('userInfo'))
+    async function getToken() {
+        const user = await JSON.parse(localStorage.getItem('userInfo'))
         if (!user) return null
         else return user.data.token
     }
@@ -21,7 +22,7 @@ const ServicesUserPage = () => {
             "Authorization": `Bearer ${token}`
         }})
         .then(response => setOfferedServices(response.data))
-        .catch(err => setOfferedServices({errorMessage: err.message}))
+        .catch(err => console.log(err.message))
     }
 
     async function fetchRequiredServices() {
@@ -31,7 +32,7 @@ const ServicesUserPage = () => {
             "Authorization": `Bearer ${token}`
         }})
         .then(response => setRequiredServices(response.data))
-        .catch(err => setRequiredServices(err.message))
+        .catch(err => console.log(err.message))
     }
 
     React.useEffect(() => {
@@ -39,11 +40,11 @@ const ServicesUserPage = () => {
         fetchRequiredServices()
     },[])
 
-    if (!Array.isArray(offeredServices)) {
+    if (!offeredServices) {
         return (
             <div stye={{ width: "100% "}}>
                 <SideDrawer/>
-                <h1 style={{fontSize: '50px', padding: '50px'}}>Error 401 unauthorised</h1>
+                <ErrorPage error={401} />
             </div>
         )
     } else {

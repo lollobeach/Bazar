@@ -16,27 +16,39 @@ const SideDrawer = () => {
 
   return (
     <>
-        <Box
-            display={"flex"}
-            justifyContent="space-between"
-            alignItems={"center"}
-            bgGradient="linear(to-r, blue.500, purple.200)"
-            w="100%"
-            p="5px 10px 5px 10px"
-            borderWidth={"5px"}
-            borderColor="00FFFF"
-            boxShadow='dark-lg'
+    <Box
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        bgGradient="linear(to-r, blue.500, purple.200)"
+        w="100%"
+        p="10px 50px"
+        borderWidth={"5px"}
+        borderColor="00FFFF"
+        boxShadow='dark-lg'
         >
-        <Tooltip label="Search User" hasArrow placement='bottom-end'>
-          <Button variant={"ghost"} >
-            <i className="fas fa-search"></i>
-              <Text d={{base: "none", md: "flex"}} px="4">
-                Search Service
-              </Text>
-          </Button>
-        </Tooltip>
+          <Box
+          display={"grid"}
+          >
+            <Tooltip label="Search Service" hasArrow placement='bottom-end'>
+            <Button variant={"ghost"} >
+              <i className="fas fa-search"></i>
+                <Text d={{base: "none"}} px="4">
+                  Search Offered Service
+                </Text>
+            </Button>
+          </Tooltip>
+          <Tooltip label="Search Service" hasArrow placement='bottom-end'>
+            <Button variant={"ghost"} >
+              <i className="fas fa-search"></i>
+                <Text d={{base: "none"}} px="4">
+                  Search Required Service
+                </Text>
+            </Button>
+          </Tooltip>
+          </Box>
         <Link to="/">
-          <Text as='button' fontSize={"2xl"} fontFamily="Work sans">
+          <Text as='button' fontSize={"5xl"} fontFamily="Work sans">
             Bazar
           </Text>
         </Link>
