@@ -16,10 +16,11 @@ const ServicesUserPage = () => {
     }
 
     async function fetchOfferedServices() {
-        const token = getToken()
-        await axios.get('/listings-offered-services-user',
+        const token = await getToken()
+        console.log(token)
+        const res = await axios.get('/listings-offered-services-user',
         { headers: {
-            "Authorization": `Bearer ${token}`
+            Authorization: 'Bearer ' + token 
         }})
         .then(response => setOfferedServices(response.data))
         .catch(err => console.log(err.message))
