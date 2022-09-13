@@ -1,7 +1,8 @@
 import React from 'react'
 
 const UserServices = (props) => {
-    const [posts, setPosts] = React.useState([])
+
+    const [posts, setPosts] = React.useState()
 
     React.useEffect(() => {
         setPosts(props.services)
@@ -9,6 +10,7 @@ const UserServices = (props) => {
 
     const services = posts.map(item => (
     <div key={item._id} className='service'>
+        <div className='box'>
         <h2>{item.title}</h2>
         <h3>{item.description}</h3>
         <p>Where: {item.place}</p>
@@ -17,6 +19,7 @@ const UserServices = (props) => {
         (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
         <p>Data creation: {item.dataCreation.split('T')[0]}</p>
         </div>
+    </div>
     ))  
 
     return (
