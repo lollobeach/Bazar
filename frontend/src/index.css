@@ -21,11 +21,6 @@ body {
   
 }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 2417952a6fa455186ef2a8cf3541cd6ac6135fc2
 .offered-services-column>h1{
   border: 5px solid rgb(0, 0, 0);
   padding: 60px;
@@ -46,8 +41,6 @@ body {
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 /*.service {
-
->>>>>>> 665f493c08b71cc85ff50b16516918e6c42657ce
   flex-shrink: 0;
   flex-basis: 40%;
   background-color: aliceblue;
@@ -56,12 +49,8 @@ body {
   border: 10px solid rgb(0, 140, 255);
   margin: 1rem;
 }
-*/
-<<<<<<< HEAD
+
 .service{
-=======
-/*.service{
->>>>>>> 2417952a6fa455186ef2a8cf3541cd6ac6135fc2
   background: white;
   width: 500px;
   height: 400px;
@@ -70,20 +59,7 @@ body {
   flex-wrap: nowrap;
   
 }
-<<<<<<< HEAD
-
-
-.serviceImage{
-  background-color: aqua;
-  height: 150px;
-  margin-bottom: 15px;
-  background-size: cover;
-  border-radius: 15px 15px 0 0;
-}
-=======
 */
->>>>>>> 2417952a6fa455186ef2a8cf3541cd6ac6135fc2
-
 
 .serviceImage{
   background-color: aqua;
@@ -96,9 +72,7 @@ body {
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	        box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	
-  
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
 /*.box{
@@ -121,32 +95,10 @@ width: 500px;
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
 	
 }
 
-
-<<<<<<< HEAD
-
-.box > h2{
-  font-weight: bold;
-  padding: 12px;
-  
-}
-
-.box > p{
-  padding: 5px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
-}
-
-.box a {
-  background-color: black;
-  color:white;
-  padding: 10px 10px;
-  display:block;
-  margin: 50px 170px;
-  
-=======
 .serviceTitle{
   font-weight: bold;
   padding:5px;
@@ -175,6 +127,5 @@ width: 500px;
 /*.serviceInformations{
   position: relative;
   top:50px;
->>>>>>> 2417952a6fa455186ef2a8cf3541cd6ac6135fc2
 }
 */
