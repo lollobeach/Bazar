@@ -30,7 +30,7 @@ body {
   background-image: linear-gradient(to top left, #ffffff 50%, #696b6c 100%);
   color: black;
   font-size: 30px;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 
@@ -42,7 +42,7 @@ body {
   background: linear-gradient(to top left, #ffffff 50%, #696b6c 100%);
   color: black;
   font-size: 30px;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 /*.service {
 
@@ -55,7 +55,7 @@ body {
   margin: 1rem;
 }
 */
-.service{
+/*.service{
   background: white;
   width: 500px;
   height: 400px;
@@ -64,38 +64,77 @@ body {
   flex-wrap: nowrap;
   
 }
+*/
 
 
 .serviceImage{
   background-color: aqua;
-  height: 150px;
+  height: 500px;
   margin-bottom: 15px;
   background-size: cover;
-  border-radius: 15px 15px 0 0;
+  position: relative;
+  border-radius: 50px;
+	-webkit-transition: 200ms ease-in-out;
+	-o-transition: 200ms ease-in-out;
+	transition: 200ms ease-in-out;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	
+  
 }
 
-.box{
+/*.box{
 box-sizing: border-box;
 width: 500px;
 }
+*/
+.box{
+
+	width: 200px;
+	height: 200px;
+  background-color: #ffffff;
+  position: relative;
+  left: 60px;
+  top:300px;
+	text-align: center;
+  background-position-x:150px;
+	border-radius: 45px;
+	-webkit-transition: 200ms ease-in-out;
+	-o-transition: 200ms ease-in-out;
+	transition: 200ms ease-in-out;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	
+}
 
 
-.box > h2{
+.serviceTitle{
   font-weight: bold;
-  padding: 12px;
+  padding:5px;
+  font-size: 12px;
   
 }
 
-.box > p{
-  padding: 5px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+.serviceInformations > p{
+  padding: 7px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 13px;
 }
 
-.box a {
+.linkBox {
   background-color: black;
   color:white;
-  padding: 10px 10px;
+  border-radius: 8px;
   display:block;
-  margin: 50px 170px;
-  
+  margin: 12px 25px;
+  position:absolute;
+  bottom: -12px; 
+  left: 25px;
+  width: 100px;
 }
+
+/*.serviceInformations{
+  position: relative;
+  top:50px;
+}
+*/
