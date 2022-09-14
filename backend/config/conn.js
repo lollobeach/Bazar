@@ -150,7 +150,7 @@ function createCorporate(db) {
                         bsonType: 'string',
                         pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$'
                     },
-                    picuture: {
+                    picture: {
                         bsonType: 'string'
                     },
                     offeredServices: {

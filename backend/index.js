@@ -159,3 +159,7 @@ app.use(require("./routes/Required_Services"));
 app.use(require("./routes/Unauthorised"))
 
 app.use(require("./routes/user_corporate"))
+
+//inizio codice modulare chat
+app.use(require("./routes/chats"));
+app.use(require("./routes/message"));
