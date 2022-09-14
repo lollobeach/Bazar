@@ -24,7 +24,7 @@ const Services = (props) => {
     </div>
     ))  
     */
-    const services = posts.map(item => (
+    /*const services = posts.map(item => (
         <div key={item._id} className='service'>
             <div className='serviceImage'></div>
             <div className='box'> 
@@ -36,6 +36,41 @@ const Services = (props) => {
          
         </div>
         ))  
+        */
+
+        /*const services = posts.map(item => (
+            <div key={item._id} className='service'>
+                <div className='box'>
+                <div className='serviceImage'></div>
+                 
+                    <h2 className='serviceTitle'>{item.title}</h2>
+                    <p>Where: {item.place}</p>
+                    <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+                    <a href=''>READ MORE</a>
+                    </div>
+                    
+             
+            </div>
+            ))  
+            */
+            const services = posts.map(item => (
+                
+                    
+                    <div className='serviceImage'>
+                    <div key={item._id} className='box'>
+
+                        <div className='serviceInformations'>
+                        <h2 className='serviceTitle'>{item.title}</h2>
+                        <p>Where: {item.place}</p>
+                        <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+                        </div>
+                        
+                        <a className='linkBox' href=''>READ MORE</a>
+                        
+                        
+                        </div>
+                </div>
+                ))
     
 
     return (
