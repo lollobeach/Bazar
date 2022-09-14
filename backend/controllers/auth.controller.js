@@ -85,6 +85,9 @@ function userPasswordValidation(req,res,user) {
     req.headers.token = token
     res.status(200).send({
         id: user._id,
+        username: user.username,
+        plan: user.plan,
+        pic: user.picture,
         token
     })
 }
@@ -120,6 +123,7 @@ function corporatePasswordValidation(req,res,corporate) {
     req.headers.token = token;
     res.status(200).send({
         id: corporate._id,
+        pic: corporate.picture,
         token
     })
 }

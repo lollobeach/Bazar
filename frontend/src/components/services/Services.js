@@ -21,7 +21,7 @@ const Services = (props) => {
             (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
             <p>Data creation: {item.dataCreation.split('T')[0]}</p>
             </div>
-         </div>
+        </div>
     </div>
     ))  
     */
@@ -34,7 +34,7 @@ const Services = (props) => {
                 <p>Data creation: {item.dataCreation.split('T')[0]}</p>
                 <a href=''>READ MORE</a>
                 </div>
-         
+        
         </div>
         ))  
         */
@@ -43,43 +43,30 @@ const Services = (props) => {
             <div key={item._id} className='service'>
                 <div className='box'>
                 <div className='serviceImage'></div>
-                 
+                
                     <h2 className='serviceTitle'>{item.title}</h2>
                     <p>Where: {item.place}</p>
                     <p>Data creation: {item.dataCreation.split('T')[0]}</p>
                     <a href=''>READ MORE</a>
                     </div>
                     
-             
+            
             </div>
             ))  
             */
-            const services = posts.map(item => (
-                
-                    
-                    <div className='serviceImage'>
-                        
-                    <div key={item._id} className='box'>
-                        
-                        <div className='serviceInformations'>
-                        <h2 className='serviceTitle'>{item.title}</h2>
-                        <p>Where: {item.place}</p>
-                        <p>Data creation: {item.dataCreation.split('T')[0]}</p>
-                        </div>
-                        <a className='linkBox' href=''>READ MORE</a>
-                        
-                        
-                        </div>
+    const services = posts.map(item => (
+        <div key={item._id} className='serviceImage'>
+            <div className='box'>
+                <div className='serviceInformations'>
+                    <h2 className='serviceTitle'>{item.title}</h2>
+                    <p>Where: {item.place}</p>
+                    <p>Data creation: {item.dataCreation.split('T')[0]}</p>
                 </div>
-<<<<<<< HEAD
-                ))
-=======
-                
-            
-                ))  
->>>>>>> c50d8ca96ba29b2557cba2e2774f28b60fe03a5b
+                <a className='linkBox' href=''>READ MORE</a>
+            </div>
+        </div>
+    ))
     
-
     return (
     <div>
         {services}

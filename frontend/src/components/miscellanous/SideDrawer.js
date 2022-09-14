@@ -62,7 +62,8 @@ const SideDrawer = () => {
           {user ? (
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            <Avatar size={'sm'} cursor='pointer' name={user.name} src={user.pic} />
+              <Text>{user.data.username}</Text>
+              <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
             </MenuButton>
             <MenuList>
                 <MenuItem>My Profile</MenuItem>
@@ -77,7 +78,7 @@ const SideDrawer = () => {
           ):(
             <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            <Avatar size={'sm'} cursor='pointer' />
+              <Avatar size={'sm'} cursor='pointer' />
             </MenuButton>
             <MenuList>
               <Link to='/auth'>

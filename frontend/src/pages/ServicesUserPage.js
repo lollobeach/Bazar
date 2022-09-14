@@ -3,11 +3,14 @@ import axios from 'axios'
 import UserServices from '../components/services/UserServices'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
+import { Button } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 
 const ServicesUserPage = () => {
 
     const [offeredServices, setOfferedServices] = React.useState()
     const [requiredServices, setRequiredServices] = React.useState()
+    const [error, setError] = React.useState()
 
     async function fetchServices() {
         const info = await JSON.parse(localStorage.getItem('userInfo'))
@@ -16,15 +19,15 @@ const ServicesUserPage = () => {
             const _offeredServices = await axios.get('/listings-offered-services-user',
             { headers: {
                 Authorization: `Bearer ${token}`
-            }})
-            setOfferedServices(_offeredServices.data)            
+            }})           
             const _requiredServices = await axios.get('/listings-required-services-user',
             { headers: {
                 Authorization: `Bearer ${token}`
             }})
+            setOfferedServices(_offeredServices.data) 
             setRequiredServices(_requiredServices.data)
         } else {
-            console.error('401 Unauthorised')
+            setError(401)
         }
     }
 
@@ -36,13 +39,20 @@ const ServicesUserPage = () => {
         return (
             <div stye={{ width: "100% "}}>
                 <SideDrawer/>
-                <ErrorPage error={401} />
+                <ErrorPage error={error} />
             </div>
         )
     } else {
         return (
             <div stye={{ width: "100% "}}>
                 <SideDrawer/>
+                <Button
+                    colorScheme={"blue"}
+                >
+                    <Link to={'/add-service'}>
+                        Add Service
+                    </Link>
+                </Button> 
                 <div className='container'>
                     <div className='offered-services-column'>
                         <h1>Offered Services</h1>

@@ -9,15 +9,16 @@ const UserServices = (props) => {
     },[props.services])
 
     const services = posts.map(item => (
-        <div key={item._id} className='service'>
+        <div key={item._id} className='serviceImage'>
             <div className='box'>
-                <h2>{item.title}</h2>
-                <h3>{item.description}</h3>
-                <p>Where: {item.place}</p>
-                {item.price ? 
-                (<p>Price: {item.price}€</p>) :
-                (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
-                <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+                <div className='serviceInformations'>
+                    <h2 className='serviceTitle'>{item.title}</h2>
+                    <p>Where: {item.place}</p>
+                    {item.price ? 
+                    (<p>Price: {item.price}€</p>) :
+                    (<p>Data required: {item.dataRequired.split('T')[0]}</p>)}
+                    <p>Data creation: {item.dataCreation.split('T')[0]}</p>
+                </div>
             </div>
         </div>
     ))  

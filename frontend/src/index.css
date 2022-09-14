@@ -12,28 +12,12 @@ body {
 }
 
 .container {
-  
   display: flex;
   flex-wrap:wrap;
   justify-content: space-between;
   padding:200px;
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
-  
 }
-<<<<<<< HEAD
-
-.offered-services-column>h1{
-  border: 5px solid rgb(0, 0, 0);
-  padding: 60px;
-  text-align: center;
-  background-image: linear-gradient(to top left, #ffffff 50%, #696b6c 100%);
-  color: black;
-  font-size: 30px;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-}
-
-.required-services-column>h1{
-=======
 .offered-services-column {
   margin-left:70px ;
   margin-top: -120px;
@@ -46,7 +30,6 @@ body {
 }
 
 .offered-services-column>h1,.required-services-column>h1{
->>>>>>> c50d8ca96ba29b2557cba2e2774f28b60fe03a5b
   border: 5px solid rgb(0, 0, 0);
   padding: 60px;
   text-align: center;
@@ -56,29 +39,6 @@ body {
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   border-radius: 30px;
 }
-<<<<<<< HEAD
-/*.service {
-  flex-shrink: 0;
-  flex-basis: 40%;
-  background-color: aliceblue;
-  padding: 10px;
-  border-radius: 10px;
-  border: 10px solid rgb(0, 140, 255);
-  margin: 1rem;
-}
-
-.service{
-  background: white;
-  width: 500px;
-  height: 400px;
-  margin: 10px;
-  border-radius: 15px;
-  flex-wrap: nowrap;
-  
-}
-*/
-=======
->>>>>>> c50d8ca96ba29b2557cba2e2774f28b60fe03a5b
 
 .serviceImage{
   margin-top: 50px;
@@ -92,17 +52,11 @@ body {
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
-<<<<<<< HEAD
-	box-shadow: 0 0 15px rgba(0,0,0,0.3);
-=======
-	        box-shadow: 0 0 15px rgba(0,0,0,0.3);  
-	  
->>>>>>> c50d8ca96ba29b2557cba2e2774f28b60fe03a5b
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);  
 }
 
 
 .box{
-
 	width: 200px;
 	height: 200px;
   background-color: #ffffff;
@@ -111,13 +65,12 @@ body {
   top:300px;
 	text-align: center;
   background-position-x:150px;
-	border-radius: 45px;
+	border-radius: 30px;
 	-webkit-transition: 200ms ease-in-out;
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
 	box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	
 }
 
 .serviceTitle{
