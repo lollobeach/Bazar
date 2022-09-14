@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserServices = (props) => {
 
-    const [posts, setPosts] = React.useState()
+    const [posts, setPosts] = React.useState([])
 
     React.useEffect(() => {
         setPosts(props.services)

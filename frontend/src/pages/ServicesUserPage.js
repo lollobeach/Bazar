@@ -9,39 +9,30 @@ const ServicesUserPage = () => {
     const [offeredServices, setOfferedServices] = React.useState()
     const [requiredServices, setRequiredServices] = React.useState()
 
-    async function getToken() {
-        const user = await JSON.parse(localStorage.getItem('userInfo'))
-        if (!user) return null
-        else return user.data.token
-    }
-
-    async function fetchOfferedServices() {
-        const token = getToken()
-        console.log(token)
-        await axios.get('/listings-offered-services-user',
-        { headers: {
-            "Authorization": `Bearer ${token}`
-        }})
-        .then(response => setOfferedServices(response.data))
-        .catch(err => console.log(err.message))
-    }
-
-    async function fetchRequiredServices() {
-        const token = getToken()
-        await axios.get('/listings-offered-services-user',
-        { headers: {
-            "Authorization": `Bearer ${token}`
-        }})
-        .then(response => setRequiredServices(response.data))
-        .catch(err => console.log(err.message))
+    async function fetchServices() {
+        const info = await JSON.parse(localStorage.getItem('userInfo'))
+        if (info) {
+            const token = info.data.token
+            const _offeredServices = await axios.get('/listings-offered-services-user',
+            { headers: {
+                Authorization: `Bearer ${token}`
+            }})
+            setOfferedServices(_offeredServices.data)            
+            const _requiredServices = await axios.get('/listings-required-services-user',
+            { headers: {
+                Authorization: `Bearer ${token}`
+            }})
+            setRequiredServices(_requiredServices.data)
+        } else {
+            console.error('401 Unauthorised')
+        }
     }
 
     React.useEffect(() => {
-        fetchOfferedServices()
-        fetchRequiredServices()
+        fetchServices()
     },[])
 
-    if (!offeredServices) {
+    if (!offeredServices || !requiredServices) {
         return (
             <div stye={{ width: "100% "}}>
                 <SideDrawer/>

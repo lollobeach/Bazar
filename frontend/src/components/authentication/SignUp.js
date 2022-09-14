@@ -34,7 +34,7 @@ const SignUp = () => {
 
     const postDetails = async (pics) => {
       setLoading(true)
-      if (pics === undefined) {
+      if (!pics) {
         toast({
           title: 'Please Select an Image!',
           status: 'warning',
@@ -277,7 +277,7 @@ const SignUp = () => {
         }
         await axios.post(
           "/corporate/signup",
-          {name, residence, address, iva, email, password},
+          {name, residence, address, iva, email, password, picture},
           config
         )
         toast({
@@ -477,6 +477,16 @@ const SignUp = () => {
                                   </Button>
                                 </InputRightElement>
                               </InputGroup>
+                          </FormControl>
+
+                          <FormControl id='pic'>
+                            <FormLabel>Upload your Picture</FormLabel>
+                              <Input 
+                                type={"file"}
+                                p={1.5}
+                                accept="image/*"
+                                onChange={(e) => postDetails(e.target.files[0]) }
+                              />
                           </FormControl>
                           </>)
     
