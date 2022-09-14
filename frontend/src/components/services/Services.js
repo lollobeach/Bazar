@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 const Services = (props) => {
 
     const [posts, setPosts] = React.useState([])
@@ -57,19 +58,21 @@ const Services = (props) => {
                 
                     
                     <div className='serviceImage'>
+                        
                     <div key={item._id} className='box'>
-
+                        
                         <div className='serviceInformations'>
                         <h2 className='serviceTitle'>{item.title}</h2>
                         <p>Where: {item.place}</p>
                         <p>Data creation: {item.dataCreation.split('T')[0]}</p>
                         </div>
-                        
                         <a className='linkBox' href=''>READ MORE</a>
                         
                         
                         </div>
                 </div>
+                
+            
                 ))  
     
 
