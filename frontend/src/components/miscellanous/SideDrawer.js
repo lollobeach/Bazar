@@ -23,7 +23,6 @@ const SideDrawer = () => {
             bgGradient="linear(to-r, blue.500, purple.200)"
             w="100%"
             p="5px 10px 5px 10px"
-            borderWidth={"5px"}
             borderColor="00FFFF"
             boxShadow='dark-lg'
         >
