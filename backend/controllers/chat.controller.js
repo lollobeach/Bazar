@@ -1,9 +1,8 @@
-const { populate } = require("../models/chat.model");
 const Chat = require("../models/chat.model");
 const User = require("../models/user.model");
 
 //@description      Crea una chat 1 to 1
-//@route            POST /routes/chat
+//@route            POST /newchat
 //@access           Protected
 const accessChat = async(req, res) => {
     const { userId } = req.body;
@@ -44,7 +43,7 @@ const accessChat = async(req, res) => {
 }
 
 //@description      Prende le chat per un utente
-//@route            GET /routes/chat
+//@route            GET /getchats
 //@access           Protected
 const fetchChats = async(req, res) => {
     try {

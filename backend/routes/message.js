@@ -1,5 +1,10 @@
 const express = require("express");
 const { allMessage, sendMessage } = require("../controllers/message.controller");
-const { protect } = require("../middlewares/middleware_auth/authJwt")
+const { verifyToken } = require("../middlewares/middleware_auth/authJwt");
 
-const router =express.Router()
+const router = express.Router();
+
+router.route('/message/:chatId').get(verifyToken, allMessage);
+router.route('/message').post(verifyToken, sendMessage);
+
+module.exports = router;
