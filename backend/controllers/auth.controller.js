@@ -123,26 +123,26 @@ function corporatePasswordValidation(req,res,corporate) {
     req.headers.token = token;
     res.status(200).send({
         id: corporate._id,
+        name: corporate.name,
         pic: corporate.picture,
         token
     })
 }
 
-exports.corporateSignIn = async (req,res) => {
-    await Corporate.getCorporates().findOne({ name: req.body.name }, async (err,corporate) => {
+exports.corporateSignIn = (req,res) => {
+    Corporate.getCorporates().findOne({ name: req.body.name }, async (err,corporate) => {
         if (err) handelError(err,res)
-        const _corporate = await corporate
-        if (!_corporate) {
+        const _user = await corporate
+        if (!_user) {
             if (req.body.email) {
                 Corporate.getCorporates().findOne({ email: req.body.email}, async (err, email) => {
                     if (err) handelError(err,res)
-                    const _email = await email;
+                    const _email = await email
                     if (!_email) return res.status(404).send('Email not found!')
-                    corporatePasswordValidation(req,res,email)
+                    corporatePasswordValidation(req,res,_email)
                 })
-            } else return res.status(404).send('Corporate not found!')
-        }
-        corporatePasswordValidation(req,res,corporate)
+            } else return res.status(404).send('User not found!')
+        } else corporatePasswordValidation(req,res,_user)
     })
 }
 

@@ -19,6 +19,14 @@ body {
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
 }
 
+.container-corp-service {
+  column-gap: 10%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding:200px;
+  background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
+}
+
 
 .offered-services-column {
   margin-left:70px ;

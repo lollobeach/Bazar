@@ -10,11 +10,12 @@ const ServicesUserPage = () => {
 
     const [offeredServices, setOfferedServices] = React.useState()
     const [requiredServices, setRequiredServices] = React.useState()
+    const [corporateServices, setCorporateServices] = React.useState()
     const [error, setError] = React.useState()
 
     async function fetchServices() {
         const info = await JSON.parse(localStorage.getItem('userInfo'))
-        if (info) {
+        if (info.data.username) {
             const token = info.data.token
             const _offeredServices = await axios.get('/listings-offered-services-user',
             { headers: {
@@ -26,7 +27,15 @@ const ServicesUserPage = () => {
             }})
             setOfferedServices(_offeredServices.data) 
             setRequiredServices(_requiredServices.data)
-        } else {
+        } else if (info.data.name) {
+            const token = info.data.token
+            const _offeredServices = await axios.get('/listings-offered-services-user',
+            { headers: {
+                Authorization: `Bearer ${token}`
+            }})
+            setCorporateServices(_offeredServices.data)
+        }
+        else {
             setError(401)
         }
     }
@@ -35,7 +44,7 @@ const ServicesUserPage = () => {
         fetchServices()
     },[])
 
-    if (!offeredServices || !requiredServices) {
+    if ((!offeredServices || !requiredServices) && !corporateServices) {
         return (
             <div stye={{ width: "100% "}}>
                 <SideDrawer/>
@@ -52,17 +61,26 @@ const ServicesUserPage = () => {
                     <Link to={'/add-service'}>
                         Add Service
                     </Link>
-                </Button> 
-                <div className='container'>
+                </Button>
+                {corporateServices ? (
+                    <div className='container-corp-service'>
+                        <div className='offered-services-column'>
+                            <h1>Offered Services</h1>
+                            <UserServices services={corporateServices} />
+                        </div>
+                    </div>
+                ) : (
+                    <div className='container'>
                     <div className='offered-services-column'>
                         <h1>Offered Services</h1>
-                        <UserServices services={offeredServices}/>
+                        <UserServices services={offeredServices} />
                     </div>
                     <div className='required-services-column'>
                         <h1>Required Services</h1>
                         <UserServices services={requiredServices} />
                     </div>
                 </div>
+                )}
             </div>
         )
     }

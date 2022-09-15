@@ -310,185 +310,187 @@ const SignUp = () => {
       submitCorporate()
     }
 
-    const userForm = (<>
-                      <FormControl id='first-name' isRequired>
-                        <FormLabel>Name</FormLabel>
-                          <Input 
-                            placeholder='Enter your name'
-                            onChange={(e) => setName(e.target.value) }
-                          />
-                      </FormControl>
+    const userForm = (
+    <div>
+      <FormControl id='first-name' isRequired>
+        <FormLabel>Name</FormLabel>
+          <Input 
+            placeholder='Enter your name'
+            onChange={(e) => setName(e.target.value) }
+          />
+      </FormControl>
 
-                      <FormControl id='last-name' isRequired>
-                        <FormLabel>Last Name</FormLabel>
-                          <Input 
-                            placeholder='Enter your lastname'
-                            onChange={(e) => setLastName(e.target.value) }
-                          />
-                      </FormControl>
+      <FormControl id='last-name' isRequired>
+        <FormLabel>Last Name</FormLabel>
+          <Input 
+            placeholder='Enter your lastname'
+            onChange={(e) => setLastName(e.target.value) }
+          />
+      </FormControl>
 
-                      <FormControl id='username' isRequired>
-                        <FormLabel>Username</FormLabel>
-                          <Input 
-                            placeholder='Enter your username'
-                            onChange={(e) => setUsername(e.target.value) }
-                          />
-                      </FormControl>
+      <FormControl id='username' isRequired>
+        <FormLabel>Username</FormLabel>
+          <Input 
+            placeholder='Enter your username'
+            onChange={(e) => setUsername(e.target.value) }
+          />
+      </FormControl>
 
-                      <FormControl id='birthday' isRequired>
-                        <FormLabel>Birthday</FormLabel>
-                        <Input 
-                        placeholder='Enter your bithdate'
-                        type='date'
-                        onChange={(e) => setBirthDate(e.target.value)}
-                        />
-                      </FormControl>
+      <FormControl id='birthday' isRequired>
+        <FormLabel>Birthday</FormLabel>
+        <Input 
+        placeholder='Enter your bithdate'
+        type='date'
+        onChange={(e) => setBirthDate(e.target.value)}
+        />
+      </FormControl>
 
-                      <FormControl id='email' isRequired>
-                        <FormLabel>Email</FormLabel>
-                          <Input 
-                            placeholder='Enter your email'
-                            onChange={(e) => setEmail(e.target.value) }
-                          />
-                      </FormControl>
+      <FormControl id='email' isRequired>
+        <FormLabel>Email</FormLabel>
+          <Input 
+            placeholder='Enter your email'
+            onChange={(e) => setEmail(e.target.value) }
+          />
+      </FormControl>
 
-                      <FormControl id='password' isRequired>
-                        <FormLabel>Password</FormLabel>
-                          <InputGroup>
-                            <Input 
-                              type={showPass ? "text" : "password"}
-                              placeholder='Enter your password'
-                              onChange={(e) => setPassword(e.target.value) }
-                            />
-                            <InputRightElement width={"4.5rem"}>
-                              <Button h="1.75rem" size="sm" onClick={handleClickPass}>
-                                {showPass ? "Hide" : "Show"}
-                              </Button>
-                            </InputRightElement>
-                          </InputGroup>
-                      </FormControl>
+      <FormControl id='password' isRequired>
+        <FormLabel>Password</FormLabel>
+          <InputGroup>
+            <Input 
+              type={showPass ? "text" : "password"}
+              placeholder='Enter your password'
+              onChange={(e) => setPassword(e.target.value) }
+            />
+            <InputRightElement width={"4.5rem"}>
+              <Button h="1.75rem" size="sm" onClick={handleClickPass}>
+                {showPass ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+      </FormControl>
 
-                      <FormControl id='confirmPassword' isRequired>
-                        <FormLabel>Confirm Password</FormLabel>
-                          <InputGroup>
-                            <Input 
-                              type={showConfirmPass ? "text" : "password"}
-                              placeholder='Confirm password'
-                              onChange={(e) => setConfirmpassword(e.target.value) }
-                            />
-                            <InputRightElement width={"4.5rem"}>
-                              <Button h="1.75rem" size="sm" onClick={handleClickConfirmPass}>
-                                {showConfirmPass ? "Hide" : "Show"}
-                              </Button>
-                            </InputRightElement>
-                          </InputGroup>
-                      </FormControl>
+      <FormControl id='confirmPassword' isRequired>
+        <FormLabel>Confirm Password</FormLabel>
+          <InputGroup>
+            <Input 
+              type={showConfirmPass ? "text" : "password"}
+              placeholder='Confirm password'
+              onChange={(e) => setConfirmpassword(e.target.value) }
+            />
+            <InputRightElement width={"4.5rem"}>
+              <Button h="1.75rem" size="sm" onClick={handleClickConfirmPass}>
+                {showConfirmPass ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+      </FormControl>
 
-                      <FormControl isRequired>
-                        <FormLabel>Choose your plan</FormLabel>
-                        <RadioGroup onChange={setPlan} value={plan}>
-                          <Stack direction='row'>
-                            <Radio value='free'>Free</Radio>
-                            <Radio value='cheap'>Cheap</Radio>
-                            <Radio value='premium'>Premium</Radio>
-                          </Stack>
-                        </RadioGroup>
-                      </FormControl>
+      <FormControl isRequired>
+        <FormLabel>Choose your plan</FormLabel>
+        <RadioGroup onChange={setPlan} value={plan}>
+          <Stack direction='row'>
+            <Radio value='free'>Free</Radio>
+            <Radio value='cheap'>Cheap</Radio>
+            <Radio value='premium'>Premium</Radio>
+          </Stack>
+        </RadioGroup>
+      </FormControl>
 
-                      <FormControl id='pic'>
-                        <FormLabel>Upload your Picture</FormLabel>
-                          <Input 
-                            type={"file"}
-                            p={1.5}
-                            accept="image/*"
-                            onChange={(e) => postDetails(e.target.files[0]) }
-                          />
-                      </FormControl>
-                      </>)
+      <FormControl id='pic'>
+        <FormLabel>Upload your Picture</FormLabel>
+          <Input 
+            type={"file"}
+            p={1.5}
+            accept="image/*"
+            onChange={(e) => postDetails(e.target.files[0]) }
+          />
+      </FormControl>
+    </div>)
 
-    const corporateForm = (<>
-                          <FormControl id='corporateName' isRequired>
-                            <FormLabel>Corporate Name</FormLabel>
-                            <Input 
-                              placeholder='Enter your corporate name'
-                              onChange={(e) => setName(e.target.value) }
-                            />
-                          </FormControl>
+    const corporateForm = (
+    <div>
+      <FormControl id='corporateName' isRequired>
+        <FormLabel>Corporate Name</FormLabel>
+        <Input 
+          placeholder='Enter your corporate name'
+          onChange={(e) => setName(e.target.value) }
+        />
+      </FormControl>
 
-                          <FormControl id='countryOfResidence' isRequired>
-                            <FormLabel>Country of residence</FormLabel>
-                            <Input 
-                              placeholder='Enter the country of residence'
-                              onChange={(e) => setResidence(e.target.value) }
-                            />
-                          </FormControl>
+      <FormControl id='countryOfResidence' isRequired>
+        <FormLabel>Country of residence</FormLabel>
+        <Input 
+          placeholder='Enter the country of residence'
+          onChange={(e) => setResidence(e.target.value) }
+        />
+      </FormControl>
 
-                          <FormControl id='address' isRequired>
-                            <FormLabel>Address</FormLabel>
-                            <Input 
-                              placeholder='Enter the address'
-                              onChange={(e) => setAddress(e.target.value) }
-                            />
-                          </FormControl>
+      <FormControl id='address' isRequired>
+        <FormLabel>Address</FormLabel>
+        <Input 
+          placeholder='Enter the address'
+          onChange={(e) => setAddress(e.target.value) }
+        />
+      </FormControl>
 
-                          <FormControl id='iva' isRequired>
-                            <FormLabel>IVA</FormLabel>
-                            <Input 
-                              placeholder='Enter the iva'
-                              onChange={(e) => setIva(e.target.value) }
-                            />
-                          </FormControl>
+      <FormControl id='iva' isRequired>
+        <FormLabel>IVA</FormLabel>
+        <Input 
+          placeholder='Enter the iva'
+          onChange={(e) => setIva(e.target.value) }
+        />
+      </FormControl>
 
-                          <FormControl id='email' isRequired>
-                            <FormLabel>Email</FormLabel>
-                            <Input 
-                              placeholder='Enter your email'
-                              onChange={(e) => setEmail(e.target.value) }
-                            />
-                          </FormControl>
+      <FormControl id='email' isRequired>
+        <FormLabel>Email</FormLabel>
+        <Input 
+          placeholder='Enter your email'
+          onChange={(e) => setEmail(e.target.value) }
+        />
+      </FormControl>
 
-                          <FormControl id='password' isRequired>
-                            <FormLabel>Password</FormLabel>
-                            <InputGroup>
-                            <Input 
-                              type={showPass ? "text" : "password"}
-                              placeholder='Enter your password'
-                              onChange={(e) => setPassword(e.target.value) }
-                            />
-                            <InputRightElement width={"4.5rem"}>
-                            <Button h="1.75rem" size="sm" onClick={handleClickPass}>
-                              {showPass ? "Hide" : "Show"}
-                            </Button>
-                            </InputRightElement>
-                            </InputGroup>
-                          </FormControl>
+      <FormControl id='password' isRequired>
+        <FormLabel>Password</FormLabel>
+        <InputGroup>
+        <Input 
+          type={showPass ? "text" : "password"}
+          placeholder='Enter your password'
+          onChange={(e) => setPassword(e.target.value) }
+        />
+        <InputRightElement width={"4.5rem"}>
+        <Button h="1.75rem" size="sm" onClick={handleClickPass}>
+          {showPass ? "Hide" : "Show"}
+        </Button>
+        </InputRightElement>
+        </InputGroup>
+      </FormControl>
 
-                          <FormControl id='confirmPassword' isRequired>
-                            <FormLabel>Confirm Password</FormLabel>
-                              <InputGroup>
-                                <Input 
-                                  type={showConfirmPass ? "text" : "password"}
-                                  placeholder='Confirm password'
-                                  onChange={(e) => setConfirmpassword(e.target.value) }
-                                />
-                                <InputRightElement width={"4.5rem"}>
-                                  <Button h="1.75rem" size="sm" onClick={handleClickConfirmPass}>
-                                    {showConfirmPass ? "Hide" : "Show"}
-                                  </Button>
-                                </InputRightElement>
-                              </InputGroup>
-                          </FormControl>
+      <FormControl id='confirmPassword' isRequired>
+        <FormLabel>Confirm Password</FormLabel>
+          <InputGroup>
+            <Input 
+              type={showConfirmPass ? "text" : "password"}
+              placeholder='Confirm password'
+              onChange={(e) => setConfirmpassword(e.target.value) }
+            />
+            <InputRightElement width={"4.5rem"}>
+              <Button h="1.75rem" size="sm" onClick={handleClickConfirmPass}>
+                {showConfirmPass ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+      </FormControl>
 
-                          <FormControl id='pic'>
-                            <FormLabel>Upload your Picture</FormLabel>
-                              <Input 
-                                type={"file"}
-                                p={1.5}
-                                accept="image/*"
-                                onChange={(e) => postDetails(e.target.files[0]) }
-                              />
-                          </FormControl>
-                          </>)
+      <FormControl id='pic'>
+        <FormLabel>Upload your Picture</FormLabel>
+          <Input 
+            type={"file"}
+            p={1.5}
+            accept="image/*"
+            onChange={(e) => postDetails(e.target.files[0]) }
+          />
+      </FormControl>
+    </div>)
     
     return (
       <VStack spacing="5px" color="black">
