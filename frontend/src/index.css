@@ -34,6 +34,14 @@ body {
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
 }
 
+.container-corp-service {
+  column-gap: 10%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding:200px;
+  background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
+}
+
 
 .offered-services-column {
   margin-left:24% ;
@@ -68,7 +76,7 @@ body {
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	        box-shadow: 0 0 15px rgba(0,0,0,0.3);  	  
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 .box{
 	width:63% ;
@@ -83,8 +91,9 @@ body {
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
+
 .serviceTitle{
   font-weight: bold;
   padding:5px;
