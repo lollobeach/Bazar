@@ -13,46 +13,36 @@ body {
 .superContainer{
   width: 100%;
   min-width:800px;
-  
 }
 @media only screen and (max-width: 600px) and (min-width: 400px){
 
 }
 
-
 .container {
- 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position: inherit;
-  
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
 }
 
 .columnsContainer{
- 
   column-gap: 10%;
   display: flex;
   flex-direction: row;
-  
   position:relative;
-  
   background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
-  
-
 }
 
 
 .offered-services-column {
-  margin-left:20% ;
+  margin-left:24% ;
   margin-top: 5%;
 }
 
 .required-services-column{
   margin-right: 20%;
   margin-top: 5%;
-
 }
 
 .offered-services-column>h1,.required-services-column>h1{
@@ -81,30 +71,24 @@ body {
 	        box-shadow: 0 0 15px rgba(0,0,0,0.3);  	  
 }
 .box{
-	width:200px ;
-	height: 200px;
+	width:63% ;
+	height: 40%;
   background-color: #ffffff;
-  background-size: cover;
   position: relative;
-  left: 21%;
+  text-align: center;
+  margin-left:19.5%;
   top:60%;
-	text-align: center;
-  background-position-x:150px;
 	border-radius: 30px;
 	-webkit-transition: 200ms ease-in-out;
 	-o-transition: 200ms ease-in-out;
 	transition: 200ms ease-in-out;
 	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
 	        box-shadow: 0 0 15px rgba(0,0,0,0.3);
-	
 }
-
-
 .serviceTitle{
   font-weight: bold;
   padding:5px;
-  font-size: 18px;
-  
+  font-size: 18px; 
 }
 
 .serviceInformations > p{
@@ -120,8 +104,8 @@ body {
   display:block;
   margin: 12px 25px;
   position:absolute;
-  bottom: -12px; 
-  left: 25px;
-  width: 100px;
+  bottom: -6%; 
+  margin-left:18%;
+  width: 65%;
 }
 
