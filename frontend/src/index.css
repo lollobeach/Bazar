@@ -14,16 +14,36 @@ body {
   width: 100%;
   min-width:800px;
 }
+.superContainerUserPage{
+  width: 100%;
+  min-width:800px;
+
+}
 @media only screen and (max-width: 600px) and (min-width: 400px){
 
 }
 
 .container {
+  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position: inherit;
-  background-image: linear-gradient(to top left, #495fa1 0%, #ffffff 50%, #AACFEF 100%);
+}
+
+.superContainerUserPage{
+  width: 100%;
+  min-width:800px;
+}
+
+
+.containerUserPage{
+  width: 100%;
+  column-gap: 10%;
+  display: flex;
+  flex-direction: row;
+  position:inherit;
+
 }
 
 .columnsContainer{
@@ -117,4 +137,5 @@ body {
   margin-left:18%;
   width: 65%;
 }
+
 

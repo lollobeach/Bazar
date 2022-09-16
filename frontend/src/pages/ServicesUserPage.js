@@ -57,7 +57,8 @@ const ServicesUserPage = () => {
         )
     } else {
         return (
-            <div stye={{ width: "100% "}}>
+            //modifica qui
+            <div className='superContainerUserPage'> 
                 <SideDrawer/>
                 <Button
                     colorScheme={"blue"}
@@ -89,7 +90,8 @@ const ServicesUserPage = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className='container'>
+                
+                    <div className='containerUserPage'>
                     <div className='offered-services-column'>
                         <h1>Offered Services</h1>
                         <UserServices services={offeredServices} />
@@ -99,6 +101,7 @@ const ServicesUserPage = () => {
                         <UserServices services={requiredServices} />
                     </div>
                 </div>
+            
                 )}
             </div>
         )

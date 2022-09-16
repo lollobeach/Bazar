@@ -59,8 +59,8 @@ const SideDrawer = () => {
           {/* <MenuList></MenuList> */}
         </Menu>
         {user ? (
-        <Menu>
-          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+        <Menu >
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />} height={"100%"}>
             <Text>{user.data.username}</Text>
             <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
           </MenuButton>
