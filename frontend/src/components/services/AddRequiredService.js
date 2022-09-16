@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, useToast, VStack, FormControl, FormLabel, Input} from '@chakra-ui/react'
+import { Textarea, Button, useToast, VStack, FormControl, FormLabel, Input} from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -127,7 +127,7 @@ const AddRequiredService = (props) => {
     
             <FormControl id='description' isRequired>
             <FormLabel>Description</FormLabel>
-                <Input
+                <Textarea
                 maxLength={500}
                 placeholder='Enter description'
                 height='100px'

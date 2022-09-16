@@ -11,29 +11,33 @@ const ServicesUserPage = () => {
     const [offeredServices, setOfferedServices] = React.useState()
     const [requiredServices, setRequiredServices] = React.useState()
     const [corporateServices, setCorporateServices] = React.useState()
+    const [info, setInfo] = React.useState()
     const [error, setError] = React.useState()
 
     async function fetchServices() {
-        const info = await JSON.parse(localStorage.getItem('userInfo'))
-        if (info.data.username) {
-            const token = info.data.token
-            const _offeredServices = await axios.get('/listings-offered-services-user',
-            { headers: {
-                Authorization: `Bearer ${token}`
-            }})           
-            const _requiredServices = await axios.get('/listings-required-services-user',
-            { headers: {
-                Authorization: `Bearer ${token}`
-            }})
-            setOfferedServices(_offeredServices.data) 
-            setRequiredServices(_requiredServices.data)
-        } else if (info.data.name) {
-            const token = info.data.token
-            const _offeredServices = await axios.get('/listings-offered-services-user',
-            { headers: {
-                Authorization: `Bearer ${token}`
-            }})
-            setCorporateServices(_offeredServices.data)
+        const _info = JSON.parse(localStorage.getItem('userInfo'))
+        if (_info) {
+            setInfo(_info.data)
+            if (_info.data.username) {
+                const token = _info.data.token
+                const _offeredServices = await axios.get('/listings-offered-services-user',
+                { headers: {
+                    Authorization: `Bearer ${token}`
+                }})           
+                const _requiredServices = await axios.get('/listings-required-services-user',
+                { headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+                setOfferedServices(_offeredServices.data) 
+                setRequiredServices(_requiredServices.data)
+            } else if (_info.data.name) {
+                const token = _info.data.token
+                const _offeredServices = await axios.get('/listings-offered-services-user',
+                { headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+                setCorporateServices(_offeredServices.data)
+            }
         }
         else {
             setError(401)
@@ -58,9 +62,24 @@ const ServicesUserPage = () => {
                 <Button
                     colorScheme={"blue"}
                 >
-                    <Link to={'/add-service'}>
-                        Add Service
-                    </Link>
+                    { !corporateServices ? (
+                        <Link 
+                        to='/add-service'
+                        state={{ 
+                            postsNumber: offeredServices.length,
+                            info: info
+                        }}
+                            >
+                            Add Service
+                        </Link>
+                    ) : (
+                        <Link 
+                        to='/add-service'
+                        state= {{ info: info}}
+                        >
+                            Add Service
+                        </Link>
+                    )}
                 </Button>
                 {corporateServices ? (
                     <div className='container-corp-service'>
