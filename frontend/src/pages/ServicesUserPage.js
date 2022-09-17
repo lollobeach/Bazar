@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import UserServices from '../components/services/UserServices'
+import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
 import { Button } from '@chakra-ui/react'
@@ -86,7 +87,7 @@ const ServicesUserPage = () => {
                     <div className='container-corp-service'>
                         <div className='offered-services-column'>
                             <h1>Offered Services</h1>
-                            <UserServices services={corporateServices} />
+                            <Services services={corporateServices} />
                         </div>
                     </div>
                 ) : (
@@ -94,11 +95,11 @@ const ServicesUserPage = () => {
                     <div className='containerUserPage'>
                     <div className='offered-services-column'>
                         <h1>Offered Services</h1>
-                        <UserServices services={offeredServices} />
+                        <Services services={offeredServices} />
                     </div>
                     <div className='required-services-column'>
                         <h1>Required Services</h1>
-                        <UserServices services={requiredServices} />
+                        <Services services={requiredServices} />
                     </div>
                 </div>
             

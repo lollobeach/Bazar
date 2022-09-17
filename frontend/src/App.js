@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ServicesUserPage from './pages/ServicesUserPage'
 import AddServicePage from './pages/AddServicePage';
 import ErrorPage from './pages/ErrorPage';
+import ServicePage from './pages/ServicePage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path='/auth' element={<AuthenticationPage />} />
             <Route path='/services' element={<ServicesUserPage />} />
             <Route path='/add-service' element={<AddServicePage />} />
+            <Route path='/service' element={<ServicePage />} />
             <Route path='*' element={<ErrorPage error={404}/>} />
         </Routes>
       </BrowserRouter>
