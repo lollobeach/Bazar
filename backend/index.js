@@ -148,11 +148,14 @@ httpServer.listen(PORT, () => {
 });
 
 app.get('/', (req,res) => {
-  res.json({ message: 'Welcome to Bazar web site'})
+  res.json('Welcome to Bazar web site!')
 })
 
 require('./routes/auth')(app)
-require('./routes/user')(app)
 
 app.use(require("./routes/Offered_Services"));
 app.use(require("./routes/Required_Services"));
+
+app.use(require("./routes/Unauthorised"))
+
+app.use(require("./routes/user_corporate"))

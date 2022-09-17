@@ -14,29 +14,27 @@ function handleErr (err,res) {
   return res.status(500).send('Error');
 }
 
-recordRoutesforOfferedServices.route("/Bazar/listings-offered-services").get(async (req, res) => {
+recordRoutesforOfferedServices.route("/listings-offered-services").get(async (req, res) => {
   await OfferedService
       .getOfferedServices()
       .find()
       .toArray(async (err, result) => {
-        if (err) {
-          console.log(err);
-          return res.status(500).send('Error');
-        } else {
+        if (err) handleErr(err,res);
+        else {
           const _result = await result;
           res.status(200).json(_result);
         }
       });
     })
 
-recordRoutesforOfferedServices.route("/Bazar/listings-offered-services/:id").get(async (req,res) => {
-  const _user = req.params.id;
-  await User.getUser().findOne({ _id: ObjectId(_user) }, async (err,user) => {
+recordRoutesforOfferedServices.route("/listings-offered-services-user").get(authJwt.verifyToken, async (req,res) => {
+  const id = await getId.getId(req);
+  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
     if (err) handleErr(err,res);
     const us = await user;
     let idServices = [];
     if (us === null) {
-      await Corporate.getCorporates().findOne({ _id: ObjectId(_user) }, async (err,corporate) => {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corporate) => {
         if (err) handleErr(err,res);
         const _corp = await corporate;
         if (_corp === null) return res.status(404).send('User not found');
@@ -58,17 +56,10 @@ recordRoutesforOfferedServices.route("/Bazar/listings-offered-services/:id").get
   })
 })
 
-recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
+
+
+recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
   const id = await getId.getId(req);
-  const matchDocument = {
-    title: req.body.title,
-    description: req.body.description,
-    price: req.body.price,
-    place: req.body.place,
-    dataCreation: new Date(),
-    lastUpdate: new Date(),
-    user: id
-  };
 
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
     if (err) handleErr(err,res);
@@ -78,6 +69,16 @@ recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.
         if (err) handleErr(err,res);
         const _corp = await corp;
         if (_corp === null) return res.status(404).send('User not found');
+        const matchDocument = {
+          title: req.body.title,
+          description: req.body.description,
+          price: req.body.price,
+          place: req.body.place,
+          picture: req.body.picture,
+          dataCreation: new Date(),
+          lastUpdate: new Date(),
+          user: _corp.name
+        };
         await OfferedService
         .getOfferedServices()
         .insertOne(matchDocument, async (err, result) => {
@@ -91,6 +92,16 @@ recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.
       })
     } else {
       if (_user.plan === 'free' && _user.offeredServices.length === 0 || _user.plan === 'cheap' && _user.offeredServices.length < 3 || _user.plan === 'premium') {
+        const matchDocument = {
+          title: req.body.title,
+          description: req.body.description,
+          price: req.body.price,
+          place: req.body.place,
+          picture: req.body.picture,
+          dataCreation: new Date(),
+          lastUpdate: new Date(),
+          user: _user.username
+        };
         OfferedService
         .getOfferedServices()
         .insertOne(matchDocument, async (err, result) => {
@@ -108,7 +119,7 @@ recordRoutesforOfferedServices.route("/Bazar/add-offered-service").post(authJwt.
   })
 })
 
-recordRoutesforOfferedServices.route("/Bazar/service-offered/:service_id").get(async (req, res) => {
+recordRoutesforOfferedServices.route("/service-offered/:service_id").get(async (req, res) => {
   let query = req.params.service_id;
   await OfferedService
   .getOfferedServices()
@@ -120,7 +131,7 @@ recordRoutesforOfferedServices.route("/Bazar/service-offered/:service_id").get(a
   });
 })
 
-recordRoutesforOfferedServices.route("/Bazar/update-offered-service/:id").patch(authJwt.verifyToken, async (req, res) => {
+recordRoutesforOfferedServices.route("/update-offered-service/:id").patch(authJwt.verifyToken, async (req, res) => {
   let query = req.params.id;
   let newService = {
       $set: req.body,
@@ -158,7 +169,7 @@ recordRoutesforOfferedServices.route("/Bazar/update-offered-service/:id").patch(
   })
 })
 
-recordRoutesforOfferedServices.route('/Bazar/delete-offered-service/:id').delete(authJwt.verifyToken, async function(req, res) {
+recordRoutesforOfferedServices.route('/delete-offered-service/:id').delete(authJwt.verifyToken, async function(req, res) {
   const id = await getId.getId(req);
   let query = req.params.id;
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {

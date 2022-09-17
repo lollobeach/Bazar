@@ -18,14 +18,18 @@ exports.userSignUp = async (req,res) => {
     let _email = req.body.email
     if (!_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) return res.status(406).send('Email format not correct')
     const _plan = req.body.plan
+    let _picture = null;
+    if (req.body.picture) _picture = req.body.picture;
+    else _picture = 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg';
     const newUser = {
         name: req.body.name,
         lastName: req.body.lastName,
-        birthDate: new Date(req.body.birth),
+        birthDate: new Date(req.body.birthDate),
         username: req.body.username,
         email: _email,
         password: bcrpyt.hashSync(_password, 12),
         plan: _plan,
+        picture: _picture,
         offeredServices: [],
         requiredServices: [],
     }
@@ -40,21 +44,23 @@ exports.userSignUp = async (req,res) => {
 }
 
 exports.corporateSignUp = async (req,res) => {
-    let name = req.body.name
-    if (!name.match(/^[a-zA-z0-9_&]+$/)) return res.status(406).send('Name format not correct')
     let iva = req.body.iva
     if (!iva.match(/^[A-Z]{2}[0-9]{11}$/)) return res.status(406).send('IVA format not correct')
     let email = req.body.email;
     if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) return res.status(406).send('Email format not correct')
     let password = req.body.password;
     if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\[-`{-~]).{6,64}$/)) return res.status(406).send('Password format not correct.\nIt is required:\n - minimum length 6 characters;\n - at least 1 capital character\n - at least 1 lower case character\n - at least 1 number\n - at least 1 special character: \|')
+    let _picture = null;
+    if (req.body.picture) _picture = req.body.picture;
+    else _picture = 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg';
     const newCorporate = {
         name: req.body.name,
-        countryOfResidence: req.body.countryOfResidence,
+        countryOfResidence: req.body.residence,
         address: req.body.address,
         iva: iva,
         email: email,
         password: bcrpyt.hashSync(password, 12),
+        picture: _picture,
         offeredServices: []
     }
 
@@ -80,8 +86,8 @@ function userPasswordValidation(req,res,user) {
     res.status(200).send({
         id: user._id,
         username: user.username,
-        email: user.email,
-        plan: user.plan.type,
+        plan: user.plan,
+        pic: user.picture,
         token
     })
 }
@@ -118,26 +124,25 @@ function corporatePasswordValidation(req,res,corporate) {
     res.status(200).send({
         id: corporate._id,
         name: corporate.name,
-        email: corporate.email,
+        pic: corporate.picture,
         token
     })
 }
 
-exports.corporateSignIn = async (req,res) => {
-    await Corporate.getCorporates().findOne({ name: req.body.name }, async (err,corporate) => {
+exports.corporateSignIn = (req,res) => {
+    Corporate.getCorporates().findOne({ name: req.body.name }, async (err,corporate) => {
         if (err) handelError(err,res)
-        const _corporate = await corporate
-        if (!_corporate) {
+        const _user = await corporate
+        if (!_user) {
             if (req.body.email) {
                 Corporate.getCorporates().findOne({ email: req.body.email}, async (err, email) => {
                     if (err) handelError(err,res)
-                    const _email = await email;
+                    const _email = await email
                     if (!_email) return res.status(404).send('Email not found!')
-                    corporatePasswordValidation(req,res,email)
+                    corporatePasswordValidation(req,res,_email)
                 })
-            } else return res.status(404).send('Corporate not found!')
-        }
-        corporatePasswordValidation(req,res,corporate)
+            } else return res.status(404).send('User not found!')
+        } else corporatePasswordValidation(req,res,_user)
     })
 }
 
