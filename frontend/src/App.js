@@ -9,13 +9,60 @@ import ErrorPage from './pages/ErrorPage';
 import ServiceUserPage from './pages/ServiceUserPage'
 
 function App() {
+
+  {/*const [socket, setSocket] = React.useState(null)
+  const toast = useToast()
+
+
+  function getToken() {
+    const user = JSON.parse(localStorage.getItem('userInfo'))
+    if (!user) return null
+    else return user.data.token
+  }
+
+  const setupSocket = () => {
+    let token = getToken()
+    if(token && !socket){
+      const newSocket = io("http://localhost:5000", {
+        query: {
+          token: getToken(),
+        },
+      })
+      newSocket.on("disconnect", () => {
+        setSocket(null)
+        setTimeout(setupSocket, 3000)
+        toast({
+          title: "Socket disconnect",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+      })
+      newSocket.on("connect", () => {
+        toast({
+          title: "Socket connected",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+      })
+      setSocket(newSocket)
+    }  
+  }
+
+  React.useEffect(() => {
+    setupSocket()
+  }, [])*/}
+
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
             <Route path='/' element={<Bazar/>} exact/>
-            <Route path='/chats' element={<ChatPage />} />
-            <Route path='/auth' element={<AuthenticationPage />} />
+            <Route path='/chats' element={<ChatPage  />} />
+            <Route path='/auth' element={<AuthenticationPage  />} />
             <Route path='/services' element={<ServicesUserPage />} />
             <Route path='/add-service' element={<AddServicePage />} />
             <Route path='/service' element={<ServiceUserPage />} />
