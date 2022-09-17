@@ -32,8 +32,8 @@ router.route('/list-corporates').get(async (req,res) => {
     )
 })
 
-router.route('/:idPost/get-user-id').get(async (req,res) => {
-    const idPost = req.params.idPost;
+router.route('/get-user-id').get(async (req,res) => {
+    const idPost = req.query.idPost;
     await OfferedService.getOfferedServices().findOne({ _id: ObjectID(idPost) }, async (err,result) => {
         if (err) handelError(err,res);
         const _result = await result;
