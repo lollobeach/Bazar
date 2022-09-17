@@ -1,69 +1,51 @@
 const Chat = require("../models/chat.model");
 const User = require("../models/user.model");
 
-//@description      Crea una chat 1 to 1
+//@description      Prende le chat per un utente
 //@route            POST /newchat
 //@access           Protected
-const accessChat = async(req, res) => {
-    const { userId } = req.body;
-    if(!userId)     return  res.status(400).send('UserID param not sent');
-
-    let isChat = await Chat.find(
-        [
-            { users: { $eleMatch: { $eq: req.user._id }}},
-            { users: { $eleMatch: { $eq: userId }}},
-        ]
-    )
-    .populate("user", "-password")
-    .populate("latestMessage");
-
-    isChat = await User.populate(isChat, {
-        path: "latestMessage.sender",
-        select: "name pic email",
-    });
-
-    if (isChat.length > 0){
-        res.send(isChat[0])
-    }else{
-        let chatData = {
-            chatName: "sender",
-            users: [req.user._id, userId],
-        };
-        try {
-            const createdChat = await Chat.create(chatData);
-            const fullChat = await Chat.findOne({ _id: createdChat._id }).populate(
-                "users",
-                "-password"
-            );
-            res.status(200).json(fullChat)
-        } catch (error) {
-            res.status(400).send(error.message)
-        }
+const getMessages = async(req, res) => {
+    try {
+        const { from, to } = req.body;
+    
+        const messages = await Messages.find({
+          users: {
+            $all: [from, to],
+          },
+        }).sort({ updatedAt: 1 });
+    
+        const projectedMessages = messages.map((msg) => {
+          return {
+            fromSelf: msg.sender.toString() === from,
+            message: msg.message.text,
+          };
+        });
+        res.json(projectedMessages);
+    } catch (error) {
+        res.status(400).send(error.message)
     }
+    
 }
 
-//@description      Prende le chat per un utente
+//@description      Crea una chat 1 to 1
 //@route            GET /getchats
 //@access           Protected
-const fetchChats = async(req, res) => {
+const addMessage = async(req, res) => {
     try {
-        Chat.find({ user: { $eleMatch: { $eq: req.user._id }}})
-            .populate("users", "-password")
-            .populate("latestMessage")
-            .sort({ updatedAt: -1 })
-            .then(async (results) => {
-                results = await User.populate(results, {
-                    path: "latestMessage.sender",
-                    select: "name pic email"
-                });
-                res.status(200).send(results);
-            });
+        const { from, to, message } = req.body;
+        const data = await Messages.create({
+            message: { text: message },
+            users: [from, to],
+            sender: from,
+        });   
+        if (data) return res.json({ msg: "Message added successfully." });
+        else return res.json({ msg: "Failed to add message to the database" });
     } catch (error) {
         res.status(400).send(error.message)
     }
 }
 
 module.exports = {
-    accessChat,
-    fetchChats
+    addMessage,
+    getMessages
 }

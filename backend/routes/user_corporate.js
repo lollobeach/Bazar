@@ -29,4 +29,22 @@ router.route('/list-corporates').get(async (req,res) => {
     )
 })
 
+router.route('/all-users').get(async (req,res) => {
+    let _result = null;
+    await Corporate.getCorporates().find().toArray(
+        async (err,result) => {
+            if (err) handelError(err,res);
+            _result = await result;
+        }
+    )
+    await User.getUser().find().toArray(
+        async (err,result) => {
+            if (err) handelError(err,res);
+            const _result_= await result;
+            _result.push(result);
+            res.status(200).json(_result)
+        }
+    )
+})
+
 module.exports = router;
