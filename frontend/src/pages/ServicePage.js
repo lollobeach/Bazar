@@ -46,7 +46,7 @@ const ServiceUserPage = () => {
                 <SideDrawer/>
                 <VStack>
                     <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-                        <Image height='20%' w='50%' src={post.picture} alt='hi' />
+                        <Image height='500px' w='50%' src={post.picture} alt='hi' />
                         <Box w='50%'>
                             <Box alignItems='baseline'>
                                 <Badge borderRadius='full' px='10' colorScheme='teal'>
@@ -103,7 +103,7 @@ const ServiceUserPage = () => {
                                         fontSize='xs'
                                         ml='2'
                                     >
-                                        {post.dataRequired}
+                                        {post.dataRequired.split('T')[0]}
                                     </Box>
                                 </Box>
                             ) : (
