@@ -41,7 +41,7 @@ router.route('/all-users').get(async (req,res) => {
         async (err,result) => {
             if (err) handelError(err,res);
             const _result_= await result;
-            _result.push(result);
+            _result.push(_result_);
             res.status(200).json(_result)
         }
     )

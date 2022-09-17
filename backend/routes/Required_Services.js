@@ -54,10 +54,11 @@ recordRoutesForRequiredServices.route("/add-required-service").post(authJwt.veri
       title: req.body.title,
       description: req.body.description,
       place: req.body.place,
+      picture: req.body.picture,
       dataRequired: requiredDate,
       dataCreation: creationDate,
       lastUpdate: new Date(),
-      user: id
+      user: _user.username
     };
     await RequiredServices.getRequiredServices().insertOne(matchDocument, async (err,result) => {
       if (err) handleErr(err,res);

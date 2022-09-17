@@ -60,15 +60,6 @@ recordRoutesforOfferedServices.route("/listings-offered-services-user").get(auth
 
 recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
   const id = await getId.getId(req);
-  const matchDocument = {
-    title: req.body.title,
-    description: req.body.description,
-    price: req.body.price,
-    place: req.body.place,
-    dataCreation: new Date(),
-    lastUpdate: new Date(),
-    user: id
-  };
 
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
     if (err) handleErr(err,res);
@@ -78,6 +69,16 @@ recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verify
         if (err) handleErr(err,res);
         const _corp = await corp;
         if (_corp === null) return res.status(404).send('User not found');
+        const matchDocument = {
+          title: req.body.title,
+          description: req.body.description,
+          price: req.body.price,
+          place: req.body.place,
+          picture: req.body.picture,
+          dataCreation: new Date(),
+          lastUpdate: new Date(),
+          user: _corp.name
+        };
         await OfferedService
         .getOfferedServices()
         .insertOne(matchDocument, async (err, result) => {
@@ -91,6 +92,16 @@ recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verify
       })
     } else {
       if (_user.plan === 'free' && _user.offeredServices.length === 0 || _user.plan === 'cheap' && _user.offeredServices.length < 3 || _user.plan === 'premium') {
+        const matchDocument = {
+          title: req.body.title,
+          description: req.body.description,
+          price: req.body.price,
+          place: req.body.place,
+          picture: req.body.picture,
+          dataCreation: new Date(),
+          lastUpdate: new Date(),
+          user: _user.username
+        };
         OfferedService
         .getOfferedServices()
         .insertOne(matchDocument, async (err, result) => {

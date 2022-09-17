@@ -7,9 +7,10 @@ const Login = (props) => {
 
   const [value, setValue] = React.useState('1')
 
-  const [show, setShow] = React.useState(false);
-  const [username, setUsername] = React.useState();
-  const [password, setPassword] = React.useState();
+  const [show, setShow] = React.useState(false)
+  const [username, setUsername] = React.useState()
+  const [password, setPassword] = React.useState()
+  const [name, setName] = React.useState()
   const [loading, setLoading] = React.useState(false)
 
   const toast = useToast()
@@ -37,7 +38,7 @@ const Login = (props) => {
       if(!emails.includes(username)){
         toast({
           title: "Email or username does not belong to an account",
-          description: "Please verify your username and try again",
+          description: "Please verify your username or your email and try again",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -93,7 +94,77 @@ const Login = (props) => {
   }
 
   const submitCorporate = async () => {
-
+    const data = await axios.get('/list-corporates')
+    const corporates = data.data
+    const names = corporates.map(item => item.name)
+    const emails = corporates.map(item => item.email)
+    if(!name || !password){
+      toast({
+        title: "Please fill all the fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      })
+      setLoading(false)
+      return
+    }
+    if(!names.includes(name)) {
+      if(!emails.includes(name)){
+        toast({
+          title: "Email or username does not belong to an account",
+          description: "Please verify your username or your email and try again",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
+    }
+    try {
+      const config = {
+        headers: {
+          "Content-type":"application/json",
+        },
+      }
+      let { data } = ''
+      if(!name.includes('@')){
+        data = await axios.post(
+        "/corporate/login",
+        {name, password},
+        config
+        )
+      }else{
+        const email = name
+        data = await axios.post(
+          "/corporate/login",
+          {email, password},
+          config
+          )
+        }
+      toast({
+        title: "Login Successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      })  
+      localStorage.setItem('userInfo', JSON.stringify(data))
+      setLoading(false)
+      navigate('/')
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      })
+      setLoading(false)
+    }
   }
 
   const submitHandler = () => {
@@ -128,7 +199,7 @@ const Login = (props) => {
         <FormControl id='emailCorporateLogin' isRequired>
           <Input 
             placeholder='Enter your email or corporate name'
-            onChange={(e) => setUsername(e.target.value) }
+            onChange={(e) => setName(e.target.value) }
           />
         </FormControl>
       )}
