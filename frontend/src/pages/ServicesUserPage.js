@@ -57,11 +57,14 @@ const ServicesUserPage = () => {
         )
     } else {
         return (
-            //modifica qui
             <div className='superContainerUserPage'> 
                 <SideDrawer/>
-                <Button
+                <Button 
                     colorScheme={"blue"}
+                    width="20%"
+                    
+                   
+                   
                 >
                     { !corporateServices ? (
                         <Link 
@@ -83,24 +86,28 @@ const ServicesUserPage = () => {
                     )}
                 </Button>
                 {corporateServices ? (
+                <div className='superContainer'>
                     <div className='container-corp-service'>
-                        <div className='offered-services-column'>
+                        <div className='offered-services-column-corporate'>
                             <h1>Offered Services</h1>
                             <Services services={corporateServices} />
                         </div>
                     </div>
+                </div>
                 ) : (
-                
+                <div className='superContainer'>
                     <div className='containerUserPage'>
-                    <div className='offered-services-column'>
-                        <h1>Offered Services</h1>
-                        <Services services={offeredServices} />
-                    </div>
+                        <div className='offered-services-column'>
+                            <h1>Offered Services</h1>
+                            <Services services={offeredServices} />
+                     </div>
                     <div className='required-services-column'>
                         <h1>Required Services</h1>
                         <Services services={requiredServices} />
                     </div>
+                    </div>
                 </div>
+                
             
                 )}
             </div>

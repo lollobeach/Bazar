@@ -71,7 +71,8 @@ const Services = (props) => {
             lastUpdate: item.lastUpdate,
             user: item.user
         }}>
-            <div className='serviceImage'>
+            <div className='serviceCard'>
+            <img src={item.picture} className='serviceImage'/>
                 <div className='box'>
                     <div className='serviceInformations'>
                         <h2 className='serviceTitle'>{item.title}</h2>
@@ -85,6 +86,7 @@ const Services = (props) => {
                     </div>
                 </div>
             </div>
+            
         </Link>
     ))
     
