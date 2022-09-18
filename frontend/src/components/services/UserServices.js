@@ -24,6 +24,7 @@ const UserServices = (props) => {
             dataCreation: item.dataCreation,
             lastUpdate: item.lastUpdate
         }}>
+            <div  key={item._id} className='serviceCard'>
             <div  className='serviceImage'>
                 <div className='box'>
                     <div className='serviceInformations'>
@@ -36,6 +37,7 @@ const UserServices = (props) => {
                     </div>
                 </div>
             </div>
+        </div> 
         </Link>
     ))  
 
