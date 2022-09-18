@@ -56,7 +56,6 @@ const SideDrawer = () => {
           <MenuButton p={1}> 
             <BellIcon fontSize="1.5rem" m={1}/>
           </MenuButton>
-          {/* <MenuList></MenuList> */}
         </Menu>
         {user ? (
         <Menu >
@@ -65,7 +64,9 @@ const SideDrawer = () => {
             <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
           </MenuButton>
           <MenuList>
+            <Link to='/my-profile'>
               <MenuItem>My Profile</MenuItem>
+            </Link>
             <MenuDivider />
               <Link to='/services'>
                 <MenuItem>Services</MenuItem>

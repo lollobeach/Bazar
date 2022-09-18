@@ -16,5 +16,5 @@ module.exports = (app) => {
     app.post('/corporate/login', controller.corporateSignIn)
 
     app.post('/logout', verify.authJwt.verifyToken, controller.signOut)
-    app.delete('/delete_account', verify.authJwt.verifyToken, controller.deleteAccount)
+    app.delete('/delete_account', controller.deleteAccount)
 }

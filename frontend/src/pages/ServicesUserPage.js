@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import UserServices from '../components/services/UserServices'
 import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
@@ -51,7 +50,7 @@ const ServicesUserPage = () => {
 
     if ((!offeredServices || !requiredServices) && !corporateServices) {
         return (
-            <div stye={{ width: "100% "}}>
+            <div stye={{ width: "100%" }}>
                 <SideDrawer/>
                 <ErrorPage error={error} />
             </div>
