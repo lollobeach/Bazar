@@ -44,7 +44,7 @@ const AddServices = () => {
 
   React.useEffect(() => {
     check()
-  },[])
+  })
 
   if (!location.state) {
     return (
