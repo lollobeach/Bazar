@@ -90,8 +90,7 @@ function userPasswordValidation(req,res,user) {
         plan: user.plan,
         pic: user.picture,
         token
-    })
-}
+})}
 
 exports.userSignIn = (req,res) => {
     User.getUser().findOne({ username: req.body.username }, async (err,user) => {

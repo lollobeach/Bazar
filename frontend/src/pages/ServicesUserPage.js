@@ -59,32 +59,36 @@ const ServicesUserPage = () => {
         return (
             <div className='superContainerUserPage'> 
                 <SideDrawer/>
-                <Button 
-                    colorScheme={"blue"}
-                    width="20%"
-                    
-                   
-                   
-                >
-                    { !corporateServices ? (
-                        <Link 
-                        to='/add-service'
-                        state={{ 
-                            postsNumber: offeredServices.length,
-                            info: info
-                        }}
-                            >
-                            Add Service
-                        </Link>
-                    ) : (
-                        <Link 
-                        to='/add-service'
-                        state= {{ info: info}}
+                { !corporateServices ? (
+                    <Link 
+                    to='/add-service'
+                    state={{ 
+                        postsNumber: offeredServices.length,
+                        info: info
+                    }}
+                    >
+                        <Button
+                        mt='2%'
+                        colorScheme={"blue"}
+                        width="20%"
                         >
                             Add Service
-                        </Link>
-                    )}
-                </Button>
+                        </Button>
+                    </Link>
+                ) : (
+                    <Link 
+                    to='/add-service'
+                    state= {{ info: info}}
+                    >
+                        <Button
+                        mt='2%'
+                        colorScheme={"blue"}
+                        width="20%"
+                        >
+                            Add Service
+                        </Button>
+                    </Link>
+                )}
                 {corporateServices ? (
                 <div className='superContainer'>
                     <div className='container-corp-service'>
@@ -100,15 +104,13 @@ const ServicesUserPage = () => {
                         <div className='offered-services-column'>
                             <h1>Offered Services</h1>
                             <Services services={offeredServices} />
-                     </div>
+                    </div>
                     <div className='required-services-column'>
                         <h1>Required Services</h1>
                         <Services services={requiredServices} />
                     </div>
                     </div>
                 </div>
-                
-            
                 )}
             </div>
         )
