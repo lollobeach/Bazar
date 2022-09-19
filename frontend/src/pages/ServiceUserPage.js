@@ -1,37 +1,88 @@
 import React from 'react'
 import SideDrawer from '../components/miscellanous/SideDrawer'
-import { useLocation } from 'react-router-dom'
-import { Box, Badge, Image, VStack, Button } from '@chakra-ui/react'
-import ErrorPage from './ErrorPage'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Box, Badge, Image, VStack, Button, useToast } from '@chakra-ui/react'
+import UpdateService from '../components/services/UpdateService'
+import axios from 'axios'
 
 const ServiceUserPage = () => {
 
-    const [picture, setPicture] = React.useState()
-    const [id, setId] = React.useState()
-    const [title, setTitle] = React.useState()
-    const [description, setDescription] = React.useState()
-    const [place, setPlace] = React.useState()
-    const [price, setPrice] = React.useState()
-    const [dataRequired, setDataRequired] = React.useState()
-    const [dataCreation, setDataCreation] = React.useState()
-    const [lastUpdate, setLastUpdate] = React.useState()
-    const [error, setError] = React.useState()
+    const [post, setPost] = React.useState()
+    const [isOwner, setIsOwner] = React.useState(false)
+    const [update, setUpdate] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
 
     const location = useLocation()
+    const navigate = useNavigate()
+    const toast = useToast()
 
     function fetchInfo() {
         if (location.state) {
-            setId(location.state.id)
-            setPicture(location.state.picture)
-            setTitle(location.state.title)
-            setDescription(location.state.description)
-            setPlace(location.state.place)
-            setPrice(location.state.price)
-            setDataRequired(location.state.dataRequired)
-            setDataCreation(location.state.dataCreation)
-            setLastUpdate(location.state.lastUpdate)
-        } else {
-            setError(401)
+            const info = JSON.parse(localStorage.getItem('userInfo'))
+            if (info) {
+                if (info.data.name) {
+                    if (info.data.name === location.state.user) setIsOwner(true)
+                } else if (info.data.username) {
+                    if (info.data.username === location.state.user) setIsOwner(true)
+                }
+            }
+            const _post = {
+                id: location.state.id,
+                user: location.state.user,
+                picture: location.state.picture,
+                title: location.state.title,
+                description: location.state.description,
+                place: location.state.place,
+                price: location.state.price,
+                dataRequired: location.state.dataRequired,
+                dataCreation: location.state.dataCreation,
+                lastUpdate: location.state.lastUpdate
+            }
+            setPost(_post)
+        }
+    }
+
+    const handleUpdate = () => setUpdate(!update)
+
+    const del = async () => {
+        setLoading(true)
+        try {
+            if (post.dataRequired) {
+                const config = {
+                    params: {
+                        username: post.user,
+                        idPost: post.id
+                    }
+                }
+                await axios.delete('/delete-required-service', config)
+            } else {
+                const config = {
+                    params: {
+                        user: post.user,
+                        idPost: post.id
+                    }
+                }
+                await axios.delete('/delete-offered-service', config)
+            }
+            toast({
+                title: "Post deleted correctly",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+                })
+            setLoading(false)
+            navigate('/services')
+        } catch (err) {
+            toast({
+                title: "Error Occured!",
+                description: err.response.data,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            })
+            setLoading(false)
         }
     }
 
@@ -39,66 +90,40 @@ const ServiceUserPage = () => {
         fetchInfo()
     },[])
 
-    if (!location.state) {
-        <div stye={{ width: "100% "}}>
-            <SideDrawer/>
-            <ErrorPage error={error} />
-        </div>
-    } else {
-        return (
-            <div>
-                <SideDrawer/>
-                <VStack>
-                    <Box margin='2%' w='70%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-                        <Image w='50%' src={picture} alt='hi' />
-                        <Box w='50%'>
-                            <Box alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                    Title
-                                </Badge>
-                                <Box
-                                    color='gray.500'
-                                    fontWeight='semibold'
-                                    letterSpacing='wide'
-                                    fontSize='xs'
-                                    textTransform='uppercase'
-                                    ml='2'
-                                >
-                                    {title}
-                                </Box>
-                            </Box>
-                            <Box alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                    Description
-                                </Badge>
-                                <Box
-                                    color='gray.500'
-                                    fontWeight='semibold'
-                                    letterSpacing='wide'
-                                    fontSize='xs'
-                                    ml='2'
-                                >
-                                    {description}
-                                </Box>
-                            </Box>
-                            <Box alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                    Place
-                                </Badge>
-                                <Box
-                                    color='gray.500'
-                                    fontWeight='semibold'
-                                    letterSpacing='wide'
-                                    fontSize='xs'
-                                    ml='2'
-                                >
-                                    {place}
-                                </Box>
-                            </Box>
-                            {dataRequired ? (
+    if(post) {
+        if (update) {
+            return (
+                <div>
+                    <SideDrawer />
+                    <UpdateService post={post} />
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <SideDrawer/>
+                    <VStack>
+                        <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
+                            <Image height='500px' w='50%' src={post.picture} alt='hi' />
+                            <Box w='50%'>
                                 <Box alignItems='baseline'>
                                     <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                        Data Required
+                                        Title
+                                    </Badge>
+                                    <Box
+                                        color='gray.500'
+                                        fontWeight='semibold'
+                                        letterSpacing='wide'
+                                        fontSize='xs'
+                                        textTransform='uppercase'
+                                        ml='2'
+                                    >
+                                        {post.title}
+                                    </Box>
+                                </Box>
+                                <Box alignItems='baseline'>
+                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        Description
                                     </Badge>
                                     <Box
                                         color='gray.500'
@@ -107,75 +132,157 @@ const ServiceUserPage = () => {
                                         fontSize='xs'
                                         ml='2'
                                     >
-                                        {dataRequired}
+                                        {post.description}
                                     </Box>
                                 </Box>
-                            ) : (
                                 <Box alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                    Price
-                                </Badge>
-                                <Box
-                                    color='gray.500'
-                                    fontWeight='semibold'
-                                    letterSpacing='wide'
-                                    fontSize='xs'
-                                    textTransform='uppercase'
-                                    ml='2'
-                                >
-                                    {price}€
+                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        Place
+                                    </Badge>
+                                    <Box
+                                        color='gray.500'
+                                        fontWeight='semibold'
+                                        letterSpacing='wide'
+                                        fontSize='xs'
+                                        ml='2'
+                                    >
+                                        {post.place}
+                                    </Box>
                                 </Box>
-                            </Box>
-                            )}
-                            <Box alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                    Data Creation
-                                </Badge>
-                                <Box
-                                    color='gray.500'
-                                    fontWeight='semibold'
-                                    letterSpacing='wide'
-                                    fontSize='xs'
-                                    textTransform='uppercase'
-                                    ml='2'
-                                >
-                                    {dataCreation.split('T')[0]}
+                                {post.dataRequired ? (
+                                    <Box alignItems='baseline'>
+                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                            Data Required
+                                        </Badge>
+                                        <Box
+                                            color='gray.500'
+                                            fontWeight='semibold'
+                                            letterSpacing='wide'
+                                            fontSize='xs'
+                                            ml='2'
+                                        >
+                                            {post.dataRequired.split('T')[0]}
+                                        </Box>
+                                    </Box>
+                                ) : (
+                                    <Box alignItems='baseline'>
+                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                            Price
+                                        </Badge>
+                                        <Box
+                                            color='gray.500'
+                                            fontWeight='semibold'
+                                            letterSpacing='wide'
+                                            fontSize='xs'
+                                            textTransform='uppercase'
+                                            ml='2'
+                                        >
+                                            {post.price}€
+                                        </Box>
+                                    </Box>
+                                )}
+                                <Box alignItems='baseline'>
+                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        Data Creation
+                                    </Badge>
+                                    <Box
+                                        color='gray.500'
+                                        fontWeight='semibold'
+                                        letterSpacing='wide'
+                                        fontSize='xs'
+                                        textTransform='uppercase'
+                                        ml='2'
+                                    >
+                                        {post.dataCreation.split('T')[0]}
+                                    </Box>
                                 </Box>
-                            </Box>
-                            <Box alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                    Last Update
-                                </Badge>
-                                <Box
-                                    color='gray.500'
-                                    fontWeight='semibold'
-                                    letterSpacing='wide'
-                                    fontSize='xs'
-                                    textTransform='uppercase'
-                                    ml='2'
-                                >
-                                    {lastUpdate.split('T')[0]}
+                                <Box alignItems='baseline'>
+                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        Last Update
+                                    </Badge>
+                                    <Box
+                                        color='gray.500'
+                                        fontWeight='semibold'
+                                        letterSpacing='wide'
+                                        fontSize='xs'
+                                        textTransform='uppercase'
+                                        ml='2'
+                                    >
+                                        {post.lastUpdate.split('T')[0]}
+                                    </Box>
                                 </Box>
+                                {isOwner ? (
+                                    <Box>
+                                        <Box alignItems='baseline'>
+                                            <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                                Post ID
+                                            </Badge>
+                                            <Box
+                                                color='gray.500'
+                                                fontWeight='semibold'
+                                                letterSpacing='wide'
+                                                fontSize='xs'
+                                                textTransform='uppercase'
+                                                ml='2'
+                                            >
+                                                {post.id}
+                                            </Box>
+                                        </Box>
+                                        <Button
+                                        mt='5%'
+                                        colorScheme={'blue'}
+                                        width='30%'
+                                        onClick={handleUpdate}
+                                        >
+                                            Update
+                                        </Button>
+                                        <Button
+                                        mt='5%'
+                                        colorScheme='red'
+                                        width='30%'
+                                        isLoading={loading}
+                                        onClick={del}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </Box>
+                                ) : (
+                                    <Box>
+                                        <Box alignItems='baseline'>
+                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                            User
+                                        </Badge>
+                                        <Box
+                                            color='gray.500'
+                                            fontWeight='semibold'
+                                            letterSpacing='wide'
+                                            fontSize='xs'
+                                            textTransform='uppercase'
+                                            ml='2'
+                                        >
+                                            {post.user}
+                                        </Box>
+                                        </Box>
+                                        <Link
+                                            to="/chats"
+                                            state={{ user: post.user}}
+                                        >
+                                            <Button
+                                            mt='5%'
+                                            colorScheme={'blue'}
+                                            width='50%'
+                                            >
+                                                Contact {post.user}
+                                            </Button>
+                                        </Link>
+                                    </Box>
+                                )}
                             </Box>
-                            <Button
-                            mt='5%'
-                            colorScheme={'blue'}
-                            width='20%'
-                            >
-                                Update
-                            </Button>
-                            <Button
-                            mt='5%'
-                            colorScheme='red'
-                            width='20%'
-                            >
-                                Delete
-                            </Button>
                         </Box>
-                    </Box>
-                </VStack>
-            </div>
-        )
+                    </VStack>
+                </div>
+            )
+        }
     }
 }
 
