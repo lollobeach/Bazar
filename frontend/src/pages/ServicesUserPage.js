@@ -75,20 +75,20 @@ const ServicesUserPage = () => {
                             Add Service
                         </Button>
                     </Link>
-                    ) : (
-                        <Link 
-                        to='/add-service'
-                        state= {{ info: info}}
+                ) : (
+                    <Link 
+                    to='/add-service'
+                    state= {{ info: info}}
+                    >
+                        <Button
+                        mt='2%'
+                        colorScheme={"blue"}
+                        width="20%"
                         >
-                            <Button
-                            mt='2%'
-                            colorScheme={"blue"}
-                            width="20%"
-                            >
-                                Add Service
-                            </Button>
-                        </Link>
-                    )}
+                            Add Service
+                        </Button>
+                    </Link>
+                )}
                 {corporateServices ? (
                 <div className='superContainer'>
                     <div className='container-corp-service'>

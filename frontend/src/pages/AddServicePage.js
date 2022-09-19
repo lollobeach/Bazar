@@ -84,7 +84,7 @@ const AddServices = () => {
             )}
         </div>
       )
-    } else {
+    } else if (location.state.info.name) {
       return (
         <div>
           <SideDrawer />
