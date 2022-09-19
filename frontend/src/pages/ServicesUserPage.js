@@ -59,30 +59,36 @@ const ServicesUserPage = () => {
         return (
             <div className='superContainerUserPage'> 
                 <SideDrawer/>
-                <Button
-                mt='2%'
-                colorScheme={"blue"}
-                width="20%"
-                >
-                    { !corporateServices ? (
-                        <Link 
-                        to='/add-service'
-                        state={{ 
-                            postsNumber: offeredServices.length,
-                            info: info
-                        }}
-                            >
+                { !corporateServices ? (
+                    <Link 
+                    to='/add-service'
+                    state={{ 
+                        postsNumber: offeredServices.length,
+                        info: info
+                    }}
+                    >
+                        <Button
+                        mt='2%'
+                        colorScheme={"blue"}
+                        width="20%"
+                        >
                             Add Service
-                        </Link>
+                        </Button>
+                    </Link>
                     ) : (
                         <Link 
                         to='/add-service'
                         state= {{ info: info}}
                         >
-                            Add Service
+                            <Button
+                            mt='2%'
+                            colorScheme={"blue"}
+                            width="20%"
+                            >
+                                Add Service
+                            </Button>
                         </Link>
                     )}
-                </Button>
                 {corporateServices ? (
                 <div className='superContainer'>
                     <div className='container-corp-service'>
