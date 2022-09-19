@@ -77,7 +77,6 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       message: msg,
     }, config);
     let msgs = { fromSelf: true, message: msg }
-    //setMessages((messages) => messages.concat(msgs))
     console.log(messages)
     setMessages(oldMessages => [...oldMessages, msgs])
   }

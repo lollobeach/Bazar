@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ServicesUserPage from './pages/ServicesUserPage'
 import AddServicePage from './pages/AddServicePage';
 import ErrorPage from './pages/ErrorPage';
+import MyProfilePage from './pages/MyProfilePage'
 import ServicePage from './pages/ServicePage';
 
 
@@ -21,7 +22,7 @@ function App() {
             <Route path='/services' element={<ServicesUserPage />} />
             <Route path='/add-service' element={<AddServicePage />} />
             <Route path='/service' element={<ServicePage />} />
-
+            <Route path='/my-profile' element={<MyProfilePage />} />
             <Route path='*' element={<ErrorPage error={404}/>} />
         </Routes>
       </BrowserRouter>

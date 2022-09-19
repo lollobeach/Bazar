@@ -68,6 +68,7 @@ const SignUp = () => {
     const validEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')
     const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$')
     const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
+    const validName = new RegExp('^[a-zA-Z\\d]+$')
 
     const submitUser = async () => {
       setLoading(true)
@@ -122,6 +123,17 @@ const SignUp = () => {
       if (!validPassword.test(password)) {
         toast({
           title: "Password format not correct, is required - minimum length 6 characters:\n - at least 1 capital character\n - at least 1 lower character\n - at least 11 number\n - at least 1 special character ",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
+      if (!validName.test(username)) {
+        toast({
+          title: "Username format not correct",
           status: "warning",
           duration: 5000,
           isClosable: true,
@@ -250,6 +262,17 @@ const SignUp = () => {
       if (!validPassword.test(password)) {
         toast({
           title: "Password format not correct, is required - minimum length 6 characters:\n - at least 1 capital character\n - at least 1 lower character\n - at least 11 number\n - at least 1 special character ",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom"
+        })
+        setLoading(false)
+        return
+      }
+      if (!validName.test(name)) {
+        toast({
+          title: "Name format not correct",
           status: "warning",
           duration: 5000,
           isClosable: true,

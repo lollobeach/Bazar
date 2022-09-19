@@ -2,6 +2,7 @@ const config = require('../config/auth.config')
 const User = require('../models/user.model')
 const Corporate = require('../models/corporate.model')
 const OfferedServices = require('../models/offered.service')
+const RequiredServices = require('../models/required.service')
 const getId = require('../config/getId')
 let jwt = require('jsonwebtoken')
 let bcrpyt = require('bcryptjs')
@@ -167,12 +168,12 @@ exports.signOut = async (req,res) => {
 }
 
 exports.deleteAccount = async (req,res) => {
-    const id = await getId.getId(req)
-    User.getUser().deleteOne({ _id: ObjectId(id) }, async (err,_result) => {
+    const user = req.query.user
+    await User.getUser().deleteOne({ username: user }, async (err,_result) => {
         if (err) handelError(err,res)
         const result = await _result
         if (result.deletedCount !== 1) {
-            Corporate.getCorporates().deleteOne({ _id: ObjectId(id) }, async (err,result) => {
+            Corporate.getCorporates().deleteOne({ name: user }, async (err,result) => {
                 if (err) {
                     console.log(err)
                     res.status(500).send('Error')
@@ -180,15 +181,18 @@ exports.deleteAccount = async (req,res) => {
                 const _result = await result
                 if (_result.deletedCount !== 1) return res.status(404).send('User not found')
                 else {
-                    await OfferedServices.getOfferedServices().deleteMany({ user: id }, async (err) => {
+                    await OfferedServices.getOfferedServices().deleteMany({ user: user }, async (err) => {
                         if (err) handelError(err,res)
                     })
                     return res.status(200).send('Account correctly deleted')
                 }
             })
         } else {
-            await OfferedServices.getOfferedServices().deleteMany({ user: id }, async (err) => {
+            await OfferedServices.getOfferedServices().deleteMany({ user: user }, async (err) => {
                 if (err) handelError(err,res)
+                await RequiredServices.getRequiredServices().deleteMany({ user: user }, async (err) => {
+                    if (err) handelError(err,res)
+                })
             })
             return res.status(200).send('Account correctly deleted')
         }

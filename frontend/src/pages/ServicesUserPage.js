@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import UserServices from '../components/services/UserServices'
 import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
@@ -51,18 +50,19 @@ const ServicesUserPage = () => {
 
     if ((!offeredServices || !requiredServices) && !corporateServices) {
         return (
-            <div stye={{ width: "100% "}}>
+            <div stye={{ width: "100%" }}>
                 <SideDrawer/>
                 <ErrorPage error={error} />
             </div>
         )
     } else {
         return (
-            //modifica qui
             <div className='superContainerUserPage'> 
                 <SideDrawer/>
                 <Button
-                    colorScheme={"blue"}
+                mt='2%'
+                colorScheme={"blue"}
+                width="20%"
                 >
                     { !corporateServices ? (
                         <Link 
@@ -84,24 +84,28 @@ const ServicesUserPage = () => {
                     )}
                 </Button>
                 {corporateServices ? (
+                <div className='superContainer'>
                     <div className='container-corp-service'>
-                        <div className='offered-services-column'>
+                        <div className='offered-services-column-corporate'>
                             <h1>Offered Services</h1>
                             <Services services={corporateServices} />
                         </div>
                     </div>
+                </div>
                 ) : (
-                
+                <div className='superContainer'>
                     <div className='containerUserPage'>
-                    <div className='offered-services-column'>
-                        <h1>Offered Services</h1>
-                        <Services services={offeredServices} />
+                        <div className='offered-services-column'>
+                            <h1>Offered Services</h1>
+                            <Services services={offeredServices} />
                     </div>
                     <div className='required-services-column'>
                         <h1>Required Services</h1>
                         <Services services={requiredServices} />
                     </div>
+                    </div>
                 </div>
+                
             
                 )}
             </div>
