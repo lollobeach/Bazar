@@ -111,8 +111,6 @@ const ServicesUserPage = () => {
                     </div>
                     </div>
                 </div>
-                
-            
                 )}
             </div>
         )
