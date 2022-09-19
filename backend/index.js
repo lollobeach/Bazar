@@ -49,7 +49,6 @@ mongoose.connect(
 )
 
 const io = require("socket.io")(server, {
-  pingTimeout: 1000,
   cors: {
     origin: "http://localhost:3000",
   },

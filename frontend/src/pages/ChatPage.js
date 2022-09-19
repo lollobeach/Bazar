@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -12,8 +12,8 @@ import ErrorPage from './ErrorPage'
 
 
 const ChatPage = () => {
-  //const socket = useRef();
-  const socket = useState(io())
+  const socket = useRef();
+  //const socket = useState(io())
   const location = useLocation()
 
   const [contacts, setContacts] = useState([]);
@@ -49,7 +49,7 @@ const ChatPage = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  }, []);
 
   useEffect( () => {
     if (currentUser) {
@@ -79,7 +79,7 @@ const ChatPage = () => {
         <Container>
           <div className="container">
             <Contacts contacts={contacts} changeChat={handleChatChange} />
-            {currentChat === undefined ? (
+            {(currentChat === undefined ) ? (
               <Welcome />
             ) : (                                                       
               <ChatContainer currentChat={currentChat} socket={socket} userChat={location.state.user}/>
