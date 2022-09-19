@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mongoose = require("mongoose");
 
 const cors = require("cors");
 
@@ -43,8 +44,12 @@ const server = app.listen(PORT, () => {
   console.log(`server listening at http://localhost:${PORT}`)
 });
 
+mongoose.connect(
+  process.env.ATLAS_DBM
+)
+
 const io = require("socket.io")(server, {
-  pingTimeout: 60000,
+  pingTimeout: 1000,
   cors: {
     origin: "http://localhost:3000",
   },

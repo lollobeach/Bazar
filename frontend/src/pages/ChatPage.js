@@ -1,46 +1,59 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import styled from "styled-components";
 import { allUsersRoute, host } from "../utils/APIchat";
 import Contacts from '../components/chat/Contacts'
 import Welcome from "../components/chat/Welcome";
 import ChatContainer from '../components/chat/ChatContainer'
+import SideDrawer from "../components/miscellanous/SideDrawer";
+import ErrorPage from './ErrorPage'
 
 
-export default function ChatPage() {
-  const navigate = useNavigate();
+const ChatPage = () => {
   //const socket = useRef();
   const socket = useState(io())
+  const location = useLocation()
+
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
 
+  const [error, setError] = React.useState()
+
+
   useEffect( () => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/auth");
+      setError(401)
     } else {
-      setCurrentUser(
-         JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        )
-      );
+      setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      setCurrentChat(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //const socket = null
+
   useEffect(() => {
+    
     if (currentUser) {
+      /*socket.current = io('http://localhost:5000')
+      socket.current.on('connect', () => {
+        socket.current.emit("add-user", currentUser._id)
+      })*/
       socket.current = io(host);
-      socket.current.emit("add-user", currentUser._id);
+      if(socket.current){
+        
+        socket.current.emit("add-user", currentUser._id);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   useEffect( () => {
     if (currentUser) {
-      const data =  axios.get(`${allUsersRoute}/${currentUser._id}`);
+      const data =  axios.get(`${allUsersRoute}`);
       setContacts(data.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,20 +63,33 @@ export default function ChatPage() {
     setCurrentChat(chat);
   };
   
-  return (
-    <>
-      <Container>
-        <div className="container">
-          <Contacts contacts={contacts} changeChat={handleChatChange} />
-          {currentChat === undefined ? (
-            <Welcome />
-          ) : (
-            <ChatContainer currentChat={currentChat} socket={socket} />
-          )}
-        </div>
-      </Container>
-    </>
-  );
+  
+  if(!currentUser){
+    return (
+      <>
+        <SideDrawer />
+        <ErrorPage error={error} />
+      </>
+    )
+  }
+  else{
+    return(
+      <>
+        <SideDrawer />
+        <Container>
+          <div className="container">
+            <Contacts contacts={contacts} changeChat={handleChatChange} />
+            {currentChat === undefined ? (
+              <Welcome />
+            ) : (                                                       
+              <ChatContainer currentChat={currentChat} socket={socket} userChat={location.state.user}/>
+            )}
+          </div>
+        </Container>
+      </>
+    )
+  }
+
 }
 
 const Container = styled.div`
@@ -86,3 +112,6 @@ const Container = styled.div`
     }
   }
 `;
+
+
+export default ChatPage

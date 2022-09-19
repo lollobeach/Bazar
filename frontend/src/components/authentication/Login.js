@@ -3,7 +3,7 @@ import { Button, FormControl, Input, InputGroup, InputRightElement, VStack, useT
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Login = (props) => {
+const Login = () => {
 
   const [value, setValue] = React.useState('1')
 
@@ -77,7 +77,6 @@ const Login = (props) => {
         position: "bottom",
       })  
       localStorage.setItem('userInfo', JSON.stringify(data))
-      props.props.setupSocket()
       setLoading(false)
       navigate('/')
     } catch (error) {

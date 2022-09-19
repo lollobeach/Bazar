@@ -1,7 +1,8 @@
+import { Avatar } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const Contacts = ( contacts, changeChat ) => {
+const Contacts = ( contacts, changeChat, userChat ) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -11,7 +12,7 @@ const Contacts = ( contacts, changeChat ) => {
       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
     );
     setCurrentUserName(data.data.username);
-    setCurrentUserImage(data.data.picture);
+    setCurrentUserImage(data.data.pic);
   }, []);
 
   const changeCurrentChat = (index, contact) => {
@@ -24,7 +25,7 @@ const Contacts = ( contacts, changeChat ) => {
       {currentUserImage && currentUserImage && (
         <Container>
           <div className="contacts">
-            {contacts.map((contact, index) => {
+            {/*contacts.map((contact, index) => {
               return (
                 <div
                   key={contact._id}
@@ -35,7 +36,7 @@ const Contacts = ( contacts, changeChat ) => {
                 >
                   <div className="avatar">
                     <img
-                      src={`data:image/svg+xml;base64,${contact.picture}`}
+                      src={`data:image/svg+xml;base64,${contact.pic}`}
                       alt=""
                     />
                   </div>
@@ -44,15 +45,10 @@ const Contacts = ( contacts, changeChat ) => {
                   </div>
                 </div>
               );
-            })}
+            })*/}
           </div>
           <div className="current-user">
-            <div className="avatar">
-              <img
-                src={`data:image/svg+xml;base64,${currentUserImage}`}
-                alt="avatar"
-              />
-            </div>
+          <Avatar size={'sm'} cursor='pointer' src={currentUserImage} />
             <div className="username">
               <h2>{currentUserName}</h2>
             </div>

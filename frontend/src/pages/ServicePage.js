@@ -1,6 +1,6 @@
 import React from 'react'
 import SideDrawer from '../components/miscellanous/SideDrawer'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Box, Badge, Image, VStack, Button } from '@chakra-ui/react'
 
 const ServiceUserPage = () => {
@@ -202,13 +202,18 @@ const ServiceUserPage = () => {
                                         {post.user}
                                     </Box>
                                     </Box>
-                                    <Button
-                                    mt='5%'
-                                    colorScheme={'blue'}
-                                    width='50%'
+                                    <Link 
+                                    to="/chats"
+                                    state={{ user: post.user}}
                                     >
-                                        Contact {post.user}
-                                    </Button>
+                                        <Button
+                                        mt='5%'
+                                        colorScheme={'blue'}
+                                        width='50%'
+                                        >
+                                            Contact {post.user}
+                                        </Button>
+                                    </Link>
                                 </Box>
                             )}
                         </Box>

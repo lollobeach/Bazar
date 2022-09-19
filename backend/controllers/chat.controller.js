@@ -1,39 +1,50 @@
 const Chat = require("../models/chat.model");
 const User = require("../models/user.model");
 
+function handelError(err,res) {
+  console.log(err)
+  return res.status('Error');
+}
+
 //@description      Prende le chat per un utente
-//@route            POST /newchat
+//@route            GET /getmsg
 //@access           Protected
 const getMessages = async(req, res) => {
-    try {
-        const { from, to } = req.body;
+    //try {
+        const { from, to } = req.query;
     
-        const messages = await Messages.find({
+        let messages = null;
+        await Chat.find({
           users: {
             $all: [from, to],
           },
-        }).sort({ updatedAt: 1 });
+        }, async (err, result) => {
+          if(err) handelError(err, res)
+          messages = await result;
+          const projectedMessages = messages.map((msg) => {
+            return {
+              fromSelf: msg.sender.toString() === from,
+              message: msg.message.text,
+            };
+          });
+          res.json(projectedMessages);
+        }).clone()
+        //.sort({ updatedAt: 1 });
     
-        const projectedMessages = messages.map((msg) => {
-          return {
-            fromSelf: msg.sender.toString() === from,
-            message: msg.message.text,
-          };
-        });
-        res.json(projectedMessages);
-    } catch (error) {
+        
+    /*} catch (error) {
         res.status(400).send(error.message)
-    }
+    }*/
     
 }
 
 //@description      Crea una chat 1 to 1
-//@route            GET /getchats
+//@route            POST /addmsg
 //@access           Protected
 const addMessage = async(req, res) => {
     try {
         const { from, to, message } = req.body;
-        const data = await Messages.create({
+        const data = await Chat.create({
             message: { text: message },
             users: [from, to],
             sender: from,
