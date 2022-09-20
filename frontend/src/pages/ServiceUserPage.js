@@ -270,7 +270,7 @@ const ServiceUserPage = () => {
                                             <Button
                                             mt='5%'
                                             colorScheme={'blue'}
-                                            width='50%'
+                                            width='60%'
                                             >
                                                 Contact {post.user}
                                             </Button>

@@ -4,26 +4,15 @@ import SideDrawer from '../components/miscellanous/SideDrawer'
 import { VStack, Box, Image, Badge, Button } from '@chakra-ui/react'
 import ErrorPage from './ErrorPage'
 import { useNavigate } from 'react-router-dom'
+import UpdateProfile from '../components/authentication/UpdateProfile'
 
 const MyProfilePage = () => {
 
-    const [idUser, setIdUser] = React.useState()
-    const [email, setEmail] = React.useState()
-    const [picture, setPicture] = React.useState()
-
-    const [username, setUsername] = React.useState()
-    const [nameUser, setNameUser] = React.useState()
-    const [lastName, setLastName] = React.useState()
-    const [birthDate, setBirthDate] = React.useState()
-    const [plan, setPlan] = React.useState()
-
-    const [nameCorporate, setNameCorporate] = React.useState()
-    const [residence, setResidence] = React.useState()
-    const [address, setAddress] = React.useState()
-    const [iva, setIva] = React.useState()
+    const [user, setUser] = React.useState()
 
     const [error, setError] = React.useState()
     const [loading, setLoading] = React.useState(false)
+    const [update, setUpdate] = React.useState(false)
 
     const navigate = useNavigate()
 
@@ -35,37 +24,37 @@ const MyProfilePage = () => {
                 params: { idUser: idUser }
             }
             const user = await axios.get('/get-user', config)
-            if (user) {
-                setIdUser(user.data._id)
-                setEmail(user.data.email)
-                setPicture(user.data.picture)
-                if (user.data.username) {
-                    setUsername(user.data.username)
-                    setNameUser(user.data.name)
-                    setLastName(user.data.lastName)
-                    setBirthDate(user.data.birthDate)
-                    setPlan(user.data.plan)
-                } else {
-                    setNameCorporate(user.data.name)
-                    setResidence(user.data.countryOfResidence)
-                    setAddress(user.data.address)
-                    setIva(user.data.iva)
-                }
+            if (user) {             
+                    setUser({
+                        idUser: user.data._id,
+                        email: user.data.email,
+                        picture: user.data.picture,
+                        username: user.data.username,
+                        name: user.data.name,
+                        lastName: user.data.lastName,
+                        birthDate: user.data.birthDate,
+                        plan:user.data.plan,
+                        residence: user.data.countryOfResidence,
+                        address: user.data.address,
+                        iva: user.data.iva
+                    })
             }
         } else {
             setError(401)
         }
     }
 
+    const handleUpdate = () => setUpdate(!update)
+
     const del = async () => {
         let config = null
-        if (username) {
+        if (user.username) {
             config = {
-                params: { user: username}
+                params: { user: user.username}
             }
         } else {
             config = {
-                params: { user: nameCorporate}
+                params: { user: user.name}
             }
         }
         setLoading(true)
@@ -80,7 +69,7 @@ const MyProfilePage = () => {
     },[])
     
 
-    if (!email) {
+    if (!user) {
         return (
             <div style={{ width: '100%' }}>
                 <SideDrawer />
@@ -88,12 +77,20 @@ const MyProfilePage = () => {
             </div>
         )
     } else {
+        if (update) {
+            return (
+                <div>
+                    <SideDrawer />
+                    <UpdateProfile user={user} />
+                </div>
+            )
+        }
         return (
             <div>
                 <SideDrawer/>
                 <VStack>
                     <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-                        <Image height='500px' w='50%' src={picture} alt='hi' />
+                        <Image height='500px' w='50%' src={user.picture} alt='hi' />
                         <Box w='50%'>
                             <Box mt='5%' alignItems='baseline'>
                                 <Badge borderRadius='full' px='10' colorScheme='teal'>
@@ -106,7 +103,7 @@ const MyProfilePage = () => {
                                     fontSize='xs'
                                     ml='2'
                                 >
-                                    {idUser}
+                                    {user.idUser}
                                 </Box>
                             </Box>
                             <Box mt='2%' alignItems='baseline'>
@@ -120,10 +117,10 @@ const MyProfilePage = () => {
                                     fontSize='xs'
                                     ml='2'
                                 >
-                                    {email}
+                                    {user.email}
                                 </Box>
                             </Box>
-                            {username ? (
+                            {user.username ? (
                                 <Box>
                                     <Box mt='2%' alignItems='baseline'>
                                         <Badge borderRadius='full' px='10' colorScheme='teal'>
@@ -136,7 +133,7 @@ const MyProfilePage = () => {
                                             fontSize='xs'
                                             ml='2'
                                         >
-                                            {username}
+                                            {user.username}
                                         </Box>
                                     </Box>
                                 <Box mt='2%' alignItems='baseline'>
@@ -150,7 +147,7 @@ const MyProfilePage = () => {
                                         fontSize='xs'
                                         ml='2'
                                     >
-                                        {nameUser}
+                                        {user.name}
                                     </Box>
                                 </Box>
                                 <Box mt='2%' alignItems='baseline'>
@@ -164,7 +161,7 @@ const MyProfilePage = () => {
                                         fontSize='xs'
                                         ml='2'
                                     >
-                                        {lastName}
+                                        {user.lastName}
                                     </Box>
                                 </Box>
                                 <Box mt='2%' alignItems='baseline'>
@@ -178,7 +175,7 @@ const MyProfilePage = () => {
                                         fontSize='xs'
                                         ml='2'
                                     >
-                                        {birthDate.split('T')[0]}
+                                        {user.birthDate.split('T')[0]}
                                     </Box>
                                 </Box>
                                 <Box mt='2%' alignItems='baseline'>
@@ -192,7 +189,7 @@ const MyProfilePage = () => {
                                         fontSize='xs'
                                         ml='2'
                                     >
-                                        {plan}
+                                        {user.plan}
                                     </Box>
                                 </Box>
                             </Box>
@@ -210,7 +207,7 @@ const MyProfilePage = () => {
                                             textTransform='uppercase'
                                             ml='2'
                                         >
-                                            {nameCorporate}
+                                            {user.name}
                                     </Box>
                                     </Box>
                                     <Box mt='2%' alignItems='baseline'>
@@ -224,7 +221,7 @@ const MyProfilePage = () => {
                                             fontSize='xs'
                                             ml='2'
                                         >
-                                            {residence}
+                                            {user.residence}
                                         </Box>
                                     </Box>
                                     <Box mt='2%' alignItems='baseline'>
@@ -238,7 +235,7 @@ const MyProfilePage = () => {
                                             fontSize='xs'
                                             ml='2'
                                         >
-                                            {address}
+                                            {user.address}
                                         </Box>
                                     </Box>
                                     <Box mt='2%' alignItems='baseline'>
@@ -252,7 +249,7 @@ const MyProfilePage = () => {
                                             fontSize='xs'
                                             ml='2'
                                         >
-                                            {iva}
+                                            {user.iva}
                                         </Box>
                                     </Box>
                                 </Box>
@@ -260,11 +257,19 @@ const MyProfilePage = () => {
                             <Button
                             mt='5%'
                             colorScheme={'red'}
-                            width='50%'
+                            width='30%'
                             onClick={del}
                             isLoading={loading}
                             >
                                 Delete account
+                            </Button>
+                            <Button
+                            mt='5%'
+                            colorScheme={'blue'}
+                            width='30%'
+                            onClick={handleUpdate}
+                            >
+                                Update account
                             </Button>
                         </Box>
                     </Box>

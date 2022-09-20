@@ -198,3 +198,47 @@ exports.deleteAccount = async (req,res) => {
         }
     })
 }
+
+exports.updateAccount = async (req,res) => {
+    const idUser = req.query.idUser;
+    await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
+        if (err) handelError(err,res);
+        const user = await result;
+        if (!user) {
+            await Corporate.getCorporates().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
+                if (err) handelError(err,res);
+                const corporate = await result;
+                if (!corporate) return res.status(404).send('User not found!');
+                const newCorporate = {
+                    $set: {
+                        email: req.body.email,
+                        picture: req.body.picture,
+                        name: req.body.name,
+                        countryOfResidence: req.body.residence,
+                        address: req.body.address,
+                        iva: req.body.iva
+                    }
+                }
+                await Corporate.getCorporates().updateOne({ _id: ObjectId(idUser) }, newCorporate, (err) => {
+                    if (err) handelError(err,res);
+                    return res.status(200).send('User information updated');
+                })
+            })
+        } else {
+            const newUser = {
+                $set: {
+                    email: req.body.email,
+                    picture: req.body.picture,
+                    username: req.body.username,
+                    name: req.body.name,
+                    lastName: req.body.lastName,
+                    birthDate: req.body.birthDate,
+                }
+            }
+            await User.getUser().updateOne({ _id: ObjectId(idUser) }, newUser, (err) => {
+                if (err) handelError(err,res);
+                return res.status(200).send('User information updated');
+            })
+        }
+    })
+}

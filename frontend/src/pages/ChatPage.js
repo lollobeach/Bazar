@@ -79,7 +79,7 @@ const ChatPage = () => {
         <Container>
           <div className="container">
             <Contacts contacts={contacts} changeChat={handleChatChange} />
-            {(currentChat === undefined ) ? (
+            {(currentChat === undefined || !location.state) ? (
               <Welcome />
             ) : (                                                       
               <ChatContainer currentChat={currentChat} socket={socket} userChat={location.state.user}/>

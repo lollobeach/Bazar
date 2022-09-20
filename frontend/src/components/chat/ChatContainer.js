@@ -54,7 +54,7 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       console.log(messages)
     }
     getMsg()
-  }, []);
+  }, [messages]);
 
 
   const handleSendMsg =  (msg) => {

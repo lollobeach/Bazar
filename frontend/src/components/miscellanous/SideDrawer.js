@@ -72,6 +72,10 @@ const SideDrawer = () => {
                 <MenuItem>Services</MenuItem>
               </Link>
             <MenuDivider />
+            <Link to='/chats'>
+                <MenuItem>Chat</MenuItem>
+              </Link>
+            <MenuDivider />
             <MenuItem onClick={logoutHandler}>Logout</MenuItem>
           </MenuList>
         </Menu>
