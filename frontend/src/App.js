@@ -9,7 +9,6 @@ import ErrorPage from './pages/ErrorPage';
 import MyProfilePage from './pages/MyProfilePage'
 import ServiceUserPage from './pages/ServiceUserPage';
 
-
 function App() {
 
   return (
