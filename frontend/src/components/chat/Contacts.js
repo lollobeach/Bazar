@@ -1,11 +1,19 @@
 import { Avatar } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+//test
+/*import { allUsersRoute } from "../../utils/APIchat";
+import axios from "axios";*/
 
-const Contacts = ( contacts, changeChat, userChat ) => {
+
+
+const Contacts = ( { contacts, changeChat } ) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
+
+  //test
+  //const [contacts, setContacts] = useState([]);
 
   useEffect( () => {
     const data =  JSON.parse(
@@ -19,13 +27,19 @@ const Contacts = ( contacts, changeChat, userChat ) => {
     setCurrentSelected(index);
     changeChat(contact);
   };
+  
+  //test
+  /*useEffect(async () => {
+    const data = await axios.get(`${allUsersRoute}`);
+    setContacts(data.data);
+  }, [contacts]);*/
 
   return (
     <>
       {currentUserImage && currentUserImage && (
         <Container>
           <div className="contacts">
-            {/*contacts.map((contact, index) => {
+            {contacts.map((contact, index) => {
               return (
                 <div
                   key={contact._id}
@@ -36,7 +50,7 @@ const Contacts = ( contacts, changeChat, userChat ) => {
                 >
                   <div className="avatar">
                     <img
-                      src={`data:image/svg+xml;base64,${contact.pic}`}
+                      src={contact.pic}
                       alt=""
                     />
                   </div>
@@ -45,7 +59,7 @@ const Contacts = ( contacts, changeChat, userChat ) => {
                   </div>
                 </div>
               );
-            })*/}
+            })}
           </div>
           <div className="current-user">
           <Avatar size={'sm'} cursor='pointer' src={currentUserImage} />
