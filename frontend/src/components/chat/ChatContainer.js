@@ -8,7 +8,7 @@ import { Avatar } from "@chakra-ui/react";
 
 const ChatContainer = ({currentChat, socket, userChat}) => {
 
-  const user = JSON.parse(localStorage.getItem("userInfo"))
+  const user = JSON.parse(sessionStorage.getItem("userInfo"))
 
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
@@ -68,7 +68,7 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       },
     } 
     // /addmsg
-     axios.post(sendMessageRoute, {
+    axios.post(sendMessageRoute, {
       from: currentChat.data.username,
       to: userChat,
       message: msg,

@@ -15,7 +15,7 @@ const ServicesUserPage = () => {
     const [error, setError] = React.useState()
 
     async function fetchServices() {
-        const _info = JSON.parse(localStorage.getItem('userInfo'))
+        const _info = JSON.parse(sessionStorage.getItem('userInfo'))
         if (_info) {
             setInfo(_info.data)
             if (_info.data.username) {

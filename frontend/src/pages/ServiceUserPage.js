@@ -16,32 +16,6 @@ const ServiceUserPage = () => {
     const navigate = useNavigate()
     const toast = useToast()
 
-    function fetchInfo() {
-        if (location.state) {
-            const info = JSON.parse(localStorage.getItem('userInfo'))
-            if (info) {
-                if (info.data.name) {
-                    if (info.data.name === location.state.user) setIsOwner(true)
-                } else if (info.data.username) {
-                    if (info.data.username === location.state.user) setIsOwner(true)
-                }
-            }
-            const _post = {
-                id: location.state.id,
-                user: location.state.user,
-                picture: location.state.picture,
-                title: location.state.title,
-                description: location.state.description,
-                place: location.state.place,
-                price: location.state.price,
-                dataRequired: location.state.dataRequired,
-                dataCreation: location.state.dataCreation,
-                lastUpdate: location.state.lastUpdate
-            }
-            setPost(_post)
-        }
-    }
-
     const handleUpdate = () => setUpdate(!update)
 
     const del = async () => {
@@ -86,7 +60,33 @@ const ServiceUserPage = () => {
         }
     }
 
-    React.useEffect(() => {
+    React.useEffect(() => {    
+        function fetchInfo() {
+            console.log(1)
+            if (location.state) {
+                const info = JSON.parse(sessionStorage.getItem('userInfo'))
+                if (info) {
+                    if (info.data.name) {
+                        if (info.data.name === location.state.user) setIsOwner(true)
+                    } else if (info.data.username) {
+                        if (info.data.username === location.state.user) setIsOwner(true)
+                    }
+                }
+                const _post = {
+                    id: location.state.id,
+                    user: location.state.user,
+                    picture: location.state.picture,
+                    title: location.state.title,
+                    description: location.state.description,
+                    place: location.state.place,
+                    price: location.state.price,
+                    dataRequired: location.state.dataRequired,
+                    dataCreation: location.state.dataCreation,
+                    lastUpdate: location.state.lastUpdate
+                }
+                setPost(_post)
+            }
+        }
         fetchInfo()
     },[])
 
@@ -270,7 +270,7 @@ const ServiceUserPage = () => {
                                             <Button
                                             mt='5%'
                                             colorScheme={'blue'}
-                                            width='50%'
+                                            width='60%'
                                             >
                                                 Contact {post.user}
                                             </Button>

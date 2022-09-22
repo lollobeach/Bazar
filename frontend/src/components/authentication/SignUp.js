@@ -22,7 +22,7 @@ const SignUp = () => {
     const [address, setAddress] = React.useState();
 
     const [showPass, setShowPass] = React.useState(false);
-    const [confirmpassword, setConfirmpassword] = React.useState();
+    const [confirmpassword, setConfirmpassword] = React.useState(false);
     const [showConfirmPass, setShowConfirmPass] = React.useState(false);
     const [loading, setLoading] = React.useState(false)
 

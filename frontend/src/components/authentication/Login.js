@@ -76,7 +76,7 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       })  
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      sessionStorage.setItem('userInfo', JSON.stringify(data))
       setLoading(false)
       navigate('/')
     } catch (error) {
@@ -150,7 +150,7 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       })  
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      sessionStorage.setItem('userInfo', JSON.stringify(data))
       setLoading(false)
       navigate('/')
     } catch (error) {

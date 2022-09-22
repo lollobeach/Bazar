@@ -198,3 +198,59 @@ exports.deleteAccount = async (req,res) => {
         }
     })
 }
+
+exports.updateAccount = async (req,res) => {
+    const idUser = req.query.idUser;
+    await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
+        if (err) handelError(err,res);
+        const user = await result;
+        if (!user) {
+            await Corporate.getCorporates().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
+                if (err) handelError(err,res);
+                const corporate = await result;
+                if (!corporate) return res.status(404).send('User not found!');
+                const newCorporate = {
+                    $set: {
+                        email: req.body.email,
+                        password: bcrpyt.hashSync(req.body.password, 12),
+                        picture: req.body.picture,
+                        name: req.body.name,
+                        countryOfResidence: req.body.countryOfResidence,
+                        address: req.body.address,
+                        iva: req.body.iva
+                    }
+                }
+                await Corporate.getCorporates().updateOne({ name: corporate.name }, newCorporate, async (err,result) => {
+                    if (err) handelError(err,res);
+                    return res.status(200).send('User information updated');
+                })
+            })
+        } else {
+            let password = null;
+            let passwordIsValid = bcrpyt.compareSync(
+                req.body.password,
+                user.password
+                )
+                if (passwordIsValid) {
+                    password = user.password
+                } else {
+                    password = bcrpyt.hashSync(req.body.password,12)
+                }
+            const newUser = {
+                $set: {
+                    email: req.body.email,
+                    password: password,
+                    picture: req.body.picture,
+                    username: req.body.username,
+                    name: req.body.name,
+                    lastName: req.body.lastName,
+                    birthDate: new Date(req.body.birthDate),
+                }
+            }
+            await User.getUser().updateOne({ _id: ObjectId(idUser) }, newUser, (err) => {
+                if (err) handelError(err,res);
+                return res.status(200).send('User information updated');
+            })
+        }
+    })
+}
