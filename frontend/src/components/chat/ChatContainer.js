@@ -48,10 +48,7 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       const response = await axios.get(recieveMessageRoute, 
         config
       );
-      console.log(response)
-      console.log(response.data)
       setMessages(response.data);
-      console.log(messages)
     }
     getMsg()
   }, [messages]);

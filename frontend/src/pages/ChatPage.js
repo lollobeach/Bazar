@@ -13,7 +13,6 @@ import ErrorPage from './ErrorPage'
 
 const ChatPage = () => {
   const socket = useRef();
-  //const socket = useState(io())
   const location = useLocation()
 
   const [contacts, setContacts] = useState([]);
@@ -21,7 +20,6 @@ const ChatPage = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   const [error, setError] = React.useState()
-
 
   useEffect( () => {
     if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
@@ -33,15 +31,9 @@ const ChatPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //const socket = null
-
   useEffect(() => {
     
     if (currentUser) {
-      /*socket.current = io('http://localhost:5000')
-      socket.current.on('connect', () => {
-        socket.current.emit("add-user", currentUser._id)
-      })*/
       socket.current = io(host);
       if(socket.current){
         
@@ -51,11 +43,22 @@ const ChatPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect( () => {
-    if (currentUser) {
-      const data =  axios.get(`${allUsersRoute}`);
-      setContacts(data.data);
-    }
+  useEffect(() => {
+    //const getUser = () => {
+      if (currentUser) {
+        axios
+          .get(`${allUsersRoute}`)
+          .then((res) => {
+            const data = res.data
+            console.log(data)
+            setContacts(data)
+          });
+        //console.log(data.data)
+        //setContacts(data.data);
+      }
+      console.log(contacts)
+    //}
+    //getUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
