@@ -1,24 +1,32 @@
 import React from 'react'
-import { useToast, Image, Input, Button, VStack, Box, Badge } from '@chakra-ui/react'
+import { Avatar, InputRightElement, useToast, Input, Button, VStack, Box, Badge, InputGroup } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 const UpdateProfile = (props) => {
 
-    const [email, setEmail] = React.useState(props.user.email)
-    const [picture, setPicture] = React.useState(props.user.picture)
-    const [username, setUsername] = React.useState(props.user.username)
-    const [name, setName] = React.useState(props.user.name)
-    const [lastName, setLastName] = React.useState(props.user.lastName)
-    const [birthDate, setBirthDate] = React.useState(props.user.birthDate)
-    const [residence, setResidence] = React.useState(props.user.residence)
-    const [address, setAddress] = React.useState(props.user.address)
-    const [iva, setIva] = React.useState(props.user.iva)
+    const [user, setUser] = React.useState(props.user)
+
+    const [newEmail, setNewEmail] = React.useState()
+    const [newPassword, setNewPassword] = React.useState()
+    const [confirmNewPassword, setConfirmNewPassword] = React.useState()
+    const [newUsername, setNewUsername] = React.useState()
+    const [newName, setNewName] = React.useState()
+    const [newLastName, setNewLastName] = React.useState()
+    const [newBirthDate, setNewBirthDate] = React.useState()
+    const [newResidence, setNewResidence] = React.useState()
+    const [newAddress, setNewAddress] = React.useState()
+    const [newIva, setNewIva] = React.useState()
     
+    const [showNewPass, setShowNewPass] = React.useState(false)
+    const [showConfirmNewPass, setShowConfirmNewPass] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
 
     const navigate = useNavigate()
     const toast = useToast()
+
+    const handleClickPass = () => setShowNewPass(!showNewPass)
+    const handleClickConfirmPass = () => setShowConfirmNewPass(!showConfirmNewPass)
 
     const postDetails = async (pics) => {
         setLoading(true)
@@ -32,12 +40,15 @@ const UpdateProfile = (props) => {
                 body: data,
             }).then((res) => res.json())
             .then(data => {
-            setPicture(data.url.toString())
-            setLoading(false)
+                setUser(user => ({
+                    ...user,
+                    ...{picture: data.url.toString()}
+                }))
+                setLoading(false)
             })
             .catch((err) => {
-            console.log(err)
-            setLoading(false)
+                console.log(err)
+                setLoading(false)
             })
         }
     }
@@ -45,31 +56,164 @@ const UpdateProfile = (props) => {
     const denie = () => navigate('/services')
 
     const updateProfile = async () => {
-        const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
-        const date = new Date().getTime()
-        const birth = new Date(birthDate).getTime()
-        if (!validIva.test(iva)) {
-            toast({
-                title: "Email format not correct",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom"
-            })
-            setLoading(false)
-            return
+        setLoading(true)
+        if (newEmail || newUsername) {
+            const data = await axios.get('/list-users')
+            const users = data.data
+            if (newEmail) {
+                const validEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')
+                const emails = users.map(item => item.email)
+                if (emails.includes(newEmail)) {
+                    toast({
+                        title: "Email is already in use",
+                        status: "warning",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom",
+                    })
+                    setLoading(false)
+                    return
+                }
+                if (!validEmail.test(newEmail)) {
+                    toast({
+                        title: "Email format not correct",
+                        status: "warning",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom"
+                    })
+                    setLoading(false)
+                    return
+                }
+                setUser(user => ({
+                    ...user,
+                    ...{email: newEmail}
+                }))
+            }
+            if (newUsername) {
+                const usernames = users.map(item => item.username)
+                if (usernames.includes(newUsername)) {
+                    toast({
+                        title: "Username is already in use",
+                        status: "warning",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom",
+                    })
+                    setLoading(false)
+                    return
+                }
+            }
+            setUser(user => ({
+                ...user,
+                ...{username: newUsername}
+            }))
         }
-        if (birth > date) {
-            toast({
-                title: "Birthdate is not valid",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            })
-            setLoading(false)
-            return
+        if (newPassword) {
+            const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$') 
+            if (!validPassword.test(newPassword)) {
+                toast({
+                    title: "Password format not correct",
+                    status: "warning",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom"
+                })
+                setLoading(false)
+                return
+            }
+            if (newPassword !== confirmNewPassword) {
+                toast({
+                    title: "Password do not match",
+                    status: "warning",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom"
+                })
+                setLoading(false)
+                return
+            }
+            setUser(user => ({
+                ...user,
+                ...{password: newPassword}
+            }))
         }
+        if (newBirthDate) {
+            const date = new Date().getTime()
+            const birth = new Date(newBirthDate).getTime()            
+            if (birth > date) {
+                toast({
+                    title: "Birthdate is not valid",
+                    status: "warning",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                })
+                setLoading(false)
+                return
+            }
+            setUser(user => ({
+                ...user,
+                ...{birthDate: newBirthDate}
+            }))
+        }
+        // if (newPassword) {
+        //     const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$')        
+        //     if (!validPassword.test(newPassword)) {
+        //         toast({
+        //             title: "Password format not correct",
+        //             status: "warning",
+        //             duration: 5000,
+        //             isClosable: true,
+        //             position: "bottom"
+        //         })
+        //         setLoading(false)
+        //         return
+        //     }
+        //     if (newPassword !== confirmNewPassword) {
+        //         toast({
+        //             title: "Password do not match",
+        //             status: "warning",
+        //             duration: 5000,
+        //             isClosable: true,
+        //             position: "bottom"
+        //         })
+        //         setLoading(false)
+        //         return
+        //     }
+        //     setUser(user => ({
+        //             ...user,
+        //             ...{password: bcrpyt.hashSync(newPassword, 12)}
+        //     }))
+        //     console.log('New Password: '+bcrpyt.hashSync(newPassword, 12))
+        //     console.log('User Password: '+user.password)
+        // }
+        if (newName) {
+            setUser(user => ({
+                ...user,
+                ...{name: newName}
+            }))
+        }
+        if (newLastName) {
+            setUser(user => ({
+                ...user,
+                ...{lastName: newLastName}
+            }))
+        }
+        // const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
+        // if (iva) {
+        //     if (!validIva.test(iva)) {
+        //         toast({
+        //             title: "Iva format not correct",
+        //             status: "warning",
+        //             duration: 5000,
+        //             isClosable: true,
+        //             position: "bottom"
+        //         })
+        //         setLoading(false)
+        //         return
+        //     }
+        // }
         try {
             const config = {
                 headers: {
@@ -79,33 +223,36 @@ const UpdateProfile = (props) => {
                     idUser: props.user.idUser
                 }
             }
-            if (username) {
+            if (user.username) {
                 const data = {
-                    picture: picture,
-                    name: name,
-                    lastName: lastName,
-                    birthDate: birthDate,
-                    username: username,
-                    email: email
+                    picture: user.picture,
+                    name: user.name,
+                    lastName: user.lastName,
+                    birthDate: user.birthDate,
+                    username: user.username,
+                    email: user.email,
+                    password: user.password,
                 }
                 await axios.patch('/update-user',
                     data,
                     config
                     )
-            } else {
-                const data = {
-                    email: email,
-                    picture: picture,
-                    name: name,
-                    countryOfResidence: residence,
-                    address: address,
-                    iva: iva
-                }
-                await axios.patch('/update-user',
-                data,
-                config
-                )
-            }
+            } 
+            // else {
+            //     const data = {
+            //         email: user.email,
+            //         password: bcrpyt.hashSync(user.password, 12),
+            //         picture: user.picture,
+            //         name: user.name,
+            //         countryOfResidence: user.residence,
+            //         address: user.address,
+            //         iva: user.iva
+            //     }
+            //     await axios.patch('/update-user',
+            //     data,
+            //     config
+            //     )
+            // }
             toast({
                 title: "User updated correctly",
                 status: "success",
@@ -114,7 +261,8 @@ const UpdateProfile = (props) => {
                 position: "bottom",
                 })
             setLoading(false)
-            navigate('/services')
+            sessionStorage.removeItem('userInfo')
+            navigate('/auth')
         } catch (err) {
             toast({
                 title: "Error Occured!",
@@ -129,9 +277,21 @@ const UpdateProfile = (props) => {
     }
 
     const form = (
-        <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-            <Image height='560px' w='50%' src={picture} alt='hi' />
-            <Box w='50%'>
+        <Box borderRadius='lg' w='50%' borderWidth='5px'>
+            <Avatar mt='1%' size='2xl' src={user.picture} />
+            <Box w='100%'>
+                <Box mt='2%'>
+                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                            Upload your picture
+                        </Badge>
+                        <Input
+                        mt='2%'
+                        type={'file'}
+                        p={1.5}
+                        accept='image/*'
+                        onChange={(e) => postDetails(e.target.files[0])}
+                        />
+                </Box>
                 <Box mt='3%' display='grid'>
                     <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
                         Email
@@ -139,21 +299,69 @@ const UpdateProfile = (props) => {
                         <Input
                         mt='2%'
                         ml='15%'
-                        placeholder={email}
+                        placeholder={user.email}
                         color='gray.500'
                         fontWeight='semibold'
                         letterSpacing='wide'
                         fontSize='xs'
                         w='70%'
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setNewEmail(e.target.value)}
                         />
                 </Box>
-                <Box display='grid' mt='5%'>
+                <Box mt='3%' display='grid'>
+                    <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
+                        New password
+                    </Badge>
+                    <InputGroup>
+                        <Input
+                        placeholder='new password'
+                        mt='2%'
+                        ml='15%'
+                        color='gray.500'
+                        fontWeight='semibold'
+                        letterSpacing='wide'
+                        fontSize='xs'
+                        w='70%'
+                        type={showNewPass ? "text" : "password"}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <InputRightElement width={"4.5rem"}>
+                            <Button mt='25%' h="1.75rem" size="sm" onClick={handleClickPass}>
+                                {showNewPass ? "Hide" : "Show"}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                </Box>
+                <Box mt='3%' display='grid'>
+                    <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
+                        Confirm new password
+                    </Badge>
+                    <InputGroup>
+                        <Input
+                        placeholder='confirm new password'
+                        mt='2%'
+                        ml='15%'
+                        color='gray.500'
+                        fontWeight='semibold'
+                        letterSpacing='wide'
+                        fontSize='xs'
+                        w='70%'
+                        type={showConfirmNewPass ? "text" : "password"}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        />
+                        <InputRightElement width={"4.5rem"}>
+                            <Button mt='25%' h="1.75rem" size="sm" onClick={handleClickConfirmPass}>
+                                {showConfirmNewPass ? "Hide" : "Show"}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                </Box>
+                <Box display='grid' mt='2%'>
                     <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                         Name
                     </Badge>
                     <Input
-                        placeholder={name}
+                        placeholder={user.name}
                         color='gray.500'
                         fontWeight='semibold'
                         letterSpacing='wide'
@@ -161,17 +369,17 @@ const UpdateProfile = (props) => {
                         w='70%'
                         ml='15%'
                         mt='2%'
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setNewName(e.target.value)}
                     />
                 </Box>
-                {username ? (
+                {user.username ? (
                     <Box>
-                        <Box display='grid' mt='5%'>
+                        <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Lastname
                             </Badge>
                             <Input
-                            placeholder={lastName}
+                            placeholder={user.lastName}
                             color='gray.500'
                             fontWeight='semibold'
                             letterSpacing='wide'
@@ -179,15 +387,15 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             ml='15%'
                             mt='2%'
-                            onChange={(e) => setLastName(e.target.value)}
+                            onChange={(e) => setNewLastName(e.target.value)}
                             />
                         </Box>
-                        <Box display='grid' mt='5%'>
+                        <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Username
                             </Badge>
                             <Input
-                            placeholder={username}
+                            placeholder={user.username}
                             color='gray.500'
                             fontWeight='semibold'
                             letterSpacing='wide'
@@ -195,10 +403,10 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             ml='15%'
                             mt='2%'
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setNewUsername(e.target.value)}
                             />
                         </Box>
-                        <Box display='grid' mt='5%'>
+                        <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Birthdate
                             </Badge>
@@ -211,18 +419,18 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             ml='15%'
                             mt='2%'
-                            onChange={(e) => setBirthDate(e.target.value)}
+                            onChange={(e) => setNewBirthDate(e.target.value)}
                             />
                         </Box>
                     </Box>
                 ) : (
                     <Box>
-                        <Box display='grid' mt='5%'>
+                        <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Residence
                             </Badge>
                             <Input
-                            placeholder={residence}
+                            placeholder={user.residence}
                             color='gray.500'
                             fontWeight='semibold'
                             letterSpacing='wide'
@@ -230,15 +438,15 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             ml='15%'
                             mt='2%'
-                            onChange={(e) => setResidence(e.target.value)}
+                            onChange={(e) => setNewResidence(e.target.value)}
                             />
                         </Box>
-                        <Box display='grid' mt='5%'>
+                        <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Address
                             </Badge>
                             <Input
-                            placeholder={address}
+                            placeholder={user.address}
                             color='gray.500'
                             fontWeight='semibold'
                             letterSpacing='wide'
@@ -246,15 +454,15 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             ml='15%'
                             mt='2%'
-                            onChange={(e) => setAddress(e.target.value)}
+                            onChange={(e) => setNewAddress(e.target.value)}
                             />
                         </Box>
-                        <Box display='grid' mt='5%'>
+                        <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 IVA
                             </Badge>
                             <Input
-                            placeholder={iva}
+                            placeholder={user.iva}
                             color='gray.500'
                             fontWeight='semibold'
                             letterSpacing='wide'
@@ -262,27 +470,15 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             ml='15%'
                             mt='2%'
-                            onChange={(e) => setIva(e.target.value)}
+                            onChange={(e) => setNewIva(e.target.value)}
                             />
                         </Box>
                     </Box>
                 )}
-                <Box mt='5%'>
-                        <Badge borderRadius='full' px='10' colorScheme='teal'>
-                            Upload your picture
-                        </Badge>
-                        <Input
-                        mt='2%'
-                        type={'file'}
-                        p={1.5}
-                        accept='image/*'
-                        onChange={(e) => postDetails(e.target.files[0])}
-                        />
-                </Box>
-                <Box display='flex'>
+                <Box ml='15%' display='flex'>
                     <Button
                     colorScheme={"blue"}
-                    width={"50%"}
+                    width={"40%"}
                     style={{marginTop: 15}}
                     onClick={updateProfile}
                     isLoading={loading}
@@ -291,7 +487,7 @@ const UpdateProfile = (props) => {
                     </Button>
                     <Button
                     colorScheme={"red"}
-                    width={"50%"}
+                    width={"40%"}
                     style={{marginTop: 15}}
                     onClick={denie}
                     isLoading={loading}

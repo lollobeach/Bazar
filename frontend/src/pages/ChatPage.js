@@ -24,11 +24,11 @@ const ChatPage = () => {
 
 
   useEffect( () => {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       setError(401)
     } else {
-      setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
-      setCurrentChat(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      setCurrentChat(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

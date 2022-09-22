@@ -7,10 +7,10 @@ const SideDrawer = () => {
 
   const navigate = useNavigate()
 
-  const user = JSON.parse(localStorage.getItem("userInfo"))
+  const user = JSON.parse(sessionStorage.getItem("userInfo"))
 
   const logoutHandler = () => {
-    localStorage.removeItem("userInfo")
+    sessionStorage.removeItem("userInfo")
     navigate('/')
   } 
 
@@ -60,7 +60,8 @@ const SideDrawer = () => {
         {user ? (
         <Menu >
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />} height={"100%"}>
-            <Text>{user.data.username}</Text>
+            {user.data.username ? (<Text>{user.data.username}</Text>)
+            : <Text>{user.data.name}</Text>}
             <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
           </MenuButton>
           <MenuList>
