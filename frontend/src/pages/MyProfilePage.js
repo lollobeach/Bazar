@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import SideDrawer from '../components/miscellanous/SideDrawer'
-import { VStack, Box, Image, Badge, Button } from '@chakra-ui/react'
+import { VStack, Box, Badge, Button, Avatar } from '@chakra-ui/react'
 import ErrorPage from './ErrorPage'
 import { useNavigate } from 'react-router-dom'
 import UpdateProfile from '../components/authentication/UpdateProfile'
@@ -17,7 +17,12 @@ const MyProfilePage = () => {
     const navigate = useNavigate()
 
     async function fetchInfo() {
-        const info = JSON.parse(localStorage.getItem('userInfo'))
+        let info = null
+        if (localStorage.getItem('userInfo')) {
+            info = JSON.parse(localStorage.getItem('userInfo'))
+        } else {
+            info = JSON.parse(sessionStorage.getItem('userInfo'))
+        }
         if (info) {
             const idUser = info.data.id
             const config = {
@@ -28,6 +33,7 @@ const MyProfilePage = () => {
                     setUser({
                         idUser: user.data._id,
                         email: user.data.email,
+                        password: user.data.password,
                         picture: user.data.picture,
                         username: user.data.username,
                         name: user.data.name,
@@ -59,7 +65,7 @@ const MyProfilePage = () => {
         }
         setLoading(true)
         await axios.delete('/delete_account', config)
-        localStorage.removeItem('userInfo')
+        sessionStorage.removeItem('userInfo')
         setLoading(false)
         navigate('/')
     }
@@ -89,10 +95,10 @@ const MyProfilePage = () => {
             <div>
                 <SideDrawer/>
                 <VStack>
-                    <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-                        <Image height='500px' w='50%' src={user.picture} alt='hi' />
-                        <Box w='50%'>
-                            <Box mt='5%' alignItems='baseline'>
+                    <Box borderRadius='lg' w='50%' borderWidth='5px'>
+                    <Avatar mt='1%' size='2xl' src={user.picture} />
+                        <Box>
+                            <Box mt='2%' alignItems='baseline'>
                                 <Badge borderRadius='full' px='10' colorScheme='teal'>
                                     ID
                                 </Badge>
@@ -255,23 +261,24 @@ const MyProfilePage = () => {
                                 </Box>
                             )}
                             <Button
-                            mt='5%'
+                            mt='3%'
+                            colorScheme={'blue'}
+                            width='30%'
+                            onClick={handleUpdate}
+                            >
+                                Update
+                            </Button>
+                            <Button
+                            mt='3%'
                             colorScheme={'red'}
                             width='30%'
                             onClick={del}
                             isLoading={loading}
                             >
-                                Delete account
-                            </Button>
-                            <Button
-                            mt='5%'
-                            colorScheme={'blue'}
-                            width='30%'
-                            onClick={handleUpdate}
-                            >
-                                Update account
+                                Delete
                             </Button>
                         </Box>
+                    {/* </Box> */}
                     </Box>
                 </VStack>
             </div>

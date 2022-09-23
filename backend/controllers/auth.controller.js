@@ -209,30 +209,44 @@ exports.updateAccount = async (req,res) => {
                 if (err) handelError(err,res);
                 const corporate = await result;
                 if (!corporate) return res.status(404).send('User not found!');
+                let password = null;
+                if (req.body.password === corporate.password) {
+                    password = corporate.password
+                } else {
+                    password = bcrpyt.hashSync(req.body.password,12)
+                }
                 const newCorporate = {
                     $set: {
                         email: req.body.email,
+                        password: bcrpyt.hashSync(req.body.password, 12),
                         picture: req.body.picture,
                         name: req.body.name,
-                        countryOfResidence: req.body.residence,
+                        countryOfResidence: req.body.countryOfResidence,
                         address: req.body.address,
                         iva: req.body.iva
                     }
                 }
-                await Corporate.getCorporates().updateOne({ _id: ObjectId(idUser) }, newCorporate, (err) => {
+                await Corporate.getCorporates().updateOne({ name: corporate.name }, newCorporate, async (err,result) => {
                     if (err) handelError(err,res);
                     return res.status(200).send('User information updated');
                 })
             })
         } else {
+            let password = null;
+            if (req.body.password === user.password) {
+                password = user.password
+            } else {
+                password = bcrpyt.hashSync(req.body.password,12)
+            }
             const newUser = {
                 $set: {
                     email: req.body.email,
+                    password: password,
                     picture: req.body.picture,
                     username: req.body.username,
                     name: req.body.name,
                     lastName: req.body.lastName,
-                    birthDate: req.body.birthDate,
+                    birthDate: new Date(req.body.birthDate),
                 }
             }
             await User.getUser().updateOne({ _id: ObjectId(idUser) }, newUser, (err) => {

@@ -13,7 +13,6 @@ import ErrorPage from './ErrorPage'
 
 const ChatPage = () => {
   const socket = useRef();
-  //const socket = useState(io())
   const location = useLocation()
 
   const [contacts, setContacts] = useState([]);
@@ -22,45 +21,58 @@ const ChatPage = () => {
 
   const [error, setError] = React.useState()
 
-
   useEffect( () => {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      setError(401)
+    if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+        setError(401)
+      } else {
+        setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+      }
     } else {
-      setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
-      setCurrentChat(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+      try {
+        setCurrentChat(location.state.user)
+      } catch (error) {
+        setCurrentChat(undefined)
+      }
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //const socket = null
-
   useEffect(() => {
     
     if (currentUser) {
-      /*socket.current = io('http://localhost:5000')
-      socket.current.on('connect', () => {
-        socket.current.emit("add-user", currentUser._id)
-      })*/
-      socket.current = io(host);
+      socket.current = io(host)
       if(socket.current){
         
-        socket.current.emit("add-user", currentUser._id);
+        socket.current.emit("add-user", currentUser._id)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect( () => {
+  useEffect(() => {
     if (currentUser) {
-      const data =  axios.get(`${allUsersRoute}`);
-      setContacts(data.data);
+      axios
+        .get(`${allUsersRoute}`)
+        .then((res) => {
+          const data = res.data
+          let newData = null
+          if(currentUser.data.username)
+            newData = data.filter(data => data.username !== currentUser.data.username)
+          else
+            newData = data.filter(data => data.name !== currentUser.data.name)       
+          setContacts(newData)
+        });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const handleChatChange = (chat) => {
-    setCurrentChat(chat);
+    if(chat.username)
+      setCurrentChat(chat.username)
+    else
+      setCurrentChat(chat.name);
   };
   
   
@@ -79,10 +91,10 @@ const ChatPage = () => {
         <Container>
           <div className="container">
             <Contacts contacts={contacts} changeChat={handleChatChange} />
-            {(currentChat === undefined || !location.state) ? (
+            {(currentChat === undefined) ? (
               <Welcome />
             ) : (                                                       
-              <ChatContainer currentChat={currentChat} socket={socket} userChat={location.state.user}/>
+              <ChatContainer currentChat={currentChat} socket={socket} />
             )}
           </div>
         </Container>
