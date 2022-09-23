@@ -5,14 +5,18 @@ import { v4 as uuidv4 } from "uuid";
 import ChatInput from "./ChatInput";
 import { sendMessageRoute, recieveMessageRoute } from "../../utils/APIchat";
 import { Avatar } from "@chakra-ui/react";
+import { allUsersRoute } from "../../utils/APIchat";
 
-const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
+
+const ChatContainer = ({currentChat, socket}) => {
 
   const user = JSON.parse(sessionStorage.getItem("userInfo"))
 
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
+
+  const [pic, setPic] = useState()
 
   /*useEffect(() => {
     const getCurrentChat =  () => {
@@ -33,12 +37,9 @@ const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
 
 
   useEffect( () => {
-    // /getmsg   
     async function getMsg(){  
       const config = {
         params: {
-          /*from: currentChat.data.username,
-          to: userChat,*/
           from: user.data.username,
           to: currentChat,
         },
@@ -59,8 +60,6 @@ const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
   const handleSendMsg =  (msg) => {
     if(socket.current){
       socket.current.emit("send-msg", {
-      /*to: currentChat.data.id,
-      from: userChat,*/
       from: user.data.username,
       to: currentChat,
       msg,
@@ -71,10 +70,7 @@ const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
       "Authorization": `Bearer ${user.data.token}`
       },
     } 
-    // /addmsg
     axios.post(sendMessageRoute, {
-      /*from: currentChat.data.username,
-      to: userChat,*/
       from: user.data.username,
       to: currentChat,
       message: msg,
@@ -115,25 +111,22 @@ const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
       </div>)
   })
 
-  const setPic = () => {
-    const config = {
-      headers: {
-        "Content-type":"application/json",
-      },
-    }
-    const user = axios.get(`/get-user`,
-      {
-        params: { idUser: {currentChat}},
-        config
-      })
-    return user.pic
-  }
+  useEffect(() => {
+    let userPic = null
+    axios
+      .get(`${allUsersRoute}`)
+      .then((res) => {
+        const data = res.data
+        userPic = data.filter(data => data.username === currentChat)
+        setPic(userPic[0].picture)
+      });
+  }, [currentChat])
 
   return (
     <Container>
       <div className="chat-header">
         <div className="user-details">
-          <Avatar size={'sm'} cursor='pointer' src={setPic} />
+          <Avatar size={'sm'} cursor='pointer' src={pic} />
           <div className="username">
             <h3>{currentChat}</h3>
           </div>

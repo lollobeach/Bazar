@@ -54,13 +54,21 @@ const ChatPage = () => {
         .get(`${allUsersRoute}`)
         .then((res) => {
           const data = res.data
-          setContacts(data)
+          let newData = null
+          if(currentUser.data.username)
+            newData = data.filter(data => data.username !== currentUser.data.username)
+          else
+            newData = data.filter(data => data.name !== currentUser.data.name)       
+          setContacts(newData)
         });
     }
   }, [currentUser]);
 
   const handleChatChange = (chat) => {
-    setCurrentChat(chat.username);
+    if(chat.username)
+      setCurrentChat(chat.username);
+    else
+      setCurrentChat(chat.name);
   };
   
   
@@ -79,10 +87,10 @@ const ChatPage = () => {
         <Container>
           <div className="container">
             <Contacts contacts={contacts} changeChat={handleChatChange} />
-            {(currentChat === undefined || !location.state) ? (
+            {(currentChat === undefined) ? (
               <Welcome />
             ) : (                                                       
-              <ChatContainer currentChat={currentChat} socket={socket} /*userChat={location.state.user*//>
+              <ChatContainer currentChat={currentChat} socket={socket} />
             )}
           </div>
         </Container>
