@@ -53,7 +53,7 @@ const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
       setMessages(response.data);
     }
     getMsg()
-  }, [currentChat]);
+  }, [currentChat, user.data.token, user.data.username]);
 
 
   const handleSendMsg =  (msg) => {
