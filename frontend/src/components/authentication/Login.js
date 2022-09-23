@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, FormControl, Input, InputGroup, InputRightElement, VStack, useToast, RadioGroup, Radio, Stack } from '@chakra-ui/react'
+import { Button, FormControl, Input, InputGroup, InputRightElement, VStack, useToast, RadioGroup, Radio, Stack, Checkbox } from '@chakra-ui/react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,12 +11,15 @@ const Login = () => {
   const [username, setUsername] = React.useState()
   const [password, setPassword] = React.useState()
   const [name, setName] = React.useState()
+  const [keepAccess, setKeepAccess] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
 
   const toast = useToast()
   const navigate = useNavigate()
 
   const handleClick = () => setShow(!show)
+
+  const handleAccess = () => setKeepAccess(!keepAccess)
 
   const submitUser = async () => {
     const data = await axios.get('/all-users')
@@ -75,8 +78,13 @@ const Login = () => {
         duration: 5000,
         isClosable: true,
         position: "bottom",
-      })  
-      sessionStorage.setItem('userInfo', JSON.stringify(data))
+      })
+      if (keepAccess) {
+        localStorage.setItem('userInfo', JSON.stringify(data))
+        sessionStorage.setItem('userInfo', JSON.stringify(data))
+      } else {
+        sessionStorage.setItem('userInfo', JSON.stringify(data))
+      }
       setLoading(false)
       navigate('/')
     } catch (error) {
@@ -149,8 +157,13 @@ const Login = () => {
         duration: 5000,
         isClosable: true,
         position: "bottom",
-      })  
-      sessionStorage.setItem('userInfo', JSON.stringify(data))
+      })
+      if (keepAccess) {
+        localStorage.setItem('userInfo', JSON.stringify(data))
+        sessionStorage.setItem('userInfo', JSON.stringify(data))
+      } else {
+        sessionStorage.setItem('userInfo', JSON.stringify(data))
+      }
       setLoading(false)
       navigate('/')
     } catch (error) {
@@ -183,6 +196,9 @@ const Login = () => {
           <Stack direction='row'>
             <Radio value='1'>User</Radio>
             <Radio value='2'>Corporate</Radio>
+            <Checkbox
+            onChange={handleAccess}
+            >Keep access</Checkbox>
           </Stack>
         </RadioGroup>
       </FormControl>

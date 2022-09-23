@@ -62,9 +62,13 @@ const ServiceUserPage = () => {
 
     React.useEffect(() => {    
         function fetchInfo() {
-            console.log(1)
             if (location.state) {
-                const info = JSON.parse(sessionStorage.getItem('userInfo'))
+                let info = null
+                if (localStorage.getItem('userInfo')) {
+                    info = JSON.parse(localStorage.getItem('userInfo'))
+                } else {
+                    info = JSON.parse(sessionStorage.getItem('userInfo'))
+                }
                 if (info) {
                     if (info.data.name) {
                         if (info.data.name === location.state.user) setIsOwner(true)

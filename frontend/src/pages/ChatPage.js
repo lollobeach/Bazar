@@ -23,7 +23,11 @@ const ChatPage = () => {
 
   useEffect( () => {
     if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      setError(401)
+      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+        setError(401)
+      } else {
+        setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+      }
     } else {
       setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
       try {

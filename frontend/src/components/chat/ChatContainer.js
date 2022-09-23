@@ -10,31 +10,18 @@ import { allUsersRoute } from "../../utils/APIchat";
 
 const ChatContainer = ({currentChat, socket}) => {
 
-  const user = JSON.parse(sessionStorage.getItem("userInfo"))
+  let user = null
+  if (localStorage.getItem("userInfo")) {
+    user = JSON.parse(localStorage.getItem("userInfo"))
+  } else {
+    user = JSON.parse(sessionStorage.getItem("userInfo"))
+  }
 
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
   const [pic, setPic] = useState()
-
-  /*useEffect(() => {
-    const getCurrentChat =  () => {
-      console.log(currentChat)
-      if (!currentChat) {
-        currentChat =  JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        );
-      }
-      //lollobeahc
-      console.log("currentChat"+currentChat.data.username)
-      //michelegitto
-      console.log(userChat)
-    };
-    
-    getCurrentChat();
-  }, [currentChat]);*/
-
 
   useEffect( () => {
     async function getMsg(){  

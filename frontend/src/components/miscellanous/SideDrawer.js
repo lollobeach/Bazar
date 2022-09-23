@@ -7,10 +7,16 @@ const SideDrawer = () => {
 
   const navigate = useNavigate()
 
-  const user = JSON.parse(sessionStorage.getItem("userInfo"))
+  let user = null
+  if (localStorage.getItem("userInfo")) {
+    user = JSON.parse(localStorage.getItem("userInfo"))
+  } else {
+    user = JSON.parse(sessionStorage.getItem("userInfo"))
+  }
 
   const logoutHandler = () => {
     sessionStorage.removeItem("userInfo")
+    localStorage.removeItem("userInfo")
     navigate('/')
   } 
 
