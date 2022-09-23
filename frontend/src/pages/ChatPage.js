@@ -26,7 +26,12 @@ const ChatPage = () => {
       setError(401)
     } else {
       setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
-      setCurrentChat(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      try {
+        setCurrentChat(location.state.user)
+      } catch (error) {
+        setCurrentChat(undefined)
+      }
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -44,22 +49,14 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    //const getUser = () => {
-      if (currentUser) {
-        axios
-          .get(`${allUsersRoute}`)
-          .then((res) => {
-            const data = res.data
-            console.log(data)
-            setContacts(data)
-          });
-        //console.log(data.data)
-        //setContacts(data.data);
-      }
-      console.log(contacts)
-    //}
-    //getUser()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (currentUser) {
+      axios
+        .get(`${allUsersRoute}`)
+        .then((res) => {
+          const data = res.data
+          setContacts(data)
+        });
+    }
   }, [currentUser]);
 
   const handleChatChange = (chat) => {
@@ -85,7 +82,7 @@ const ChatPage = () => {
             {(currentChat === undefined || !location.state) ? (
               <Welcome />
             ) : (                                                       
-              <ChatContainer currentChat={currentChat} socket={socket} userChat={location.state.user}/>
+              <ChatContainer currentChat={currentChat} socket={socket} /*userChat={location.state.user*//>
             )}
           </div>
         </Container>

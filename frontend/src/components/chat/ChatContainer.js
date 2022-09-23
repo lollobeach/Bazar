@@ -6,7 +6,7 @@ import ChatInput from "./ChatInput";
 import { sendMessageRoute, recieveMessageRoute } from "../../utils/APIchat";
 import { Avatar } from "@chakra-ui/react";
 
-const ChatContainer = ({currentChat, socket, userChat}) => {
+const ChatContainer = ({currentChat, socket/*, userChat*/}) => {
 
   const user = JSON.parse(sessionStorage.getItem("userInfo"))
 
@@ -37,12 +37,14 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
     async function getMsg(){  
       const config = {
         params: {
-          from: currentChat.data.username,
-          to: userChat,
+          /*from: currentChat.data.username,
+          to: userChat,*/
+          from: user.data.username,
+          to: currentChat,
         },
         headers: {
         "Content-type":"application/json",
-        Authorization: `Bearer ${currentChat.data.token}`
+        Authorization: `Bearer ${user.data.token}`
         },
       } 
       const response = await axios.get(recieveMessageRoute, 
@@ -51,26 +53,30 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       setMessages(response.data);
     }
     getMsg()
-  }, []);
+  }, [currentChat]);
 
 
   const handleSendMsg =  (msg) => {
     if(socket.current){
       socket.current.emit("send-msg", {
-      to: currentChat.data.id,
-      from: userChat,
+      /*to: currentChat.data.id,
+      from: userChat,*/
+      from: user.data.username,
+      to: currentChat,
       msg,
     });}
     const config = {
       headers: {
       "Content-type":"application/json",
-      "Authorization": `Bearer ${currentChat.data.token}`
+      "Authorization": `Bearer ${user.data.token}`
       },
     } 
     // /addmsg
     axios.post(sendMessageRoute, {
-      from: currentChat.data.username,
-      to: userChat,
+      /*from: currentChat.data.username,
+      to: userChat,*/
+      from: user.data.username,
+      to: currentChat,
       message: msg,
     }, config);
     let msgs = { fromSelf: true, message: msg }
@@ -109,13 +115,27 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       </div>)
   })
 
+  const setPic = () => {
+    const config = {
+      headers: {
+        "Content-type":"application/json",
+      },
+    }
+    const user = axios.get(`/get-user`,
+      {
+        params: { idUser: {currentChat}},
+        config
+      })
+    return user.pic
+  }
+
   return (
     <Container>
       <div className="chat-header">
         <div className="user-details">
-          <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
+          <Avatar size={'sm'} cursor='pointer' src={setPic} />
           <div className="username">
-            <h3>{userChat}</h3>
+            <h3>{currentChat}</h3>
           </div>
         </div>
       </div>
