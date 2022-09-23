@@ -3,6 +3,7 @@ import { Avatar, InputRightElement, useToast, Input, Button, VStack, Box, Badge,
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
+
 const UpdateProfile = (props) => {
 
     const [user, setUser] = React.useState(props.user)
@@ -14,6 +15,7 @@ const UpdateProfile = (props) => {
     const [newName, setNewName] = React.useState()
     const [newLastName, setNewLastName] = React.useState()
     const [newBirthDate, setNewBirthDate] = React.useState()
+    const [newCorporateName, setNewCorporateName] = React.useState()
     const [newResidence, setNewResidence] = React.useState()
     const [newAddress, setNewAddress] = React.useState()
     const [newIva, setNewIva] = React.useState()
@@ -57,8 +59,8 @@ const UpdateProfile = (props) => {
 
     const updateProfile = async () => {
         setLoading(true)
-        if (newEmail || newUsername) {
-            const data = await axios.get('/list-users')
+        if (newEmail || newUsername || newCorporateName) {
+            const data = await axios.get('/all-users')
             const users = data.data
             if (newEmail) {
                 const validEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$')
@@ -85,10 +87,8 @@ const UpdateProfile = (props) => {
                     setLoading(false)
                     return
                 }
-                setUser(user => ({
-                    ...user,
-                    ...{email: newEmail}
-                }))
+                user.email = newEmail
+                setUser({...user})
             }
             if (newUsername) {
                 const usernames = users.map(item => item.username)
@@ -104,10 +104,22 @@ const UpdateProfile = (props) => {
                     return
                 }
             }
-            setUser(user => ({
-                ...user,
-                ...{username: newUsername}
-            }))
+            user.username = newUsername
+            setUser({...user})
+            if (newCorporateName) {
+                const corporatesName = users.map(item => item.name)
+                if (corporatesName.includes(newCorporateName)) {
+                    toast({
+                        title: "Corporate name is already in use",
+                        status: "warning",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom",
+                    })
+                }
+                user.name = newCorporateName
+                setUser({...user})
+            }
         }
         if (newPassword) {
             const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$') 
@@ -133,10 +145,8 @@ const UpdateProfile = (props) => {
                 setLoading(false)
                 return
             }
-            setUser(user => ({
-                ...user,
-                ...{password: newPassword}
-            }))
+            user.password = newPassword
+            setUser({...user})
         }
         if (newBirthDate) {
             const date = new Date().getTime()
@@ -152,68 +162,41 @@ const UpdateProfile = (props) => {
                 setLoading(false)
                 return
             }
-            setUser(user => ({
-                ...user,
-                ...{birthDate: newBirthDate}
-            }))
+            user.birthDate = newBirthDate
+            setUser({...user})
         }
-        // if (newPassword) {
-        //     const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$')        
-        //     if (!validPassword.test(newPassword)) {
-        //         toast({
-        //             title: "Password format not correct",
-        //             status: "warning",
-        //             duration: 5000,
-        //             isClosable: true,
-        //             position: "bottom"
-        //         })
-        //         setLoading(false)
-        //         return
-        //     }
-        //     if (newPassword !== confirmNewPassword) {
-        //         toast({
-        //             title: "Password do not match",
-        //             status: "warning",
-        //             duration: 5000,
-        //             isClosable: true,
-        //             position: "bottom"
-        //         })
-        //         setLoading(false)
-        //         return
-        //     }
-        //     setUser(user => ({
-        //             ...user,
-        //             ...{password: bcrpyt.hashSync(newPassword, 12)}
-        //     }))
-        //     console.log('New Password: '+bcrpyt.hashSync(newPassword, 12))
-        //     console.log('User Password: '+user.password)
-        // }
         if (newName) {
-            setUser(user => ({
-                ...user,
-                ...{name: newName}
-            }))
+            user.name = newName
+            setUser({...user})
         }
         if (newLastName) {
-            setUser(user => ({
-                ...user,
-                ...{lastName: newLastName}
-            }))
+            user.lastName = newLastName
+            setUser({...user})
         }
-        // const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
-        // if (iva) {
-        //     if (!validIva.test(iva)) {
-        //         toast({
-        //             title: "Iva format not correct",
-        //             status: "warning",
-        //             duration: 5000,
-        //             isClosable: true,
-        //             position: "bottom"
-        //         })
-        //         setLoading(false)
-        //         return
-        //     }
-        // }
+        if (newIva) {
+            const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
+            if (!validIva.test(newIva)) {
+                toast({
+                    title: "Iva format not correct",
+                    status: "warning",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom"
+                })
+                setLoading(false)
+                return
+            }
+            user.iva = newIva
+            setUser({...user})
+        }
+        if (newResidence) {
+            user.residence = newResidence
+            setUser({...user})
+        }
+        if (newAddress) {
+            user.address = newAddress
+            setUser({...user})
+        }
         try {
             const config = {
                 headers: {
@@ -237,22 +220,21 @@ const UpdateProfile = (props) => {
                     data,
                     config
                     )
-            } 
-            // else {
-            //     const data = {
-            //         email: user.email,
-            //         password: bcrpyt.hashSync(user.password, 12),
-            //         picture: user.picture,
-            //         name: user.name,
-            //         countryOfResidence: user.residence,
-            //         address: user.address,
-            //         iva: user.iva
-            //     }
-            //     await axios.patch('/update-user',
-            //     data,
-            //     config
-            //     )
-            // }
+            } else {
+                const data = {
+                    picture: user.picture,
+                    name: user.name,
+                    countryOfResidence: user.residence,
+                    address: user.address,
+                    iva: user.iva,
+                    email: user.email,
+                    password: user.password,
+                }
+                await axios.patch('/update-user',
+                    data,
+                    config
+                    )
+            }
             toast({
                 title: "User updated correctly",
                 status: "success",
@@ -356,24 +338,24 @@ const UpdateProfile = (props) => {
                         </InputRightElement>
                     </InputGroup>
                 </Box>
-                <Box display='grid' mt='2%'>
-                    <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
-                        Name
-                    </Badge>
-                    <Input
-                        placeholder={user.name}
-                        color='gray.500'
-                        fontWeight='semibold'
-                        letterSpacing='wide'
-                        fontSize='xs'
-                        w='70%'
-                        ml='15%'
-                        mt='2%'
-                        onChange={(e) => setNewName(e.target.value)}
-                    />
-                </Box>
                 {user.username ? (
                     <Box>
+                        <Box display='grid' mt='2%'>
+                        <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
+                            Name
+                        </Badge>
+                        <Input
+                            placeholder={user.name}
+                            color='gray.500'
+                            fontWeight='semibold'
+                            letterSpacing='wide'
+                            fontSize='xs'
+                            w='70%'
+                            ml='15%'
+                            mt='2%'
+                            onChange={(e) => setNewName(e.target.value)}
+                            />
+                        </Box>
                         <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Lastname
@@ -425,6 +407,22 @@ const UpdateProfile = (props) => {
                     </Box>
                 ) : (
                     <Box>
+                        <Box display='grid' mt='2%'>
+                            <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
+                                Corporate Name
+                            </Badge>
+                            <Input
+                                placeholder={user.name}
+                                color='gray.500'
+                                fontWeight='semibold'
+                                letterSpacing='wide'
+                                fontSize='xs'
+                                w='70%'
+                                ml='15%'
+                                mt='2%'
+                                onChange={(e) => setNewCorporateName(e.target.value)}
+                            />
+                        </Box>
                         <Box display='grid' mt='2%'>
                             <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
                                 Residence

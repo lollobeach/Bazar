@@ -209,6 +209,12 @@ exports.updateAccount = async (req,res) => {
                 if (err) handelError(err,res);
                 const corporate = await result;
                 if (!corporate) return res.status(404).send('User not found!');
+                let password = null;
+                if (req.body.password === corporate.password) {
+                    password = corporate.password
+                } else {
+                    password = bcrpyt.hashSync(req.body.password,12)
+                }
                 const newCorporate = {
                     $set: {
                         email: req.body.email,
@@ -227,15 +233,11 @@ exports.updateAccount = async (req,res) => {
             })
         } else {
             let password = null;
-            let passwordIsValid = bcrpyt.compareSync(
-                req.body.password,
-                user.password
-                )
-                if (passwordIsValid) {
-                    password = user.password
-                } else {
-                    password = bcrpyt.hashSync(req.body.password,12)
-                }
+            if (req.body.password === user.password) {
+                password = user.password
+            } else {
+                password = bcrpyt.hashSync(req.body.password,12)
+            }
             const newUser = {
                 $set: {
                     email: req.body.email,
