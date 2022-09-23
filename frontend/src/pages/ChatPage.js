@@ -54,13 +54,21 @@ const ChatPage = () => {
         .get(`${allUsersRoute}`)
         .then((res) => {
           const data = res.data
-          setContacts(data)
+          let newData = null
+          if(currentUser.data.username)
+            newData = data.filter(data => data.username !== currentUser.data.username)
+          else
+            newData = data.filter(data => data.name !== currentUser.data.name)
+          setContacts(newData)
         });
     }
   }, [currentUser]);
 
   const handleChatChange = (chat) => {
-    setCurrentChat(chat.username);
+    if(chat.username)
+      setCurrentChat(chat.username)
+    else
+      setCurrentChat(chat.name);
   };
   
   
