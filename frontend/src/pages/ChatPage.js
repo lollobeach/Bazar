@@ -60,7 +60,7 @@ const ChatPage = () => {
   }, [currentUser]);
 
   const handleChatChange = (chat) => {
-    setCurrentChat(chat);
+    setCurrentChat(chat.username);
   };
   
   
