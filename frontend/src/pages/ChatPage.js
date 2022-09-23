@@ -25,7 +25,7 @@ const ChatPage = () => {
     if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       setError(401)
     } else {
-      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
       try {
         setCurrentChat(location.state.user)
       } catch (error) {
@@ -39,10 +39,10 @@ const ChatPage = () => {
   useEffect(() => {
     
     if (currentUser) {
-      socket.current = io(host);
+      socket.current = io(host)
       if(socket.current){
         
-        socket.current.emit("add-user", currentUser._id);
+        socket.current.emit("add-user", currentUser._id)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +66,7 @@ const ChatPage = () => {
 
   const handleChatChange = (chat) => {
     if(chat.username)
-      setCurrentChat(chat.username);
+      setCurrentChat(chat.username)
     else
       setCurrentChat(chat.name);
   };
