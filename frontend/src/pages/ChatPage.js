@@ -25,7 +25,7 @@ const ChatPage = () => {
     if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       setError(401)
     } else {
-      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)));
+      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
       try {
         setCurrentChat(location.state.user)
       } catch (error) {
@@ -39,10 +39,10 @@ const ChatPage = () => {
   useEffect(() => {
     
     if (currentUser) {
-      socket.current = io(host);
+      socket.current = io(host)
       if(socket.current){
         
-        socket.current.emit("add-user", currentUser._id);
+        socket.current.emit("add-user", currentUser._id)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +58,7 @@ const ChatPage = () => {
           if(currentUser.data.username)
             newData = data.filter(data => data.username !== currentUser.data.username)
           else
-            newData = data.filter(data => data.name !== currentUser.data.name)
+            newData = data.filter(data => data.name !== currentUser.data.name)       
           setContacts(newData)
         });
     }
@@ -87,10 +87,10 @@ const ChatPage = () => {
         <Container>
           <div className="container">
             <Contacts contacts={contacts} changeChat={handleChatChange} />
-            {(currentChat === undefined || !location.state) ? (
+            {(currentChat === undefined) ? (
               <Welcome />
             ) : (                                                       
-              <ChatContainer currentChat={currentChat} socket={socket} /*userChat={location.state.user*//>
+              <ChatContainer currentChat={currentChat} socket={socket} />
             )}
           </div>
         </Container>
