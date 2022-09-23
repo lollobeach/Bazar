@@ -19,7 +19,7 @@ const Login = () => {
   const handleClick = () => setShow(!show)
 
   const submitUser = async () => {
-    const data = await axios.get('/list-users')
+    const data = await axios.get('/all-users')
     const users = data.data
     const usernames = users.map(item => item.username)
     const emails = users.map(item => item.email)
@@ -93,7 +93,7 @@ const Login = () => {
   }
 
   const submitCorporate = async () => {
-    const data = await axios.get('/list-corporates')
+    const data = await axios.get('/all-users')
     const corporates = data.data
     const names = corporates.map(item => item.name)
     const emails = corporates.map(item => item.email)
