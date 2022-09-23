@@ -1,19 +1,12 @@
 import { Avatar } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-//test
-/*import { allUsersRoute } from "../../utils/APIchat";
-import axios from "axios";*/
-
-
+import Logo from "../../assets/store.ico";
 
 const Contacts = ( { contacts, changeChat } ) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-
-  //test
-  //const [contacts, setContacts] = useState([]);
 
   useEffect( () => {
     const data =  JSON.parse(
@@ -27,17 +20,15 @@ const Contacts = ( { contacts, changeChat } ) => {
     setCurrentSelected(index);
     changeChat(contact);
   };
-  
-  //test
-  /*useEffect(async () => {
-    const data = await axios.get(`${allUsersRoute}`);
-    setContacts(data.data);
-  }, [contacts]);*/
 
   return (
     <>
       {currentUserImage && currentUserImage && (
         <Container>
+        <div className="brand">
+            <img src={Logo} alt="logo" />
+            <h3>Bazar</h3>
+          </div>
           <div className="contacts">
             {contacts.map((contact, index) => {
               return (
@@ -55,7 +46,9 @@ const Contacts = ( { contacts, changeChat } ) => {
                     />
                   </div>
                   <div className="username">
-                    <h3>{contact.username}</h3>
+                    {contact.username ? (<h3>{contact.username}</h3>) :
+                      (<h3>{contact.name}</h3>)
+                    }
                   </div>
                 </div>
               );
