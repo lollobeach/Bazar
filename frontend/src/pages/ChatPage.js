@@ -42,7 +42,7 @@ const ChatPage = () => {
       socket.current = io(host)
       if(socket.current){
         
-        socket.current.emit("add-user", currentUser._id);
+        socket.current.emit("add-user", currentUser._id)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
