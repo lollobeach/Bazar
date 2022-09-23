@@ -15,26 +15,7 @@ const ChatContainer = ({currentChat, socket}) => {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
-
   const [pic, setPic] = useState()
-
-  /*useEffect(() => {
-    const getCurrentChat =  () => {
-      console.log(currentChat)
-      if (!currentChat) {
-        currentChat =  JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        );
-      }
-      //lollobeahc
-      console.log("currentChat"+currentChat.data.username)
-      //michelegitto
-      console.log(userChat)
-    };
-    
-    getCurrentChat();
-  }, [currentChat]);*/
-
 
   useEffect( () => {
     async function getMsg(){  
@@ -54,8 +35,7 @@ const ChatContainer = ({currentChat, socket}) => {
       setMessages(response.data);
     }
     getMsg()
-  }, [currentChat, user.data.token, user.data.username]);
-
+  }, [messages])
 
   const handleSendMsg =  (msg) => {
     if(socket.current){
@@ -76,7 +56,6 @@ const ChatContainer = ({currentChat, socket}) => {
       message: msg,
     }, config);
     let msgs = { fromSelf: true, message: msg }
-    console.log(messages)
     setMessages(oldMessages => [...oldMessages, msgs])
   }
 
