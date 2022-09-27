@@ -16,8 +16,9 @@ const ChatContainer = ({currentChat, socket}) => {
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [pic, setPic] = useState()
+  const [isFetching, setIsFetching] = useState(false)
 
-  useEffect( () => {
+  /*useEffect( () => {
     async function getMsg(){  
       const config = {
         params: {
@@ -35,7 +36,36 @@ const ChatContainer = ({currentChat, socket}) => {
       setMessages(response.data);
     }
     getMsg()
-  }, [messages])
+  }, [messages])*/
+
+  const fetchMsg = async(url) => {
+    try {
+      const config = {
+        params: {
+          from: user.data.username,
+          to: currentChat,
+        },
+        headers: {
+        "Content-type":"application/json",
+        Authorization: `Bearer ${user.data.token}`
+        },
+      } 
+      const {data} = await axios.get(url, 
+        config
+      );
+      setMessages(await data)
+      setIsFetching(!isFetching)
+      //setIsFetching(false)
+    }catch (error) {
+      console.log(error.response)
+    }
+  }
+
+  useEffect(() => {
+    fetchMsg(recieveMessageRoute)
+  },[isFetching])
+
+
 
   const handleSendMsg =  (msg) => {
     if(socket.current){
@@ -63,6 +93,8 @@ const ChatContainer = ({currentChat, socket}) => {
     if (socket.current) {
       socket.current.on("msg-recieve", (msg) => {
         setArrivalMessage({ fromSelf: false, message: msg });
+        setIsFetching(!isFetching)
+        //setIsFetching(true)
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +108,7 @@ const ChatContainer = ({currentChat, socket}) => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const chats = messages.map((message) => {
+  const chats = messages?.map((message) => {
       return(<div ref={scrollRef} key={uuidv4()}>
         <div
           className={`message ${
