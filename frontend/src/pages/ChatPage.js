@@ -72,7 +72,7 @@ const ChatPage = () => {
     if(chat.username)
       setCurrentChat(chat.username)
     else
-      setCurrentChat(chat.name);
+      setCurrentChat(chat.name)
   };
   
   
