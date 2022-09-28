@@ -55,14 +55,14 @@ router.route('/all-users').get(async (req,res) => {
             if (err) handelError(err,res);
             const _result_ = await result;
             _result = _result.concat(_result_);
-        }
-    )
-    await User.getUser().find().toArray(
-        async (err,result) => {
-            if (err) handelError(err,res);
-            const _result_= await result;
-            _result = _result.concat(_result_);
-            res.status(200).json(_result)
+            await User.getUser().find().toArray(
+                async (err,result) => {
+                    if (err) handelError(err,res);
+                    const _result_= await result;
+                    _result = _result.concat(_result_);
+                    res.status(200).json(_result)
+                }
+            )
         }
     )
 })

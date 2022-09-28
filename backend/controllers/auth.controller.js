@@ -8,7 +8,7 @@ let jwt = require('jsonwebtoken')
 let bcrpyt = require('bcryptjs')
 const { ObjectId } = require('mongodb')
 
-function handelError(err,res) {
+function handleError(err,res) {
     console.log(err)
     return res.status('Error');
 }
@@ -36,7 +36,7 @@ exports.userSignUp = async (req,res) => {
     }
 
     await User.getUser().insertOne(newUser, async (err) => {
-        if (err) handelError(err,res)
+        if (err) handleError(err,res)
         let chosenPlan = newUser.plan;
         if (chosenPlan === 'free') return res.status(201).send(`User:\n${newUser.name}\n${newUser.lastName}\n${newUser.username}\n${newUser.email}\nwas registered successfully with Free Plan!`)
         if (chosenPlan === 'cheap') return res.status(201).send(`User:\n ${newUser.name}\n${newUser.lastName}\n${newUser.username}\n${newUser.email}\nwas registered successfully with Cheap Plan!`)
@@ -66,7 +66,7 @@ exports.corporateSignUp = async (req,res) => {
     }
 
     await Corporate.getCorporates().insertOne(newCorporate, async(err) => {
-        if (err) handelError(err,res)
+        if (err) handleError(err,res)
         res.status(201).send('Successful registration!')
     })
 }
@@ -94,12 +94,12 @@ function userPasswordValidation(req,res,user) {
 
 exports.userSignIn = (req,res) => {
     User.getUser().findOne({ username: req.body.username }, async (err,user) => {
-        if (err) handelError(err,res)
+        if (err) handleError(err,res)
         const _user = await user
         if (!_user) {
             if (req.body.email) {
                 User.getUser().findOne({ email: req.body.email}, async (err, email) => {
-                    if (err) handelError(err,res)
+                    if (err) handleError(err,res)
                     const _email = await email
                     if (!_email) return res.status(404).send('Email not found!')
                     userPasswordValidation(req,res,_email)
@@ -131,12 +131,12 @@ function corporatePasswordValidation(req,res,corporate) {
 
 exports.corporateSignIn = (req,res) => {
     Corporate.getCorporates().findOne({ name: req.body.name }, async (err,corporate) => {
-        if (err) handelError(err,res)
+        if (err) handleError(err,res)
         const _user = await corporate
         if (!_user) {
             if (req.body.email) {
                 Corporate.getCorporates().findOne({ email: req.body.email}, async (err, email) => {
-                    if (err) handelError(err,res)
+                    if (err) handleError(err,res)
                     const _email = await email
                     if (!_email) return res.status(404).send('Email not found!')
                     corporatePasswordValidation(req,res,_email)
@@ -150,11 +150,11 @@ exports.signOut = async (req,res) => {
     const id = await getId.getId(req)
     try {
         await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
-            if (err) handelError(err,res)
+            if (err) handleError(err,res)
             const _user = await user
             if (!_user) {
                 await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corporate) => {
-                    if (err) handelError(err,res)
+                    if (err) handleError(err,res)
                     const _corporate = await corporate;
                     if (!_corporate) return res.status(404).send('User not found')
                 })
@@ -170,7 +170,7 @@ exports.signOut = async (req,res) => {
 exports.deleteAccount = async (req,res) => {
     const user = req.query.user
     await User.getUser().deleteOne({ username: user }, async (err,_result) => {
-        if (err) handelError(err,res)
+        if (err) handleError(err,res)
         const result = await _result
         if (result.deletedCount !== 1) {
             Corporate.getCorporates().deleteOne({ name: user }, async (err,result) => {
@@ -182,16 +182,16 @@ exports.deleteAccount = async (req,res) => {
                 if (_result.deletedCount !== 1) return res.status(404).send('User not found')
                 else {
                     await OfferedServices.getOfferedServices().deleteMany({ user: user }, async (err) => {
-                        if (err) handelError(err,res)
+                        if (err) handleError(err,res)
                     })
                     return res.status(200).send('Account correctly deleted')
                 }
             })
         } else {
             await OfferedServices.getOfferedServices().deleteMany({ user: user }, async (err) => {
-                if (err) handelError(err,res)
+                if (err) handleError(err,res)
                 await RequiredServices.getRequiredServices().deleteMany({ user: user }, async (err) => {
-                    if (err) handelError(err,res)
+                    if (err) handleError(err,res)
                 })
             })
             return res.status(200).send('Account correctly deleted')
@@ -202,11 +202,11 @@ exports.deleteAccount = async (req,res) => {
 exports.updateAccount = async (req,res) => {
     const idUser = req.query.idUser;
     await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
-        if (err) handelError(err,res);
+        if (err) handleError(err,res);
         const user = await result;
         if (!user) {
             await Corporate.getCorporates().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
-                if (err) handelError(err,res);
+                if (err) handleError(err,res);
                 const corporate = await result;
                 if (!corporate) return res.status(404).send('User not found!');
                 let password = null;
@@ -218,7 +218,7 @@ exports.updateAccount = async (req,res) => {
                 const newCorporate = {
                     $set: {
                         email: req.body.email,
-                        password: bcrpyt.hashSync(req.body.password, 12),
+                        password: password,
                         picture: req.body.picture,
                         name: req.body.name,
                         countryOfResidence: req.body.countryOfResidence,
@@ -226,8 +226,19 @@ exports.updateAccount = async (req,res) => {
                         iva: req.body.iva
                     }
                 }
-                await Corporate.getCorporates().updateOne({ name: corporate.name }, newCorporate, async (err,result) => {
-                    if (err) handelError(err,res);
+                await Corporate.getCorporates().updateOne({ _id: ObjectId(idUser) }, newCorporate, async (err) => {
+                    if (err) handleError(err,res);
+                    await Corporate.getCorporates().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
+                        if (err) handleError(err,res);
+                        const _result = await result;
+                        if (corporate.name !== _result.name) {
+                            _result.offeredServices.map(item => {
+                                OfferedServices.getOfferedServices().updateOne({ _id: item }, { $set: { user: _result.name } }, (err) => {
+                                    if (err) handleError(err,res);
+                                })
+                            })
+                        }
+                    })
                     return res.status(200).send('User information updated');
                 })
             })
@@ -249,8 +260,24 @@ exports.updateAccount = async (req,res) => {
                     birthDate: new Date(req.body.birthDate),
                 }
             }
-            await User.getUser().updateOne({ _id: ObjectId(idUser) }, newUser, (err) => {
-                if (err) handelError(err,res);
+            await User.getUser().updateOne({ _id: ObjectId(idUser) }, newUser, async (err) => {
+                if (err) handleError(err,res);
+                await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,result) => {
+                    if (err) handleError(err,res);
+                    const _result = await result;
+                    if (user.username !== _result.username) {
+                        _result.offeredServices.map(item => {
+                            OfferedServices.getOfferedServices().updateOne({ _id: item }, { $set: { user: _result.username }}, (err) => {
+                                if(err) handleError(err,res);
+                            })
+                        })
+                        _result.requiredServices.map(item => {
+                            RequiredServices.getRequiredServices().updateOne({ _id: item }, { $set: { user: _result.username }}, (err) => {
+                                if(err) handleError(err,res);
+                            })
+                        })
+                    }
+                })
                 return res.status(200).send('User information updated');
             })
         }

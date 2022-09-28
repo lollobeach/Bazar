@@ -1,11 +1,21 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Avatar, Box, Button, /*Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, */Menu, MenuButton, MenuDivider, MenuItem, MenuList, /*Spinner,*/ Text, Tooltip/*, useDisclosure, useToast */} from '@chakra-ui/react'
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerFooter, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast} from '@chakra-ui/react'
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import axios from 'axios'
+import SearchLoading from './SearchLoading'
+import OfferedServices from './OfferedServices'
 
 const SideDrawer = () => {
 
+  const [searchOfferedServices, setSearchOfferedServices] = React.useState()
+  const [offeredServices, setOfferedServices] = React.useState()
+  const [loading, setLoading] = React.useState(false)
+
+  const toast = useToast()
   const navigate = useNavigate()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const btnRef = React.useRef()
 
   let user = null
   if (localStorage.getItem("userInfo")) {
@@ -18,7 +28,39 @@ const SideDrawer = () => {
     sessionStorage.removeItem("userInfo")
     localStorage.removeItem("userInfo")
     navigate('/')
-  } 
+  }
+
+  const accessService = (itemId) => {
+
+  }
+
+  const handleSearchOfferedService = async () => {
+    if(!searchOfferedServices){
+      toast({
+        title: "Please enter something",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      })
+      return
+    }
+    try{
+      setLoading(true)
+      const {data} = await axios.get('/api/user?search=${searchOfferedService}') 
+      setLoading(false)
+      setSearchOfferedServices(data)
+    } catch(err) { 
+      toast({
+        title: "Error occurred",
+        description: "Failed to load search results",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      })
+    }
+  }
 
   return (
     <Box
@@ -36,13 +78,48 @@ const SideDrawer = () => {
         display={"grid"}
         >
           <Tooltip label="Search Service" hasArrow placement='bottom-end'>
-          <Button variant={"ghost"} >
-            <i className="fas fa-search"></i>
-              <Text d={{base: "none"}} px="4">
-                Search Offered Service
-              </Text>
-          </Button>
-        </Tooltip>
+            <Button variant={"ghost"} ref={btnRef} onClick={onOpen}>
+              <i className="fas fa-search"></i>
+                <Text d={{base: "none"}} px="4">
+                  Search Offered Service
+                </Text>
+            </Button>
+          </Tooltip>
+        <Drawer
+        isOpen={isOpen}
+        placement='left'
+        onClose={onClose}
+        finalFocusRef={btnRef}
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Search Offered Service</DrawerHeader>
+            <DrawerBody display={'flex'}>
+              <Input 
+              placeholder='Type here...'
+              value={searchOfferedServices}
+              onChange={e => setSearchOfferedServices(e.target.value)}
+              />
+              <Button
+              onClick={handleSearchOfferedService}
+              >
+                search
+              </Button>
+              {loading? (
+              <SearchLoading/>
+                ):(
+                  offeredServices?.map(item => (
+                    <OfferedServices
+                      key={item._id}
+                      item={item}
+                      handleFunction={() => accessService(item._id)}
+                    />
+                  ))
+                )}
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
         <Tooltip label="Search Service" hasArrow placement='bottom-end'>
           <Button variant={"ghost"} >
             <i className="fas fa-search"></i>

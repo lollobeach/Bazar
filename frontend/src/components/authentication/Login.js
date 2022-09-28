@@ -119,8 +119,8 @@ const Login = () => {
     if(!names.includes(name)) {
       if(!emails.includes(name)){
         toast({
-          title: "Email or username does not belong to an account",
-          description: "Please verify your username or your email and try again",
+          title: "Email or name does not belong to an account",
+          description: "Please verify your name or your email and try again",
           status: "error",
           duration: 5000,
           isClosable: true,
