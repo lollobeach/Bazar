@@ -82,7 +82,7 @@ recordRoutesForRequiredServices.route("/service-required/:service_id").get(async
 
 
 recordRoutesForRequiredServices.route("/update-required-service").patch(async function(req, res) {
-  const username = req.query.username;
+  const username = req.query.user;
   let idPost = req.query.idPost;
   await User.getUser().findOne({ username: username }, async (err,user) => {
     if (err) handleErr(err,res);

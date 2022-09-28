@@ -27,6 +27,22 @@ recordRoutesforOfferedServices.route("/listings-offered-services").get(async (re
       });
     })
 
+recordRoutesforOfferedServices.route("/offered-services/").get(async (req,res) => {
+  const title = req.query.search;
+  await OfferedService
+    .getOfferedServices()
+    .find({
+      title: /title/
+    })
+    .toArray(async (err,result) => {
+      if (err) handleErr(err,res);
+      else {
+        const _result = await result;
+        res.status(200).json(_result);
+      }
+    })
+})
+
 /*recordRoutesforOfferedServices.route("/listings-offered-services-user").get(authJwt.verifyToken, async (req,res) => {
   const id = await getId.getId(req);
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {

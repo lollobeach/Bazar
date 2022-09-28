@@ -17,7 +17,12 @@ const MyProfilePage = () => {
     const navigate = useNavigate()
 
     async function fetchInfo() {
-        const info = JSON.parse(sessionStorage.getItem('userInfo'))
+        let info = null
+        if (localStorage.getItem('userInfo')) {
+            info = JSON.parse(localStorage.getItem('userInfo'))
+        } else {
+            info = JSON.parse(sessionStorage.getItem('userInfo'))
+        }
         if (info) {
             const idUser = info.data.id
             const config = {
@@ -60,6 +65,7 @@ const MyProfilePage = () => {
         }
         setLoading(true)
         await axios.delete('/delete_account', config)
+        localStorage.removeItem('userInfo')
         sessionStorage.removeItem('userInfo')
         setLoading(false)
         navigate('/')
@@ -273,7 +279,6 @@ const MyProfilePage = () => {
                                 Delete
                             </Button>
                         </Box>
-                    {/* </Box> */}
                     </Box>
                 </VStack>
             </div>

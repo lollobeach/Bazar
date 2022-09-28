@@ -244,6 +244,7 @@ const UpdateProfile = (props) => {
                 })
             setLoading(false)
             sessionStorage.removeItem('userInfo')
+            localStorage.removeItem('userInfo')
             navigate('/auth')
         } catch (err) {
             toast({

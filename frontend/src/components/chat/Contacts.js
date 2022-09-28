@@ -9,9 +9,12 @@ const Contacts = ( { contacts, changeChat } ) => {
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   useEffect( () => {
-    const data =  JSON.parse(
-      sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-    );
+    let data = null
+    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      data = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+    } else {
+      data = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+    }
     setCurrentUserName(data.data.username);
     setCurrentUserImage(data.data.pic);
   }, []);
