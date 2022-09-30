@@ -12,11 +12,10 @@ const Services = (props) => {
 
     const services = posts.map(item => (
         <Link
-        to='/service'
+        to={`/service`}
         key={item._id}
         state={{
             picture: item.picture,
-            id: item._id,
             title: item.title,
             description: item.description,
             place: item.place,

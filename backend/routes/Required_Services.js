@@ -24,6 +24,30 @@ recordRoutesForRequiredServices.route("/listings-required-services").get(async (
     });
 })
 
+recordRoutesForRequiredServices.route("/required-services").get(async (req,res) => {
+  const _search = req.query.search;
+  await RequiredServices
+    .getRequiredServices()
+    .createIndex({
+      title: "text",
+      place: "text"
+    })
+  await RequiredServices
+    .getRequiredServices()
+    .find({
+      $text: {
+        $search: _search
+      }
+    })
+    .toArray(async (err,result) => {
+      if (err) handleErr(err,res);
+      else {
+        const _result = await result;
+        res.status(200).json(_result);
+      }
+    })
+})
+
 recordRoutesForRequiredServices.route("/listings-required-services-user").get(authJwt.verifyToken, async (req,res) => {
   const id = await getId.getId(req);
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {

@@ -27,12 +27,20 @@ recordRoutesforOfferedServices.route("/listings-offered-services").get(async (re
       });
     })
 
-recordRoutesforOfferedServices.route("/offered-services/").get(async (req,res) => {
-  const title = req.query.search;
+recordRoutesforOfferedServices.route("/offered-services").get(async (req,res) => {
+  const _search = req.query.search;
+  await OfferedService
+    .getOfferedServices()
+    .createIndex({
+      title: "text",
+      place: "text"
+    })
   await OfferedService
     .getOfferedServices()
     .find({
-      title: /title/
+      $text: {
+        $search: _search
+      }
     })
     .toArray(async (err,result) => {
       if (err) handleErr(err,res);

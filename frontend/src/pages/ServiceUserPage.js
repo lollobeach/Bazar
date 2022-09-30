@@ -60,7 +60,7 @@ const ServiceUserPage = () => {
         }
     }
 
-    React.useEffect(() => {    
+    React.useEffect(() => {
         function fetchInfo() {
             if (location.state) {
                 let info = null
@@ -92,7 +92,7 @@ const ServiceUserPage = () => {
             }
         }
         fetchInfo()
-    },[])
+    },[location.state.id])
 
     if(post) {
         if (update) {
