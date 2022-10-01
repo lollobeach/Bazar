@@ -24,6 +24,30 @@ recordRoutesForRequiredServices.route("/listings-required-services").get(async (
     });
 })
 
+recordRoutesForRequiredServices.route("/required-services").get(async (req,res) => {
+  const _search = req.query.search;
+  await RequiredServices
+    .getRequiredServices()
+    .createIndex({
+      title: "text",
+      place: "text"
+    })
+  await RequiredServices
+    .getRequiredServices()
+    .find({
+      $text: {
+        $search: _search
+      }
+    })
+    .toArray(async (err,result) => {
+      if (err) handleErr(err,res);
+      else {
+        const _result = await result;
+        res.status(200).json(_result);
+      }
+    })
+})
+
 recordRoutesForRequiredServices.route("/listings-required-services-user").get(authJwt.verifyToken, async (req,res) => {
   const id = await getId.getId(req);
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
@@ -82,9 +106,9 @@ recordRoutesForRequiredServices.route("/service-required/:service_id").get(async
 
 
 recordRoutesForRequiredServices.route("/update-required-service").patch(async function(req, res) {
-  const username = req.query.username;
+  const idUser = await getId.getId(req);
   let idPost = req.query.idPost;
-  await User.getUser().findOne({ username: username }, async (err,user) => {
+  await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
     if (err) handleErr(err,res);
     const _user = await user;
     if (!_user) return res.status(404).send('User not found');
@@ -127,10 +151,10 @@ recordRoutesForRequiredServices.route("/update-required-service").patch(async fu
 
 
 
-recordRoutesForRequiredServices.route("/delete-required-service").delete(async (req, res) => {
-  const username = req.query.username;
+recordRoutesForRequiredServices.route("/delete-required-service").delete(authJwt.verifyToken, async (req, res) => {
+  const idUser = await getId.getId(req);
   let idPost = req.query.idPost;
-  await User.getUser().findOne({ username: username }, async (err,user) => {
+  await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
     if (err) handleErr(err);
     const _user = await user;
     if (!_user) return res.status(404).send('User not found');

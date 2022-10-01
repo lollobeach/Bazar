@@ -65,6 +65,7 @@ const MyProfilePage = () => {
         }
         setLoading(true)
         await axios.delete('/delete_account', config)
+        localStorage.removeItem('userInfo')
         sessionStorage.removeItem('userInfo')
         setLoading(false)
         navigate('/')
@@ -278,7 +279,6 @@ const MyProfilePage = () => {
                                 Delete
                             </Button>
                         </Box>
-                    {/* </Box> */}
                     </Box>
                 </VStack>
             </div>

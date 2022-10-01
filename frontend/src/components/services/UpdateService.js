@@ -56,12 +56,19 @@ const UpdateService = (props) => {
             }
         }
         try {
+            let _info = null
+            if (localStorage.getItem('userInfo')) {
+                _info = JSON.parse(localStorage.getItem('userInfo'))
+            } else {
+                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+            }
+            const token = _info.data.token
             const config = {
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 params: {
-                    user:  props.post.user,
                     idPost: props.post.id
                 }
             }

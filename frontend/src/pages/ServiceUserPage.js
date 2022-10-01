@@ -21,21 +21,24 @@ const ServiceUserPage = () => {
     const del = async () => {
         setLoading(true)
         try {
-            if (post.dataRequired) {
-                const config = {
-                    params: {
-                        username: post.user,
-                        idPost: post.id
-                    }
+            let _info = null
+            if (localStorage.getItem('userInfo')) {
+                _info = JSON.parse(localStorage.getItem('userInfo'))
+            } else {
+                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+            }
+            const token = _info.data.token
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                params: {
+                    idPost: post.id
                 }
+            }
+            if (post.dataRequired) {
                 await axios.delete('/delete-required-service', config)
             } else {
-                const config = {
-                    params: {
-                        user: post.user,
-                        idPost: post.id
-                    }
-                }
                 await axios.delete('/delete-offered-service', config)
             }
             toast({
@@ -60,7 +63,7 @@ const ServiceUserPage = () => {
         }
     }
 
-    React.useEffect(() => {    
+    React.useEffect(() => {
         function fetchInfo() {
             if (location.state) {
                 let info = null
@@ -92,7 +95,7 @@ const ServiceUserPage = () => {
             }
         }
         fetchInfo()
-    },[])
+    },[location.state.id])
 
     if(post) {
         if (update) {
