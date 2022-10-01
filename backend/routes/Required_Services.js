@@ -106,9 +106,9 @@ recordRoutesForRequiredServices.route("/service-required/:service_id").get(async
 
 
 recordRoutesForRequiredServices.route("/update-required-service").patch(async function(req, res) {
-  const username = req.query.user;
+  const idUser = await getId.getId(req);
   let idPost = req.query.idPost;
-  await User.getUser().findOne({ username: username }, async (err,user) => {
+  await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
     if (err) handleErr(err,res);
     const _user = await user;
     if (!_user) return res.status(404).send('User not found');
@@ -151,10 +151,10 @@ recordRoutesForRequiredServices.route("/update-required-service").patch(async fu
 
 
 
-recordRoutesForRequiredServices.route("/delete-required-service").delete(async (req, res) => {
-  const username = req.query.username;
+recordRoutesForRequiredServices.route("/delete-required-service").delete(authJwt.verifyToken, async (req, res) => {
+  const idUser = await getId.getId(req);
   let idPost = req.query.idPost;
-  await User.getUser().findOne({ username: username }, async (err,user) => {
+  await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
     if (err) handleErr(err);
     const _user = await user;
     if (!_user) return res.status(404).send('User not found');

@@ -15,6 +15,7 @@ const Services = (props) => {
         to={`/service`}
         key={item._id}
         state={{
+            id: item._id,
             picture: item.picture,
             title: item.title,
             description: item.description,

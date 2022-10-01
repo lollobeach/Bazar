@@ -161,8 +161,6 @@ const AddRequiredService = (props) => {
                 onChange={(e) => postDetails(e.target.files[0])}
                 />
             </FormControl>
-            { loading ? console.log('giorgio')
-            : console.log('ciao')}
         </div>
     )
 
