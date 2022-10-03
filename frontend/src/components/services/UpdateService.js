@@ -57,10 +57,10 @@ const UpdateService = (props) => {
         }
         try {
             let _info = null
-            if (localStorage.getItem('userInfo')) {
-                _info = JSON.parse(localStorage.getItem('userInfo'))
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                _info = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
             } else {
-                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+                _info = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
             }
             const token = _info.data.token
             const config = {

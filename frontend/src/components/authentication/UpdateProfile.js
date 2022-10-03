@@ -243,8 +243,8 @@ const UpdateProfile = (props) => {
                 position: "bottom",
                 })
             setLoading(false)
-            sessionStorage.removeItem('userInfo')
-            localStorage.removeItem('userInfo')
+            sessionStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
+            localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
             navigate('/auth')
         } catch (err) {
             toast({

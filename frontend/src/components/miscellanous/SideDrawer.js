@@ -13,24 +13,33 @@ const SideDrawer = () => {
   const [offeredServices, setOfferedServices] = React.useState([])
   const [searchRequiredServices, setSearchRequiredServices] = React.useState('')
   const [requiredServices, setRequiredServices] = React.useState([])
-
   const [loading, setLoading] = React.useState(false)
 
   const toast = useToast()
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
+  const CryptoJS = require('crypto-js')
+
+  const decrypt = (data) => {
+    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+    result = result.toString(CryptoJS.enc.Utf8)
+    return result
+  }
 
   let user = null
-  if (localStorage.getItem("userInfo")) {
-    user = JSON.parse(localStorage.getItem("userInfo"))
-  } else {
-    user = JSON.parse(sessionStorage.getItem("userInfo"))
+  let data = null
+  if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+    user = JSON.parse(data)
+  } else if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+    user = JSON.parse(data)
   }
 
   const logoutHandler = () => {
-    sessionStorage.removeItem("userInfo")
-    localStorage.removeItem("userInfo")
+    sessionStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
+    localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
     navigate('/')
   }
 

@@ -21,15 +21,26 @@ const ChatPage = () => {
 
   const [error, setError] = React.useState()
 
+  const CryptoJS = require('crypto-js')
+
+  const decrypt = (data) => {
+    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+    result = result.toString(CryptoJS.enc.Utf8)
+    return result
+  }
+
   useEffect( () => {
+    let data = null
     if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
         setError(401)
       } else {
-        setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+        data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+        setCurrentUser(JSON.parse(data))
       }
     } else {
-      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+      data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      setCurrentUser(JSON.parse(data))
       try {
         setCurrentChat(location.state.user)
       } catch (error) {
