@@ -22,7 +22,7 @@ const SignUp = () => {
     const [address, setAddress] = React.useState();
 
     const [showPass, setShowPass] = React.useState(false);
-    const [confirmpassword, setConfirmpassword] = React.useState();
+    const [confirmpassword, setConfirmpassword] = React.useState(false);
     const [showConfirmPass, setShowConfirmPass] = React.useState(false);
     const [loading, setLoading] = React.useState(false)
 
@@ -72,7 +72,7 @@ const SignUp = () => {
 
     const submitUser = async () => {
       setLoading(true)
-      const data = await axios.get('/list-users')
+      const data = await axios.get('/all-users')
       const users = data.data
       const usernames = users.map(item => item.username)
       const emails = users.map(item => item.email)
@@ -188,7 +188,7 @@ const SignUp = () => {
     
     const submitCorporate = async () => {
       setLoading(true)
-      const data = await axios.get('/list-corporates')
+      const data = await axios.get('/all-users')
       const corporates = data.data
       const names = corporates.map(item => item.name)
       const emails = corporates.map(item => item.email)

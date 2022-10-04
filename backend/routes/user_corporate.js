@@ -12,26 +12,6 @@ function handelError(err,res) {
     return res.status(500).send('Error');
 }
 
-router.route('/list-users').get(async (req,res) => {
-    await User.getUser().find().toArray(
-        async (err,result) => {
-            if (err) handelError(err,res);
-            const _result = await result;
-            res.status(200).json(_result);
-        }
-    )
-})
-
-router.route('/list-corporates').get(async (req,res) => {
-    await Corporate.getCorporates().find().toArray(
-        async (err,result) => {
-            if (err) handelError(err,res);
-            const _result = await result;
-            res.status(200).json(_result);
-        }
-    )
-})
-
 router.route('/get-user-id').get(async (req,res) => {
     const idPost = req.query.idPost;
     await OfferedService.getOfferedServices().findOne({ _id: ObjectID(idPost) }, async (err,result) => {
@@ -74,15 +54,15 @@ router.route('/all-users').get(async (req,res) => {
         async (err,result) => {
             if (err) handelError(err,res);
             const _result_ = await result;
-            _result.push(_result_);
-        }
-    )
-    await User.getUser().find().toArray(
-        async (err,result) => {
-            if (err) handelError(err,res);
-            const _result_= await result;
-            _result.push(_result_);
-            res.status(200).json(_result)
+            _result = _result.concat(_result_);
+            await User.getUser().find().toArray(
+                async (err,result) => {
+                    if (err) handelError(err,res);
+                    const _result_= await result;
+                    _result = _result.concat(_result_);
+                    res.status(200).json(_result)
+                }
+            )
         }
     )
 })

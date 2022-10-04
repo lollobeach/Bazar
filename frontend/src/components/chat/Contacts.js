@@ -1,16 +1,20 @@
 import { Avatar } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import Logo from "../../assets/store.ico";
 
-const Contacts = ( contacts, changeChat, userChat ) => {
+const Contacts = ( { contacts, changeChat } ) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   useEffect( () => {
-    const data =  JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-    );
+    let data = null
+    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      data = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+    } else {
+      data = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+    }
     setCurrentUserName(data.data.username);
     setCurrentUserImage(data.data.pic);
   }, []);
@@ -24,8 +28,12 @@ const Contacts = ( contacts, changeChat, userChat ) => {
     <>
       {currentUserImage && currentUserImage && (
         <Container>
+        <div className="brand">
+            <img src={Logo} alt="logo" />
+            <h3>Bazar</h3>
+          </div>
           <div className="contacts">
-            {/*contacts.map((contact, index) => {
+            {contacts.map((contact, index) => {
               return (
                 <div
                   key={contact._id}
@@ -36,16 +44,18 @@ const Contacts = ( contacts, changeChat, userChat ) => {
                 >
                   <div className="avatar">
                     <img
-                      src={`data:image/svg+xml;base64,${contact.pic}`}
+                      src={contact.pic}
                       alt=""
                     />
                   </div>
                   <div className="username">
-                    <h3>{contact.username}</h3>
+                    {contact.username ? (<h3>{contact.username}</h3>) :
+                      (<h3>{contact.name}</h3>)
+                    }
                   </div>
                 </div>
               );
-            })*/}
+            })}
           </div>
           <div className="current-user">
           <Avatar size={'sm'} cursor='pointer' src={currentUserImage} />

@@ -5,79 +5,92 @@ import { v4 as uuidv4 } from "uuid";
 import ChatInput from "./ChatInput";
 import { sendMessageRoute, recieveMessageRoute } from "../../utils/APIchat";
 import { Avatar } from "@chakra-ui/react";
+import { allUsersRoute } from "../../utils/APIchat";
 
-const ChatContainer = ({currentChat, socket, userChat}) => {
 
-  const user = JSON.parse(localStorage.getItem("userInfo"))
+const ChatContainer = ({currentChat, socket}) => {
+
+  let user = null
+  if (localStorage.getItem("userInfo")) {
+    user = JSON.parse(localStorage.getItem("userInfo"))
+  } else {
+    user = JSON.parse(sessionStorage.getItem("userInfo"))
+  }
 
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [pic, setPic] = useState()
+  const [isFetching, setIsFetching] = useState(false)
 
-  /*useEffect(() => {
-    const getCurrentChat =  () => {
-      console.log(currentChat)
-      if (!currentChat) {
-        currentChat =  JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        );
-      }
-      //lollobeahc
-      console.log("currentChat"+currentChat.data.username)
-      //michelegitto
-      console.log(userChat)
-    };
-    
-    getCurrentChat();
-  }, [currentChat]);*/
-
-
-  useEffect( () => {
-    // /getmsg   
+  /*useEffect( () => {
     async function getMsg(){  
       const config = {
         params: {
-          from: currentChat.data.username,
-          to: userChat,
+          from: user.data.username,
+          to: currentChat,
         },
         headers: {
         "Content-type":"application/json",
-        Authorization: `Bearer ${currentChat.data.token}`
+        Authorization: `Bearer ${user.data.token}`
         },
       } 
       const response = await axios.get(recieveMessageRoute, 
         config
       );
-      console.log(response)
-      console.log(response.data)
       setMessages(response.data);
-      console.log(messages)
     }
     getMsg()
-  }, []);
+  }, [messages])*/
+
+  const fetchMsg = async(url) => {
+    try {
+      const config = {
+        params: {
+          from: user.data.username,
+          to: currentChat,
+        },
+        headers: {
+        "Content-type":"application/json",
+        Authorization: `Bearer ${user.data.token}`
+        },
+      } 
+      const {data} = await axios.get(url, 
+        config
+      );
+      setMessages(await data)
+      setIsFetching(!isFetching)
+      //setIsFetching(false)
+    }catch (error) {
+      console.log(error.response)
+    }
+  }
+
+  useEffect(() => {
+    fetchMsg(recieveMessageRoute)
+  },[isFetching])
+
 
 
   const handleSendMsg =  (msg) => {
     if(socket.current){
       socket.current.emit("send-msg", {
-      to: currentChat.data.id,
-      from: userChat,
+      from: user.data.username,
+      to: currentChat,
       msg,
     });}
     const config = {
       headers: {
       "Content-type":"application/json",
-      "Authorization": `Bearer ${currentChat.data.token}`
+      "Authorization": `Bearer ${user.data.token}`
       },
     } 
-    // /addmsg
-     axios.post(sendMessageRoute, {
-      from: currentChat.data.username,
-      to: userChat,
+    axios.post(sendMessageRoute, {
+      from: user.data.username,
+      to: currentChat,
       message: msg,
     }, config);
     let msgs = { fromSelf: true, message: msg }
-    console.log(messages)
     setMessages(oldMessages => [...oldMessages, msgs])
   }
 
@@ -85,6 +98,8 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
     if (socket.current) {
       socket.current.on("msg-recieve", (msg) => {
         setArrivalMessage({ fromSelf: false, message: msg });
+        setIsFetching(!isFetching)
+        //setIsFetching(true)
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +113,7 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const chats = messages.map((message) => {
+  const chats = messages?.map((message) => {
       return(<div ref={scrollRef} key={uuidv4()}>
         <div
           className={`message ${
@@ -112,13 +127,24 @@ const ChatContainer = ({currentChat, socket, userChat}) => {
       </div>)
   })
 
+  useEffect(() => {
+    let userPic = null
+    axios
+      .get(`${allUsersRoute}`)
+      .then((res) => {
+        const data = res.data
+        userPic = data.filter(data => data.username === currentChat)
+        setPic(userPic[0].picture)
+      });
+  }, [currentChat])
+
   return (
     <Container>
       <div className="chat-header">
         <div className="user-details">
-          <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
+          <Avatar size={'sm'} cursor='pointer' src={pic} />
           <div className="username">
-            <h3>{userChat}</h3>
+            <h3>{currentChat}</h3>
           </div>
         </div>
       </div>

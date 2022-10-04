@@ -16,52 +16,29 @@ const ServiceUserPage = () => {
     const navigate = useNavigate()
     const toast = useToast()
 
-    function fetchInfo() {
-        if (location.state) {
-            const info = JSON.parse(localStorage.getItem('userInfo'))
-            if (info) {
-                if (info.data.name) {
-                    if (info.data.name === location.state.user) setIsOwner(true)
-                } else if (info.data.username) {
-                    if (info.data.username === location.state.user) setIsOwner(true)
-                }
-            }
-            const _post = {
-                id: location.state.id,
-                user: location.state.user,
-                picture: location.state.picture,
-                title: location.state.title,
-                description: location.state.description,
-                place: location.state.place,
-                price: location.state.price,
-                dataRequired: location.state.dataRequired,
-                dataCreation: location.state.dataCreation,
-                lastUpdate: location.state.lastUpdate
-            }
-            setPost(_post)
-        }
-    }
-
     const handleUpdate = () => setUpdate(!update)
 
     const del = async () => {
         setLoading(true)
         try {
-            if (post.dataRequired) {
-                const config = {
-                    params: {
-                        username: post.user,
-                        idPost: post.id
-                    }
+            let _info = null
+            if (localStorage.getItem('userInfo')) {
+                _info = JSON.parse(localStorage.getItem('userInfo'))
+            } else {
+                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+            }
+            const token = _info.data.token
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                params: {
+                    idPost: post.id
                 }
+            }
+            if (post.dataRequired) {
                 await axios.delete('/delete-required-service', config)
             } else {
-                const config = {
-                    params: {
-                        user: post.user,
-                        idPost: post.id
-                    }
-                }
                 await axios.delete('/delete-offered-service', config)
             }
             toast({
@@ -87,8 +64,38 @@ const ServiceUserPage = () => {
     }
 
     React.useEffect(() => {
+        function fetchInfo() {
+            if (location.state) {
+                let info = null
+                if (localStorage.getItem('userInfo')) {
+                    info = JSON.parse(localStorage.getItem('userInfo'))
+                } else {
+                    info = JSON.parse(sessionStorage.getItem('userInfo'))
+                }
+                if (info) {
+                    if (info.data.name) {
+                        if (info.data.name === location.state.user) setIsOwner(true)
+                    } else if (info.data.username) {
+                        if (info.data.username === location.state.user) setIsOwner(true)
+                    }
+                }
+                const _post = {
+                    id: location.state.id,
+                    user: location.state.user,
+                    picture: location.state.picture,
+                    title: location.state.title,
+                    description: location.state.description,
+                    place: location.state.place,
+                    price: location.state.price,
+                    dataRequired: location.state.dataRequired,
+                    dataCreation: location.state.dataCreation,
+                    lastUpdate: location.state.lastUpdate
+                }
+                setPost(_post)
+            }
+        }
         fetchInfo()
-    },[])
+    },[location.state.id])
 
     if(post) {
         if (update) {
@@ -270,7 +277,7 @@ const ServiceUserPage = () => {
                                             <Button
                                             mt='5%'
                                             colorScheme={'blue'}
-                                            width='50%'
+                                            width='60%'
                                             >
                                                 Contact {post.user}
                                             </Button>

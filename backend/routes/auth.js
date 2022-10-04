@@ -17,4 +17,5 @@ module.exports = (app) => {
 
     app.post('/logout', verify.authJwt.verifyToken, controller.signOut)
     app.delete('/delete_account', controller.deleteAccount)
+    app.patch('/update-user', controller.updateAccount)
 }
