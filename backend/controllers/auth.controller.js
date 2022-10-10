@@ -84,13 +84,15 @@ function userPasswordValidation(req,res,user) {
             expiresIn: 172800 // 48 hours
         })
     req.headers.token = token
-    res.status(200).send({
+    res.status(200).send(
+        {
         id: user._id,
         username: user.username,
         plan: user.plan,
         pic: user.picture,
         token
-})}
+        }
+        )}
 
 exports.userSignIn = (req,res) => {
     User.getUser().findOne({ username: req.body.username }, async (err,user) => {

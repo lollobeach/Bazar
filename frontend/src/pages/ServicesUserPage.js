@@ -14,12 +14,23 @@ const ServicesUserPage = () => {
     const [info, setInfo] = React.useState()
     const [error, setError] = React.useState()
 
+    const CryptoJS = require('crypto-js')
+
+    const decrypt = (data) => {
+        let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+        result = result.toString(CryptoJS.enc.Utf8)
+        return result
+    }
+
     async function fetchServices() {
         let _info = null
-        if (localStorage.getItem('userInfo')) {
-            _info = JSON.parse(localStorage.getItem('userInfo'))
+        let data = null
+        if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+            data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            _info = JSON.parse(data)
         } else {
-            _info = JSON.parse(sessionStorage.getItem('userInfo'))
+            data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            _info = JSON.parse(data)
         }
         if (_info) {
             setInfo(_info.data)

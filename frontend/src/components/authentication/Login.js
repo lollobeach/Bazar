@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, FormControl, Input, InputGroup, InputRightElement, VStack, useToast, RadioGroup, Radio, Stack, Checkbox } from '@chakra-ui/react'
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 
@@ -16,6 +16,13 @@ const Login = () => {
 
   const toast = useToast()
   const navigate = useNavigate()
+  const CryptoJS = require('crypto-js')
+
+  const encrypt = (data) => {
+    let encrypted = CryptoJS.AES.encrypt(data, process.env.REACT_APP_SECRET_KEY)
+    encrypted = encrypted.toString()
+    return encrypted
+  }
 
   const handleClick = () => setShow(!show)
 
@@ -79,11 +86,12 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       })
+      const value = encrypt(JSON.stringify(data))
       if (keepAccess) {
-        localStorage.setItem('userInfo', JSON.stringify(data))
-        sessionStorage.setItem('userInfo', JSON.stringify(data))
+        localStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY,value)
+        sessionStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY,value)
       } else {
-        sessionStorage.setItem('userInfo', JSON.stringify(data))
+        sessionStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY,value)
       }
       setLoading(false)
       navigate('/')
@@ -158,11 +166,13 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       })
+      const value = encrypt(JSON.stringify(data))
+      const key = encrypt(process.env.REACT_APP_LOCALHOST_KEY)
       if (keepAccess) {
-        localStorage.setItem('userInfo', JSON.stringify(data))
-        sessionStorage.setItem('userInfo', JSON.stringify(data))
+        localStorage.setItem(key,value)
+        sessionStorage.setItem(key,value)
       } else {
-        sessionStorage.setItem('userInfo', JSON.stringify(data))
+        sessionStorage.setItem(key,value)
       }
       setLoading(false)
       navigate('/')

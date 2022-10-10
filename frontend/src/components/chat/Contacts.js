@@ -8,12 +8,23 @@ const Contacts = ( { contacts, changeChat } ) => {
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
+  const CryptoJS = require('crypto-js')
+
+  const decrypt = (data) => {
+    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+    result = result.toString(CryptoJS.enc.Utf8)
+    return result
+  }
+
   useEffect( () => {
     let data = null
+    let result = null
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      data = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+      result = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      data = JSON.parse(result);
     } else {
-      data = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+      result = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      data = JSON.parse(result);
     }
     setCurrentUserName(data.data.username);
     setCurrentUserImage(data.data.pic);

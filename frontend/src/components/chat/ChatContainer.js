@@ -11,10 +11,10 @@ import { allUsersRoute } from "../../utils/APIchat";
 const ChatContainer = ({currentChat, socket}) => {
 
   let user = null
-  if (localStorage.getItem("userInfo")) {
-    user = JSON.parse(localStorage.getItem("userInfo"))
+  if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    user = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
   } else {
-    user = JSON.parse(sessionStorage.getItem("userInfo"))
+    user = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
   }
 
   const [messages, setMessages] = useState([]);

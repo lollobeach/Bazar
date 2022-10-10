@@ -15,13 +15,23 @@ const MyProfilePage = () => {
     const [update, setUpdate] = React.useState(false)
 
     const navigate = useNavigate()
+    const CryptoJS = require('crypto-js')
+
+    const decrypt = (data) => {
+        let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+        result = result.toString(CryptoJS.enc.Utf8)
+        return result
+    }
 
     async function fetchInfo() {
         let info = null
-        if (localStorage.getItem('userInfo')) {
-            info = JSON.parse(localStorage.getItem('userInfo'))
+        let data = null
+        if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+        data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+        info = JSON.parse(data)
         } else {
-            info = JSON.parse(sessionStorage.getItem('userInfo'))
+        data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+        info = JSON.parse(data)
         }
         if (info) {
             const idUser = info.data.id
@@ -65,8 +75,8 @@ const MyProfilePage = () => {
         }
         setLoading(true)
         await axios.delete('/delete_account', config)
-        localStorage.removeItem('userInfo')
-        sessionStorage.removeItem('userInfo')
+        localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
+        sessionStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
         setLoading(false)
         navigate('/')
     }

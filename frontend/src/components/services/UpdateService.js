@@ -56,12 +56,19 @@ const UpdateService = (props) => {
             }
         }
         try {
+            let _info = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                _info = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            } else {
+                _info = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            }
+            const token = _info.data.token
             const config = {
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 params: {
-                    user:  props.post.user,
                     idPost: props.post.id
                 }
             }

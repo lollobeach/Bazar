@@ -27,12 +27,20 @@ recordRoutesforOfferedServices.route("/listings-offered-services").get(async (re
       });
     })
 
-recordRoutesforOfferedServices.route("/offered-services/").get(async (req,res) => {
-  const title = req.query.search;
+recordRoutesforOfferedServices.route("/offered-services").get(async (req,res) => {
+  const _search = req.query.search;
+  await OfferedService
+    .getOfferedServices()
+    .createIndex({
+      title: "text",
+      place: "text"
+    })
   await OfferedService
     .getOfferedServices()
     .find({
-      title: /title/
+      $text: {
+        $search: _search
+      }
     })
     .toArray(async (err,result) => {
       if (err) handleErr(err,res);
@@ -175,7 +183,7 @@ recordRoutesforOfferedServices.route("/service-offered/:service_id").get(async (
   });
 })
 
-recordRoutesforOfferedServices.route("/update-offered-service").patch(async (req, res) => {
+recordRoutesforOfferedServices.route("/update-offered-service").patch(authJwt.verifyToken, async (req, res) => {
   const idPost = req.query.idPost;
   let newService = {
       $set: {
@@ -187,13 +195,13 @@ recordRoutesforOfferedServices.route("/update-offered-service").patch(async (req
       },
       $currentDate: { lastUpdate: true } 
   }
-  const _user_ = req.query.user;
-  await User.getUser().findOne({ username: _user_ }, async (err,user) => {
+  const idUser = await getId.getId(req);
+  await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
     if (err) handleErr(err,res);
     const _user = await user;
     let services = [];
     if (_user === null) {
-      await Corporate.getCorporates().findOne({ name: _user_ }, async (err,corporates) => {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(idUser) }, async (err,corporates) => {
         if (err) handleErr(err,res);
         const _corporate = await corporates;
         if (_corporate === null) return res.status(404).send('User not found!');
@@ -219,15 +227,15 @@ recordRoutesforOfferedServices.route("/update-offered-service").patch(async (req
   })
 })
 
-recordRoutesforOfferedServices.route('/delete-offered-service').delete(async function(req, res) {
-  const _user_ = req.query.user;
+recordRoutesforOfferedServices.route('/delete-offered-service').delete(authJwt.verifyToken, async function(req, res) {
+  const idUser = await getId.getId(req);
   let idPost = req.query.idPost;
-  await User.getUser().findOne({ username: _user_ }, async (err,user) => {
+  await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
     if (err) handleErr(err,res);
     const _user = await user;
     let services = [];
     if (_user === null) {
-      await Corporate.getCorporates().findOne({ name: _user_ }, async (err,corporate) => {
+      await Corporate.getCorporates().findOne({ _id: ObjectId(idUser) }, async (err,corporate) => {
         if (err) handleErr(err,res);
         const _corporate = await corporate;
         if (_corporate === null) return res.status(404).send('User not found');
