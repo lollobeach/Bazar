@@ -167,12 +167,11 @@ const Login = () => {
         position: "bottom",
       })
       const value = encrypt(JSON.stringify(data))
-      const key = encrypt(process.env.REACT_APP_LOCALHOST_KEY)
       if (keepAccess) {
-        localStorage.setItem(key,value)
-        sessionStorage.setItem(key,value)
+        localStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY,value)
+        sessionStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY,value)
       } else {
-        sessionStorage.setItem(key,value)
+        sessionStorage.setItem(process.env.REACT_APP_LOCALHOST_KEY,value)
       }
       setLoading(false)
       navigate('/')

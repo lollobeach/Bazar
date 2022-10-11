@@ -6,6 +6,7 @@ import axios from 'axios'
 import SearchLoading from './SearchLoading'
 import ListOfferedServices from './ListOfferedServices'
 import ListRequiredServices from './ListRequiredServices'
+import { decrypt } from '../../utils/decrypted_value'
 
 const SideDrawer = () => {
 
@@ -19,13 +20,6 @@ const SideDrawer = () => {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
-  const CryptoJS = require('crypto-js')
-
-  const decrypt = (data) => {
-    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-    result = result.toString(CryptoJS.enc.Utf8)
-    return result
-  }
 
   let user = null
   let data = null
