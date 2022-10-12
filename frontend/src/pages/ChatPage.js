@@ -116,7 +116,7 @@ const ChatPage = () => {
 }
 
 const Container = styled.div`
-  height: 100vh;
+  height: 89.4vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
