@@ -499,7 +499,7 @@ const UpdateProfile = (props) => {
 )
 
     return (
-        <VStack>
+        <VStack top={"100px"} position={'absolute'} >
             {form}
         </VStack>
     )
