@@ -10,11 +10,23 @@ import { allUsersRoute } from "../../utils/APIchat";
 
 const ChatContainer = ({currentChat, socket}) => {
 
+  const CryptoJS = require('crypto-js')
+
+  const decrypt = (data) => {
+    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+    result = result.toString(CryptoJS.enc.Utf8)
+    return result
+  }
+
   let user = null
-  if (localStorage.getItem("userInfo")) {
-    user = JSON.parse(localStorage.getItem("userInfo"))
+  let data = null
+
+  if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+    user = JSON.parse(data)
   } else {
-    user = JSON.parse(sessionStorage.getItem("userInfo"))
+    data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+    user = JSON.parse(data)
   }
 
   const [messages, setMessages] = useState([]);

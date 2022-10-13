@@ -15,6 +15,13 @@ const ServiceUserPage = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const toast = useToast()
+    const CryptoJS = require('crypto-js')
+
+    const decrypt = (data) => {
+        let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+        result = result.toString(CryptoJS.enc.Utf8)
+        return result
+    }
 
     const handleUpdate = () => setUpdate(!update)
 
@@ -22,10 +29,13 @@ const ServiceUserPage = () => {
         setLoading(true)
         try {
             let _info = null
-            if (localStorage.getItem('userInfo')) {
-                _info = JSON.parse(localStorage.getItem('userInfo'))
+            let data = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
             } else {
-                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+                data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
             }
             const token = _info.data.token
             const config = {
@@ -67,10 +77,13 @@ const ServiceUserPage = () => {
         function fetchInfo() {
             if (location.state) {
                 let info = null
-                if (localStorage.getItem('userInfo')) {
-                    info = JSON.parse(localStorage.getItem('userInfo'))
+                let data = null
+                if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                    data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                    info = JSON.parse(data)
                 } else {
-                    info = JSON.parse(sessionStorage.getItem('userInfo'))
+                    data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                    info = JSON.parse(data)
                 }
                 if (info) {
                     if (info.data.name) {

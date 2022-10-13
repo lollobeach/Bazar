@@ -3,19 +3,28 @@ import styled from "styled-components";
 import Robot from "../../assets/robot.gif";
 
 export default function Welcome() {
+
   const [userName, setUserName] = useState("");
+
+  const CryptoJS = require('crypto-js')
+
+  const decrypt = (data) => {
+    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
+    result = result.toString(CryptoJS.enc.Utf8)
+    return result
+  }
+  
   useEffect( () => {
+    let data = null
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
       setUserName(
-        JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        ).username
+        JSON.parse(data).username
       );
     } else {
+      data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
       setUserName(
-        JSON.parse(
-          sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        ).username
+        JSON.parse(data).username
       );
     }
   }, []);
