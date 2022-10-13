@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Box } from '@chakra-ui/react'
+import { Image } from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 
 
 const Services = (props) => {
@@ -11,6 +14,7 @@ const Services = (props) => {
     },[props.services])
 
     const services = posts.map(item => (
+  
         <Link
         to={`/service`}
         key={item._id}
@@ -26,30 +30,65 @@ const Services = (props) => {
             lastUpdate: item.lastUpdate,
             user: item.user
         }}>
-            <div className='serviceCard'>
-            <img src={item.picture} alt='service' className='serviceImage'/>
-                <div className='box'>
-                    <div className='serviceInformations'>
-                        <h2 className='serviceTitle'>{item.title}</h2>
-                        <p>Where: {item.place}</p>
-                        <p>Data creation: {item.dataCreation.split('T')[0]}</p>
-                        {item.dataRequired ? (
-                            <p>Data required: {item.dataRequired.split('T')[0]}</p>
-                        ) : (
-                            <p>Price: {item.price}€</p>
-                        )}
-                    </div>
-                </div>
-            </div>
+          
+    <Box maxW='sm' borderWidth='5px' borderRadius='lg' overflow='hidden' m='15px'>
+      <Image src={item.picture} alt={item.description} borderWidth='5px' />
+
+      <Box p='6'>
+        <Box display='flex' alignItems='baseline'>
+          <Box
+            color='gray.500'
+            fontWeight='semibold'
+            letterSpacing='wide'
+            fontSize='xs'
+            textTransform='uppercase'
+            ml='2'
+          >
+          </Box>
+        </Box>
+
+        <Box
+          mt='1'
+          fontWeight='semibold'
+          as='h4'
+          lineHeight='tight'
+          noOfLines={1}
+        >
+          {item.title}
+        </Box>
+
+        <Box>
+           
+
+          <Box as='span' color='gray.600' fontSize='sm'>
+           
+          </Box>
+          <Box>
+          
+           Data creation: {item.dataCreation.split('T')[0]}
+          </Box>
+          
+          <Box>
+
+          </Box>
+
+        </Box>
+            {item.place}
+        </Box>
+        </Box>
+           
             
         </Link>
+       
 
     ))
     
     return (
+     
     <div>
         {services}
     </div>
+    
     )
 }
 
