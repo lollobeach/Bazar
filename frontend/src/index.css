@@ -14,6 +14,8 @@ body {
   width: 100%;
   min-width:800px;
 }
+
+
 .superContainerUserPage{
   width: 100%;
   min-width:800px;
@@ -42,6 +44,7 @@ body {
 }
 
 .columnsContainer{
+
   column-gap: 10%;
   display: flex;
   flex-direction: row;
@@ -60,16 +63,18 @@ body {
 
 
 .offered-services-column {
-  margin-left:24% ;
+  margin-left:24%;
   margin-top: 5%;
+  
 }
 
 .required-services-column{
-  margin-right: 24%;
+  margin-right: 30%;
   margin-top: 5%;
+  
 }
 
-.offered-services-column>h1{
+.offered-service-title{
   border: 5px solid rgb(0, 0, 0);
   padding: 30px;
   text-align: center;
@@ -78,9 +83,10 @@ body {
   font-size: 30px;
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   border-radius: 30px;
-  margin-right: 40px;
+  width: 100%;
+  
 }
-.required-services-column>h1{
+.required-service-title{
   border: 5px solid rgb(0, 0, 0);
   padding: 30px;
   text-align: center;
@@ -90,12 +96,13 @@ body {
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   border-radius: 30px;
   margin-right: 3px;
+  width: 100%;
 }
 
 .serviceCard{
   margin-top: 50px;
   height: 500px;
-  width: 270px;
+  width: 260px;
   margin-bottom: 15px;
   background-size: cover;
   position: relative;
