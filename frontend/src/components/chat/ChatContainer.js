@@ -80,6 +80,7 @@ const ChatContainer = ({currentChat, socket}) => {
 
   useEffect(() => {
     fetchMsg(recieveMessageRoute)
+    // eslint-disable-next-line
   },[isFetching])
 
 
