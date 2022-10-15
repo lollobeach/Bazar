@@ -11,7 +11,7 @@ Durante la fase di registrazione è libero di scegliere fino a 3 piani:
 Tutti e tre i piani non impongono limiti per l'aggiunta di servizi da richiedere.
 
 #### Azienda
-L'azienda può pubblicare solo i servizi da offrire e non ha limiti
+L'azienda può pubblicare solo i servizi da offrire e non ha limiti.
 ___
 
 L'applicazione permette agli utenti di modificare o eliminare i propri servizi, lo stesso vale per il proprio profilo che, nel caso in cui venisse eliminato vengono automaticamente rimossi tutti i post proprietari dell'utente in questione.
@@ -40,7 +40,9 @@ Tra le altre features troviamo:
 ## Sviluppo
 
 ### Autenticazione
-
+Ovviamente prima di accedere tramite login bisogna registrarsi: in questa operazione bisogna selezionare il tipo di utente da registrare (privato o azienda) per poi proseguire con l'inserimento dei dati. Nel caricare tali dati all'interno del database la password in particolare viene criptata tramite l'utilizzo del pacchetto npm *bcryptjs*.
+Dopo di che si può procedere con l'accesso tramite l'email o l'username (nel caso dell'azienda verrà richiesto il nome invece dell'username) e la password. In fase di autenticazione si può decidere se mantenere l'accesso, anche con la chiusura del browser, salvando i dati sia nel *session storage*, sia nel *local storage* e in caso contrario i dati verranno caricati solo nel *session storage*.
+Il login procede con il rilascio del *Json Web Token* ([JWT](https://jwt.io/)) tramite il quale l'utente può accedere alle varie funzionalità fornite dal sito, come l'aggiunta dei servizi o la messaggistica
 
 ### Chat
 La chat è stata sviluppata utilizzando la libreria [socket.io](socket.io), la quale permette una comunicazione bidirezionale, tra server e client usando il protocollo [websocket](https://en.wikipedia.org/wiki/WebSocket).
