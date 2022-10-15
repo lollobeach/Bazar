@@ -1,27 +1,29 @@
 # Bazar
 
 ## Introduzione
-Bazar è una web application, single page, che permette di pubblicare un servizio che si è disposti ad offrire o che è richiesto da colui che l'ha pubblicato. I servizi possono essere di ogni tipo, dal web developer all'idraulico e due sono i tipi di utente che possono registrarsi:
+Bazar è una web application, single page, che permette di pubblicare un servizio che si è disposti ad offrire o che è richiesto da colui che l'ha pubblicato. I servizi possono essere di ogni tipo, dal web developer all'idraulico e due sono i tipi di utenti che possono registrarsi:
 
 #### Privato
 Durante la fase di registrazione è libero di scegliere fino a 3 piani:
 - free: in questo caso può pubblicare un solo servizio da offrire
 - cheap: può pubblicare fino a 3 servizi da offrire
 - premium: può pubblicare tutti i servizi da offrire che vuole
+
 Tutti e tre i piani non impongono limiti per l'aggiunta di servizi da richiedere.
 
 #### Azienda
-L'azienda può pubblicare solo i servizi da offrire e non ha limiti.
+L'azienda può pubblicare solo i servizi da offrire e non ha limiti su di essi.
 ___
 
 L'applicazione permette agli utenti di modificare o eliminare i propri servizi, lo stesso vale per il proprio profilo che, nel caso in cui venisse eliminato vengono automaticamente rimossi tutti i post proprietari dell'utente in questione.
+
 Tra le altre features troviamo:
 - la possibilità di ricercare un servizio offerto o richiesto digitando il nome del servizio o il luogo in cui viene svolto
 - la possibilità di contattare tramite messaggio gli utenti iscritti a Bazar
 
 ## Tecnologie utilizzate
 - [Express js](https://expressjs.com/): web framework usato per lo sviluppo del backend
-- [MongoDB](https://www.mongodb.com/it-it): database non relazionale per mantenere i dati persistenti
+- [MongoDB Atlas](https://www.mongodb.com/atlas): database non relazionale cloud-based per mantenere i dati persistenti
 - [React](https://it.reactjs.org/): libreria javascript per lo sviluppo del frontend
 
 ## Prerequisiti
@@ -40,13 +42,17 @@ Tra le altre features troviamo:
 ## Sviluppo
 
 ### Autenticazione
-Ovviamente prima di accedere tramite login bisogna registrarsi: in questa operazione bisogna selezionare il tipo di utente da registrare (privato o azienda) per poi proseguire con l'inserimento dei dati. Nel caricare tali dati all'interno del database la password in particolare viene criptata tramite l'utilizzo del pacchetto npm *bcryptjs*.
-Dopo di che si può procedere con l'accesso tramite l'email o l'username (nel caso dell'azienda verrà richiesto il nome invece dell'username) e la password. In fase di autenticazione si può decidere se mantenere l'accesso, anche con la chiusura del browser, salvando i dati sia nel *session storage*, sia nel *local storage* e in caso contrario i dati verranno caricati solo nel *session storage*.
-Il login procede con il rilascio del *Json Web Token* ([JWT](https://jwt.io/)) tramite il quale l'utente può accedere alle varie funzionalità fornite dal sito, come l'aggiunta dei servizi o la messaggistica
+L'autenticazione ha previsto la gestione della registrazione e del login. Nel caso della registrazione ci siamo occupati in particolar modo di garantire il giusto formato degli input da inserire tramite i *regex* e di criptare la password prima di caricarla nel database, questo tramite l'utilizzo del pacchetto npm *bcryptjs*.
+Per il login abbiamo implementato la possibilità di mantenere l'accesso, anche dopo aver chiuso il browser, caricando i dati sia nel *session storage* che nel *local storage*, in caso contrario i dati vengono salvati solo nel *session storage*. Anche i dati inviati vengono criptati, questa volta grazie all'uso del pacchetto npm *crypto-js*.
+Come ultima cosa non poteva mancare il rilascio del *Json Web Token* ([JWT](https://jwt.io/)), previo controllo della correttezza delle credenziali inserite, tramite il quale l'utente può accedere alle varie funzionalità fornite dal sito, come l'aggiunta dei servizi o la messaggistica.
+
+<img src="/assets/images/FBj5z-2308515857.png" height="50%" alt="How JWT works">
 
 ### Chat
 La chat è stata sviluppata utilizzando la libreria [socket.io](socket.io), la quale permette una comunicazione bidirezionale, tra server e client usando il protocollo [websocket](https://en.wikipedia.org/wiki/WebSocket).
+
 ![socket communication!](/assets/images/bidirectional-communication-socket-dark.png "socket communication")
+
 ### Sicurezza
 La web application è stata testata tramite analisi di vulnerabilità a diverse tipologie di attacco. Per un analisi più dettagliata consultare il Vulnerability Assessment.
 - [x] Sql Injection (SQLi)
