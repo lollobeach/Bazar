@@ -5,9 +5,9 @@ Bazar è una web application, single page, che permette di pubblicare un servizi
 
 #### Privato
 Durante la fase di registrazione è libero di scegliere fino a 3 piani:
-- free: in questo caso può pubblicare un solo servizio da offrire
-- cheap: può pubblicare fino a 3 servizi da offrire
-- premium: può pubblicare tutti i servizi da offrire che vuole
+- *free*: in questo caso può pubblicare un solo servizio da offrire
+- *cheap*: può pubblicare fino a 3 servizi da offrire
+- *premium*: può pubblicare tutti i servizi da offrire che vuole
 
 Tutti e tre i piani non impongono limiti per l'aggiunta di servizi da richiedere.
 
