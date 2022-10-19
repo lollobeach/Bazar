@@ -23,5 +23,6 @@ La web application è stata testata tramite analisi di vulnerabilità a diverse 
 - [x] Cross-site Request Forgery (CSRF)
 - [x] Sanitize and render HTML 
 - [x] Broken authentication
+- [x] Brute force prevention
 - [] DDos Protection
 
