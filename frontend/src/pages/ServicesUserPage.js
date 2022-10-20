@@ -5,7 +5,6 @@ import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
 import { Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { Box } from '@chakra-ui/react'
 import { decrypt } from '../utils/decrypted_value'
 
 const ServicesUserPage = () => {

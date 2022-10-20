@@ -27,8 +27,8 @@ module.exports = (app) => {
 
     app.post('/corporate/signup', apiLimiter, verify.verifySignUp.checkDuplicateCorporate, controller.corporateSignUp)
 
-    app.post('/user/login', apiLimiter, bruteForce.prevent, controller.userSignIn)
-    app.post('/corporate/login', apiLimiter, bruteForce.prevent, controller.corporateSignIn)
+    app.post('/user/login', bruteForce.prevent, apiLimiter, controller.userSignIn)
+    app.post('/corporate/login', bruteForce.prevent, apiLimiter, controller.corporateSignIn)
 
     app.post('/logout', apiLimiter, verify.authJwt.verifyToken, controller.signOut)
     app.delete('/delete_account', apiLimiter, controller.deleteAccount)
