@@ -81,7 +81,7 @@ const ServiceUserPage = () => {
                 if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
                     data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
                     info = JSON.parse(data)
-                } else {
+                } else  if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
                     data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
                     info = JSON.parse(data)
                 }

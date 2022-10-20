@@ -24,5 +24,4 @@ La web application è stata testata tramite analisi di vulnerabilità a diverse 
 - [x] Sanitize and render HTML 
 - [x] Broken authentication
 - [x] Brute force prevention
-- [] DDos Protection
-
+- [x] DDos Protection
