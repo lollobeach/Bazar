@@ -117,7 +117,7 @@ const SideDrawer = () => {
 
   return (
     <>
-      <Box backgroundColor="#EDF2F7" px={4} position={'fixed'} w={'100%'} zIndex={'2'} backdropFilter={'10px'} >
+      <Box backgroundColor="#EDF2F7" px={4} position={'fixed'} w={'100%'} zIndex={'2'} backdropFilter={'10px'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
 
           <Tooltip hasArrow placement='bottom-end'>

@@ -26,7 +26,7 @@ const Bazar = () => {
 
     return (
     <div className='superContainer'>
-        <SideDrawer/> 
+        <SideDrawer pos={'fixed'}/> 
         <div className='columnsContainer'>
             <div className='offered-services-column'>
             
