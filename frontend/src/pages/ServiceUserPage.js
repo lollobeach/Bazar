@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Box, Badge, Image, VStack, Button, useToast } from '@chakra-ui/react'
 import UpdateService from '../components/services/UpdateService'
 import axios from 'axios'
+import { decrypt } from '../utils/decrypted_value'
+import ErrorPage from './ErrorPage'
 
 const ServiceUserPage = () => {
 
@@ -11,6 +13,7 @@ const ServiceUserPage = () => {
     const [isOwner, setIsOwner] = React.useState(false)
     const [update, setUpdate] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
+    const [error, setError] = React.useState()
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -22,10 +25,13 @@ const ServiceUserPage = () => {
         setLoading(true)
         try {
             let _info = null
-            if (localStorage.getItem('userInfo')) {
-                _info = JSON.parse(localStorage.getItem('userInfo'))
+            let data = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
             } else {
-                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+                data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
             }
             const token = _info.data.token
             const config = {
@@ -67,10 +73,13 @@ const ServiceUserPage = () => {
         function fetchInfo() {
             if (location.state) {
                 let info = null
-                if (localStorage.getItem('userInfo')) {
-                    info = JSON.parse(localStorage.getItem('userInfo'))
-                } else {
-                    info = JSON.parse(sessionStorage.getItem('userInfo'))
+                let data = null
+                if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                    data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                    info = JSON.parse(data)
+                } else  if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                    data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                    info = JSON.parse(data)
                 }
                 if (info) {
                     if (info.data.name) {
@@ -92,12 +101,22 @@ const ServiceUserPage = () => {
                     lastUpdate: location.state.lastUpdate
                 }
                 setPost(_post)
+            } else {
+                setError(404)
             }
         }
         fetchInfo()
-    },[location.state.id])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
-    if(post) {
+    if(!post) {
+        return (
+            <>
+                <SideDrawer />
+                <ErrorPage error = {error} />
+            </>
+        )
+    } else {
         if (update) {
             return (
                 <div>

@@ -2,6 +2,7 @@ import { Avatar } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../../assets/store.ico";
+import { decrypt } from "../../utils/decrypted_value";
 
 const Contacts = ( { contacts, changeChat } ) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
@@ -10,10 +11,13 @@ const Contacts = ( { contacts, changeChat } ) => {
 
   useEffect( () => {
     let data = null
+    let result = null
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      data = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+      result = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      data = JSON.parse(result);
     } else {
-      data = JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+      result = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      data = JSON.parse(result);
     }
     setCurrentUserName(data.data.username);
     setCurrentUserImage(data.data.pic);

@@ -98,6 +98,19 @@ const SignUp = () => {
         setLoading(false)
         return
       }
+      const date = new Date().getTime()
+      const birth = new Date(birthDate).getTime()
+      if (birth > date) {
+        toast({
+            title: "Birthdate is not valid",
+            status: "warning",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+        })
+        setLoading(false)
+        return
+      }
       if(!name || !lastName || !birthDate || !username || !email || !password || !confirmpassword || !plan){
         toast({
           title: "Please fill all the fields",
@@ -122,7 +135,7 @@ const SignUp = () => {
       }
       if (!validPassword.test(password)) {
         toast({
-          title: "Password format not correct, is required - minimum length 6 characters:\n - at least 1 capital character\n - at least 1 lower character\n - at least 11 number\n - at least 1 special character ",
+          title: "Password format not correct, is required - minimum length 6 characters:\n - at least 1 capital character\n - at least 1 lower character\n - at least 1 number\n - at least 1 special character ",
           status: "warning",
           duration: 5000,
           isClosable: true,
@@ -270,17 +283,17 @@ const SignUp = () => {
         setLoading(false)
         return
       }
-      if (!validName.test(name)) {
-        toast({
-          title: "Name format not correct",
-          status: "warning",
-          duration: 5000,
-          isClosable: true,
-          position: "bottom"
-        })
-        setLoading(false)
-        return
-      }
+      // if (!validName.test(name)) {
+      //   toast({
+      //     title: "Name format not correct",
+      //     status: "warning",
+      //     duration: 5000,
+      //     isClosable: true,
+      //     position: "bottom"
+      //   })
+      //   setLoading(false)
+      //   return
+      // }
       if(password !== confirmpassword){
         toast({
           title: "Password do not match",

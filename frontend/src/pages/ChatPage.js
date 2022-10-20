@@ -9,6 +9,7 @@ import Welcome from "../components/chat/Welcome";
 import ChatContainer from '../components/chat/ChatContainer'
 import SideDrawer from "../components/miscellanous/SideDrawer";
 import ErrorPage from './ErrorPage'
+import { decrypt } from "../utils/decrypted_value";
 
 
 const ChatPage = () => {
@@ -22,14 +23,17 @@ const ChatPage = () => {
   const [error, setError] = React.useState()
 
   useEffect( () => {
+    let data = null
     if (!sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
         setError(401)
       } else {
-        setCurrentUser(JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+        data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+        setCurrentUser(JSON.parse(data))
       }
     } else {
-      setCurrentUser(JSON.parse(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)))
+      data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      setCurrentUser(JSON.parse(data))
       try {
         setCurrentChat(location.state.user)
       } catch (error) {
@@ -105,7 +109,7 @@ const ChatPage = () => {
 }
 
 const Container = styled.div`
-  height: 100vh;
+  height: 89.4vh;
   width: 100vw;
   display: flex;
   flex-direction: column;

@@ -5,6 +5,7 @@ import { VStack, Box, Badge, Button, Avatar } from '@chakra-ui/react'
 import ErrorPage from './ErrorPage'
 import { useNavigate } from 'react-router-dom'
 import UpdateProfile from '../components/authentication/UpdateProfile'
+import { decrypt } from '../utils/decrypted_value'
 
 const MyProfilePage = () => {
 
@@ -15,40 +16,6 @@ const MyProfilePage = () => {
     const [update, setUpdate] = React.useState(false)
 
     const navigate = useNavigate()
-
-    async function fetchInfo() {
-        let info = null
-        if (localStorage.getItem('userInfo')) {
-            info = JSON.parse(localStorage.getItem('userInfo'))
-        } else {
-            info = JSON.parse(sessionStorage.getItem('userInfo'))
-        }
-        if (info) {
-            const idUser = info.data.id
-            const config = {
-                params: { idUser: idUser }
-            }
-            const user = await axios.get('/get-user', config)
-            if (user) {             
-                    setUser({
-                        idUser: user.data._id,
-                        email: user.data.email,
-                        password: user.data.password,
-                        picture: user.data.picture,
-                        username: user.data.username,
-                        name: user.data.name,
-                        lastName: user.data.lastName,
-                        birthDate: user.data.birthDate,
-                        plan:user.data.plan,
-                        residence: user.data.countryOfResidence,
-                        address: user.data.address,
-                        iva: user.data.iva
-                    })
-            }
-        } else {
-            setError(401)
-        }
-    }
 
     const handleUpdate = () => setUpdate(!update)
 
@@ -65,13 +32,49 @@ const MyProfilePage = () => {
         }
         setLoading(true)
         await axios.delete('/delete_account', config)
-        localStorage.removeItem('userInfo')
-        sessionStorage.removeItem('userInfo')
+        localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
+        sessionStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
         setLoading(false)
         navigate('/')
     }
 
     React.useEffect(() => {
+        async function fetchInfo() {
+            let info = null
+            let data = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+            data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            info = JSON.parse(data)
+            } else if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+            data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            info = JSON.parse(data)
+            } else {
+                setError(401)
+            }
+            if (info) {
+                const idUser = info.data.id
+                const config = {
+                    params: { idUser: idUser }
+                }
+                const user = await axios.get('/get-user', config)
+                if (user) {             
+                        setUser({
+                            idUser: user.data._id,
+                            email: user.data.email,
+                            password: user.data.password,
+                            picture: user.data.picture,
+                            username: user.data.username,
+                            name: user.data.name,
+                            lastName: user.data.lastName,
+                            birthDate: user.data.birthDate,
+                            plan:user.data.plan,
+                            residence: user.data.countryOfResidence,
+                            address: user.data.address,
+                            iva: user.data.iva
+                        })
+                }
+            }
+        }
         fetchInfo()
     },[])
     

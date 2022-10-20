@@ -6,6 +6,7 @@ import axios from 'axios'
 import SearchLoading from './SearchLoading'
 import ListOfferedServices from './ListOfferedServices'
 import ListRequiredServices from './ListRequiredServices'
+import { decrypt } from '../../utils/decrypted_value'
 
 const SideDrawer = () => {
 
@@ -13,7 +14,6 @@ const SideDrawer = () => {
   const [offeredServices, setOfferedServices] = React.useState([])
   const [searchRequiredServices, setSearchRequiredServices] = React.useState('')
   const [requiredServices, setRequiredServices] = React.useState([])
-
   const [loading, setLoading] = React.useState(false)
 
   const toast = useToast()
@@ -22,15 +22,18 @@ const SideDrawer = () => {
   const btnRef = React.useRef()
 
   let user = null
-  if (localStorage.getItem("userInfo")) {
-    user = JSON.parse(localStorage.getItem("userInfo"))
-  } else {
-    user = JSON.parse(sessionStorage.getItem("userInfo"))
+  let data = null
+  if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+    user = JSON.parse(data)
+  } else if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+    user = JSON.parse(data)
   }
 
   const logoutHandler = () => {
-    sessionStorage.removeItem("userInfo")
-    localStorage.removeItem("userInfo")
+    sessionStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
+    localStorage.removeItem(process.env.REACT_APP_LOCALHOST_KEY)
     navigate('/')
   }
 

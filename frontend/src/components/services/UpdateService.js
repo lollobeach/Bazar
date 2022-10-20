@@ -2,6 +2,7 @@ import React from 'react'
 import { useToast, NumberInput, InputGroup, InputRightAddon, NumberInputField, Textarea, Image, Input, Button, VStack, Box, Badge } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { decrypt } from '../../utils/decrypted_value'
 
 const UpdateService = (props) => {
 
@@ -57,10 +58,13 @@ const UpdateService = (props) => {
         }
         try {
             let _info = null
-            if (localStorage.getItem('userInfo')) {
-                _info = JSON.parse(localStorage.getItem('userInfo'))
+            let data = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
             } else {
-                _info = JSON.parse(sessionStorage.getItem('userInfo'))
+                data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
             }
             const token = _info.data.token
             const config = {
