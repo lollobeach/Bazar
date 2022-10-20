@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Box, Badge, Image, VStack, Button, useToast } from '@chakra-ui/react'
 import UpdateService from '../components/services/UpdateService'
 import axios from 'axios'
+import { decrypt } from '../utils/decrypted_value'
+import ErrorPage from './ErrorPage'
 
 const ServiceUserPage = () => {
 
@@ -11,17 +13,11 @@ const ServiceUserPage = () => {
     const [isOwner, setIsOwner] = React.useState(false)
     const [update, setUpdate] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
+    const [error, setError] = React.useState()
 
     const location = useLocation()
     const navigate = useNavigate()
     const toast = useToast()
-    const CryptoJS = require('crypto-js')
-
-    const decrypt = (data) => {
-        let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-        result = result.toString(CryptoJS.enc.Utf8)
-        return result
-    }
 
     const handleUpdate = () => setUpdate(!update)
 
@@ -105,12 +101,22 @@ const ServiceUserPage = () => {
                     lastUpdate: location.state.lastUpdate
                 }
                 setPost(_post)
+            } else {
+                setError(404)
             }
         }
         fetchInfo()
-    },[location.state.id])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
-    if(post) {
+    if(!post) {
+        return (
+            <>
+                <SideDrawer />
+                <ErrorPage error = {error} />
+            </>
+        )
+    } else {
         if (update) {
             return (
                 <div>

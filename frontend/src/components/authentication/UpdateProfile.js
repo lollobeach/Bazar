@@ -103,9 +103,9 @@ const UpdateProfile = (props) => {
                     setLoading(false)
                     return
                 }
+                user.username = newUsername
+                setUser({...user})
             }
-            user.username = newUsername
-            setUser({...user})
             if (newCorporateName) {
                 const corporatesName = users.map(item => item.name)
                 if (corporatesName.includes(newCorporateName)) {
@@ -116,6 +116,8 @@ const UpdateProfile = (props) => {
                         isClosable: true,
                         position: "bottom",
                     })
+                    setLoading(false)
+                    return
                 }
                 user.name = newCorporateName
                 setUser({...user})
@@ -174,6 +176,20 @@ const UpdateProfile = (props) => {
             setUser({...user})
         }
         if (newIva) {
+            const data = await axios.get('/all-users')
+            const corporates = data.data
+            const ivas = corporates.map(item => item.iva)
+            if (ivas.includes(newIva)) {
+                toast({
+                    title: "IVA is already in use",
+                    status: "warning",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                })
+                setLoading(false)
+                return
+            }
             const validIva = new RegExp('^[A-Z]{2}[0-9]{11}$')
             if (!validIva.test(newIva)) {
                 toast({

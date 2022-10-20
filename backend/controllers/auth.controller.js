@@ -80,9 +80,8 @@ function userPasswordValidation(req,res,user) {
     if (!passwordIsValid) return res.status(401).send('Invalid password!')
     let token = jwt.sign(
         { id: user._id }, 
-        config.secret, {
-            expiresIn: 172800 // 48 hours
-        })
+        config.secret,
+        { expiresIn: 172800 }) // 48 hours
     req.headers.token = token
     res.status(200).send(
         {

@@ -9,6 +9,7 @@ import Welcome from "../components/chat/Welcome";
 import ChatContainer from '../components/chat/ChatContainer'
 import SideDrawer from "../components/miscellanous/SideDrawer";
 import ErrorPage from './ErrorPage'
+import { decrypt } from "../utils/decrypted_value";
 
 
 const ChatPage = () => {
@@ -20,14 +21,6 @@ const ChatPage = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   const [error, setError] = React.useState()
-
-  const CryptoJS = require('crypto-js')
-
-  const decrypt = (data) => {
-    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-    result = result.toString(CryptoJS.enc.Utf8)
-    return result
-  }
 
   useEffect( () => {
     let data = null

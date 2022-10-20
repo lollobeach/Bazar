@@ -1,6 +1,11 @@
 const rateLimit = require('express-rate-limit')
+const ExpressBrute = require('express-brute')
+
 const verify = require ('../middlewares/middleware_auth/modules')
 const controller = require('../controllers/auth.controller')
+
+const store = new ExpressBrute.MemoryStore()
+const bruteForce = new ExpressBrute(store)
 
 module.exports = (app) => {
     
@@ -22,8 +27,8 @@ module.exports = (app) => {
 
     app.post('/corporate/signup', apiLimiter, verify.verifySignUp.checkDuplicateCorporate, controller.corporateSignUp)
 
-    app.post('/user/login', apiLimiter, controller.userSignIn)
-    app.post('/corporate/login', apiLimiter, controller.corporateSignIn)
+    app.post('/user/login', bruteForce.prevent, apiLimiter, controller.userSignIn)
+    app.post('/corporate/login', bruteForce.prevent, apiLimiter, controller.corporateSignIn)
 
     app.post('/logout', apiLimiter, verify.authJwt.verifyToken, controller.signOut)
     app.delete('/delete_account', apiLimiter, controller.deleteAccount)

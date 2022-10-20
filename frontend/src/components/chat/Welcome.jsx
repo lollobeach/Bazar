@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Robot from "../../assets/robot.gif";
+import { decrypt } from "../../utils/decrypted_value";
 
 export default function Welcome() {
 
   const [userName, setUserName] = useState("");
-
-  const CryptoJS = require('crypto-js')
-
-  const decrypt = (data) => {
-    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-    result = result.toString(CryptoJS.enc.Utf8)
-    return result
-  }
   
   useEffect( () => {
     let data = null

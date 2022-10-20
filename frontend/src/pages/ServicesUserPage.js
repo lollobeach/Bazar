@@ -5,7 +5,7 @@ import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
 import { Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { Box } from '@chakra-ui/react'
+import { decrypt } from '../utils/decrypted_value'
 
 const ServicesUserPage = () => {
 
@@ -15,53 +15,43 @@ const ServicesUserPage = () => {
     const [info, setInfo] = React.useState()
     const [error, setError] = React.useState()
 
-    const CryptoJS = require('crypto-js')
-
-    const decrypt = (data) => {
-        let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-        result = result.toString(CryptoJS.enc.Utf8)
-        return result
-    }
-
-    async function fetchServices() {
-        let _info = null
-        let data = null
-        if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-            data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
-            _info = JSON.parse(data)
-        } else {
-            data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
-            _info = JSON.parse(data)
-        }
-        if (_info) {
-            setInfo(_info.data)
-            if (_info.data.username) {
-                const token = _info.data.token
-                const _offeredServices = await axios.get('/listings-offered-services-user',
-                { headers: {
-                    Authorization: `Bearer ${token}`
-                }})           
-                const _requiredServices = await axios.get('/listings-required-services-user',
-                { headers: {
-                    Authorization: `Bearer ${token}`
-                }})
-                setOfferedServices(_offeredServices.data) 
-                setRequiredServices(_requiredServices.data)
-            } else if (_info.data.name) {
-                const token = _info.data.token
-                const _offeredServices = await axios.get('/listings-offered-services-user',
-                { headers: {
-                    Authorization: `Bearer ${token}`
-                }})
-                setCorporateServices(_offeredServices.data)
+    React.useEffect(() => {
+        async function fetchServices() {
+            let _info = null
+            let data = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
+            } else if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+                _info = JSON.parse(data)
+            } else {
+                setError(401)
+            }
+            if (_info) {
+                setInfo(_info.data)
+                if (_info.data.username) {
+                    const token = _info.data.token
+                    const _offeredServices = await axios.get('/listings-offered-services-user',
+                    { headers: {
+                        Authorization: `Bearer ${token}`
+                    }})           
+                    const _requiredServices = await axios.get('/listings-required-services-user',
+                    { headers: {
+                        Authorization: `Bearer ${token}`
+                    }})
+                    setOfferedServices(_offeredServices.data) 
+                    setRequiredServices(_requiredServices.data)
+                } else if (_info.data.name) {
+                    const token = _info.data.token
+                    const _offeredServices = await axios.get('/listings-offered-services-user',
+                    { headers: {
+                        Authorization: `Bearer ${token}`
+                    }})
+                    setCorporateServices(_offeredServices.data)
+                }
             }
         }
-        else {
-            setError(401)
-        }
-    }
-
-    React.useEffect(() => {
         fetchServices()
     },[])
 
