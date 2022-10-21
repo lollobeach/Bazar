@@ -4,15 +4,23 @@ const OfferedService = require('../models/offered.service');
 const RequiredService = require('../models/required.service');
 const express = require('express');
 const { ObjectID } = require('bson');
+const rateLimit = require('express-rate-limit')
 
 const router = express.Router();
+
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
 
 function handelError(err,res) {
     console.log(err);
     return res.status(500).send('Error');
 }
 
-router.route('/get-user-id').get(async (req,res) => {
+router.route('/get-user-id').get(apiLimiter, async (req,res) => {
     const idPost = req.query.idPost;
     await OfferedService.getOfferedServices().findOne({ _id: ObjectID(idPost) }, async (err,result) => {
         if (err) handelError(err,res);
@@ -48,7 +56,7 @@ router.route('/get-user-id').get(async (req,res) => {
     })
 })
     
-router.route('/all-users').get(async (req,res) => {
+router.route('/all-users').get(apiLimiter, async (req,res) => {
     let _result = [];
     await Corporate.getCorporates().find().toArray(
         async (err,result) => {
@@ -67,7 +75,7 @@ router.route('/all-users').get(async (req,res) => {
     )
 })
 
-router.route('/get-user').get(async (req,res) => {
+router.route('/get-user').get(apiLimiter, async (req,res) => {
     const idUser = req.query.idUser;
     await User.getUser().findOne({ _id: ObjectID(idUser) }, async (err,result) => {
         if (err) handelError(err,res);

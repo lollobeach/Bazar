@@ -3,7 +3,7 @@ import axios from 'axios'
 import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
-import { Button } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { decrypt } from '../utils/decrypted_value'
 
@@ -66,6 +66,7 @@ const ServicesUserPage = () => {
         return (
             <div className='superContainerUserPage'> 
                 <SideDrawer/>
+                <Box pt={'64px'}>
                 { !corporateServices ? (
                     <Link 
                     to='/add-service'
@@ -96,6 +97,7 @@ const ServicesUserPage = () => {
                         </Button>
                     </Link>
                 )}
+                </Box>
                 {corporateServices ? (
                 <div className='superContainer'>
                     <div className='container-corp-service'>

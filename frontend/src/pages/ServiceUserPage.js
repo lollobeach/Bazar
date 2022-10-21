@@ -128,7 +128,7 @@ const ServiceUserPage = () => {
             return (
                 <div>
                     <SideDrawer/>
-                    <VStack>
+                    <VStack pt={'64px'}>
                         <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
                             <Image height='500px' w='50%' src={post.picture} alt='hi' />
                             <Box w='50%'>
