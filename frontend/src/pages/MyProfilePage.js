@@ -98,7 +98,7 @@ const MyProfilePage = () => {
         return (
             <div>
                 <SideDrawer/>
-                <VStack>
+                <VStack pt={'64px'}>
                     <Box borderRadius='lg' w='50%' borderWidth='5px'>
                     <Avatar mt='1%' size='2xl' src={user.picture} />
                         <Box>
