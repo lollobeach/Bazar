@@ -3,7 +3,9 @@ import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import axios from 'axios'
 import { Box } from '@chakra-ui/react'
-
+import { Container } from '@chakra-ui/react'
+import {  VStack, HStack,StackDivider } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 const Bazar = () => {
 
     const [offeredServices, setOfferedServices] = React.useState([])
@@ -25,26 +27,41 @@ const Bazar = () => {
     },[])
 
     return (
-    <div className='superContainer'>
+    <>
         <SideDrawer/> 
-        <div className='columnsContainer'>
-            <div className='offered-services-column'>
-            
+
+        <Flex>
+          
+           
+            <Container pt='20' >
+           
+
+            <VStack spacing ='50px' w='70%' marginLeft='30%'>
             <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                 <h1>Offered Services</h1>    
             </Box>
             <Services services={offeredServices}/>
-              
-            </div>
-            <div className='required-services-column'>
+            </VStack>
+
+           
+            </Container>
+           
+            <Container pt='20'>
+            
+            
+            <VStack spacing ='50px' w='70%' marginLeft='15%'>
                <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                 <h1>Required Services</h1>
                 </Box>
                 
                 <Services services={requiredServices} />
-            </div>
-        </div>
-    </div>
+                </VStack>
+            
+            </Container> 
+            
+            </Flex>
+        </>
+   
     )
 }
 

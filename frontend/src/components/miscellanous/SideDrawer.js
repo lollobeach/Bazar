@@ -207,7 +207,7 @@ const SideDrawer = () => {
             </DrawerContent>
           </Drawer>
           <Link to="/">
-            <Text as='button' fontSize={"5xl"} fontFamily="Work sans">
+            <Text as='button' fontSize={"5xl"} fontFamily="Work sans" >
               Bazar
             </Text>
           </Link>

@@ -5,6 +5,7 @@ import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
 import { Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
+import { VStack } from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
 
 const ServicesUserPage = () => {
@@ -110,27 +111,37 @@ const ServicesUserPage = () => {
                 <div className='superContainer'>
                     <div className='container-corp-service'>
                         <div className='offered-services-column-corporate'>
+                        <div>
                             <h1>Offered Services</h1>
                             <Services services={corporateServices} />
                         </div>
                     </div>
-                </div>
+               </div>
+               </div>
                 ) : (
                 <div className='superContainer'>
-                    <div className='containerUserPage'>
-                        <div className='offered-services-column'>
+                  <div className='containerUserPage'>
+                       <div className='offered-services-column'>
+                    
+                    <div>
                             <h1>Offered Services</h1>
                             <Services services={offeredServices} />
                     </div>
                     <div className='required-services-column'>
+                    <div>
                         <h1>Required Services</h1>
                         <Services services={requiredServices} />
                     </div>
                     </div>
-                </div>
+                    </div>
+                    </div>
+                    </div>                    
+                
                 )}
             </div>
+            
         )
+        
     }
 }
 
