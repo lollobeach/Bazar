@@ -6,6 +6,7 @@ import UpdateService from '../components/services/UpdateService'
 import axios from 'axios'
 import { decrypt } from '../utils/decrypted_value'
 import ErrorPage from './ErrorPage'
+import Footer from '../components/miscellanous/Footer'
 
 const ServiceUserPage = () => {
 
@@ -128,7 +129,7 @@ const ServiceUserPage = () => {
             return (
                 <div>
                     <SideDrawer/>
-                    <VStack pt={'64px'}>
+                    <VStack pt={'64px'} h="93.3vh">
                         <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
                             <Image height='500px' w='50%' src={post.picture} alt='hi' />
                             <Box w='50%'>
@@ -306,6 +307,7 @@ const ServiceUserPage = () => {
                             </Box>
                         </Box>
                     </VStack>
+                    <Footer />
                 </div>
             )
         }

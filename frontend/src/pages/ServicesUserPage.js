@@ -6,6 +6,7 @@ import ErrorPage from './ErrorPage'
 import { Box, Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { decrypt } from '../utils/decrypted_value'
+import Footer from '../components/miscellanous/Footer'
 
 const ServicesUserPage = () => {
 
@@ -121,6 +122,7 @@ const ServicesUserPage = () => {
                     </div>
                 </div>
                 )}
+                <Footer />
             </div>
         )
     }
