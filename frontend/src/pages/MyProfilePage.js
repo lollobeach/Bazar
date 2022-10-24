@@ -6,6 +6,7 @@ import ErrorPage from './ErrorPage'
 import { useNavigate } from 'react-router-dom'
 import UpdateProfile from '../components/authentication/UpdateProfile'
 import { decrypt } from '../utils/decrypted_value'
+import Footer from '../components/miscellanous/Footer'
 
 const MyProfilePage = () => {
 
@@ -98,7 +99,7 @@ const MyProfilePage = () => {
         return (
             <div>
                 <SideDrawer/>
-                <VStack pt={'64px'}>
+                <VStack pt={'64px'} h="93.3vh">
                     <Box borderRadius='lg' w='50%' borderWidth='5px'>
                     <Avatar mt='1%' size='2xl' src={user.picture} />
                         <Box>
@@ -284,6 +285,7 @@ const MyProfilePage = () => {
                         </Box>
                     </Box>
                 </VStack>
+                <Footer />
             </div>
         )
     }
