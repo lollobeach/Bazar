@@ -99,6 +99,7 @@ const MyProfilePage = () => {
         return (
             <div>
                 <SideDrawer/>
+
                 <VStack pt={'64px'} h="93.3vh">
                     <Box borderRadius='lg' w='50%' borderWidth='5px'>
                     <Avatar mt='1%' size='2xl' src={user.picture} />
@@ -284,6 +285,7 @@ const MyProfilePage = () => {
                             </Button>
                         </Box>
                     </Box>
+                    
                 </VStack>
                 <Footer />
             </div>
