@@ -1,11 +1,14 @@
 import React from 'react'
 import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
+import Footer from '../components/miscellanous/Footer'
 import axios from 'axios'
 import { Box } from '@chakra-ui/react'
+import Home from '../components/miscellanous/Home'
 import { Container } from '@chakra-ui/react'
 import {  VStack, HStack,StackDivider } from '@chakra-ui/react'
 import { Flex } from '@chakra-ui/react'
+
 const Bazar = () => {
 
     const [offeredServices, setOfferedServices] = React.useState([])
@@ -29,7 +32,7 @@ const Bazar = () => {
     return (
     <>
         <SideDrawer/> 
-
+        <Home />
         <Flex>
           
            

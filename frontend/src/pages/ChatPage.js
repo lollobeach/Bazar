@@ -9,6 +9,8 @@ import Welcome from "../components/chat/Welcome";
 import ChatContainer from '../components/chat/ChatContainer'
 import SideDrawer from "../components/miscellanous/SideDrawer";
 import ErrorPage from './ErrorPage'
+import { decrypt } from "../utils/decrypted_value";
+import Footer from "../components/miscellanous/Footer";
 
 
 const ChatPage = () => {
@@ -20,14 +22,6 @@ const ChatPage = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   const [error, setError] = React.useState()
-
-  const CryptoJS = require('crypto-js')
-
-  const decrypt = (data) => {
-    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-    result = result.toString(CryptoJS.enc.Utf8)
-    return result
-  }
 
   useEffect( () => {
     let data = null
@@ -109,6 +103,7 @@ const ChatPage = () => {
             )}
           </div>
         </Container>
+        <Footer />
       </>
     )
   }
@@ -116,7 +111,7 @@ const ChatPage = () => {
 }
 
 const Container = styled.div`
-  height: 89.4vh;
+  height: 93.3vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -124,6 +119,7 @@ const Container = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #131324;
+  padding-top: 64px;
   .container {
     height: 85vh;
     width: 85vw;

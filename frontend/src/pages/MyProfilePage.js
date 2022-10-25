@@ -5,6 +5,8 @@ import { VStack, Box, Badge, Button, Avatar } from '@chakra-ui/react'
 import ErrorPage from './ErrorPage'
 import { useNavigate } from 'react-router-dom'
 import UpdateProfile from '../components/authentication/UpdateProfile'
+import { decrypt } from '../utils/decrypted_value'
+import Footer from '../components/miscellanous/Footer'
 
 const MyProfilePage = () => {
 
@@ -15,50 +17,6 @@ const MyProfilePage = () => {
     const [update, setUpdate] = React.useState(false)
 
     const navigate = useNavigate()
-    const CryptoJS = require('crypto-js')
-
-    const decrypt = (data) => {
-        let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-        result = result.toString(CryptoJS.enc.Utf8)
-        return result
-    }
-
-    async function fetchInfo() {
-        let info = null
-        let data = null
-        if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-        data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
-        info = JSON.parse(data)
-        } else {
-        data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
-        info = JSON.parse(data)
-        }
-        if (info) {
-            const idUser = info.data.id
-            const config = {
-                params: { idUser: idUser }
-            }
-            const user = await axios.get('/get-user', config)
-            if (user) {             
-                    setUser({
-                        idUser: user.data._id,
-                        email: user.data.email,
-                        password: user.data.password,
-                        picture: user.data.picture,
-                        username: user.data.username,
-                        name: user.data.name,
-                        lastName: user.data.lastName,
-                        birthDate: user.data.birthDate,
-                        plan:user.data.plan,
-                        residence: user.data.countryOfResidence,
-                        address: user.data.address,
-                        iva: user.data.iva
-                    })
-            }
-        } else {
-            setError(401)
-        }
-    }
 
     const handleUpdate = () => setUpdate(!update)
 
@@ -82,6 +40,42 @@ const MyProfilePage = () => {
     }
 
     React.useEffect(() => {
+        async function fetchInfo() {
+            let info = null
+            let data = null
+            if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+            data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            info = JSON.parse(data)
+            } else if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+            data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+            info = JSON.parse(data)
+            } else {
+                setError(401)
+            }
+            if (info) {
+                const idUser = info.data.id
+                const config = {
+                    params: { idUser: idUser }
+                }
+                const user = await axios.get('/get-user', config)
+                if (user) {             
+                        setUser({
+                            idUser: user.data._id,
+                            email: user.data.email,
+                            password: user.data.password,
+                            picture: user.data.picture,
+                            username: user.data.username,
+                            name: user.data.name,
+                            lastName: user.data.lastName,
+                            birthDate: user.data.birthDate,
+                            plan:user.data.plan,
+                            residence: user.data.countryOfResidence,
+                            address: user.data.address,
+                            iva: user.data.iva
+                        })
+                }
+            }
+        }
         fetchInfo()
     },[])
     
@@ -105,8 +99,8 @@ const MyProfilePage = () => {
         return (
             <div>
                 <SideDrawer/>
-                <VStack pt='90px'>
-                    
+
+                <VStack pt={'64px'} h="93.3vh">
                     <Box borderRadius='lg' w='50%' borderWidth='5px'>
                     <Avatar mt='1%' size='2xl' src={user.picture} />
                         <Box>
@@ -293,6 +287,7 @@ const MyProfilePage = () => {
                     </Box>
                     
                 </VStack>
+                <Footer />
             </div>
         )
     }

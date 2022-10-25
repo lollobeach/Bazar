@@ -4,8 +4,17 @@ const getId = require('../config/getId');
 const User = require('../models/user.model');
 const Corporate = require('../models/corporate.model');
 const express = require("express");
+const rateLimit = require('express-rate-limit')
+
 
 const recordRoutesforOfferedServices = express.Router();
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
 
 const ObjectId = require("mongodb").ObjectId;
 
@@ -14,7 +23,7 @@ function handleErr (err,res) {
   return res.status(500).send('Error');
 }
 
-recordRoutesforOfferedServices.route("/listings-offered-services").get(async (req, res) => {
+recordRoutesforOfferedServices.route("/listings-offered-services").get(apiLimiter, async (req, res) => {
   await OfferedService
       .getOfferedServices()
       .find()
@@ -27,7 +36,7 @@ recordRoutesforOfferedServices.route("/listings-offered-services").get(async (re
       });
     })
 
-recordRoutesforOfferedServices.route("/offered-services").get(async (req,res) => {
+recordRoutesforOfferedServices.route("/offered-services").get(apiLimiter, async (req,res) => {
   const _search = req.query.search;
   await OfferedService
     .getOfferedServices()
@@ -51,35 +60,7 @@ recordRoutesforOfferedServices.route("/offered-services").get(async (req,res) =>
     })
 })
 
-/*recordRoutesforOfferedServices.route("/listings-offered-services-user").get(authJwt.verifyToken, async (req,res) => {
-  const id = await getId.getId(req);
-  await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
-    if (err) handleErr(err,res);
-    const us = await user;
-    let idServices = [];
-    if (us === null) {
-      await Corporate.getCorporates().findOne({ _id: ObjectId(id) }, async (err,corporate) => {
-        if (err) handleErr(err,res);
-        const _corp = await corporate;
-        if (_corp === null) return res.status(404).send('User not found');
-        idServices = await _corp.offeredServices;    
-        OfferedService.getOfferedServices().find({ _id: { $in: idServices } }).toArray(async (err,result) => {
-          if (err) handleErr(err,res);
-          const _result = await result;
-          res.status(200).send(_result);
-        })
-      })
-    } else {
-      idServices = await us.offeredServices;    
-      OfferedService.getOfferedServices().find({ _id: { $in: idServices } }).toArray(async (err,result) => {
-        if (err) handleErr(err,res);
-        const _result = await result;
-        res.status(200).send(_result);
-      })
-    }
-  })
-})*/
-recordRoutesforOfferedServices.route("/listings-offered-services-user").get(authJwt.verifyToken, async (req,res) => {
+recordRoutesforOfferedServices.route("/listings-offered-services-user").get(authJwt.verifyToken, apiLimiter, async (req,res) => {
   const id = await getId.getId(req);
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
     if (err) handleErr(err,res);
@@ -110,7 +91,7 @@ recordRoutesforOfferedServices.route("/listings-offered-services-user").get(auth
 
 
 
-recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verifyToken, async (req, res) => {
+recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verifyToken, apiLimiter, async (req, res) => {
   const id = await getId.getId(req);
 
   await User.getUser().findOne({ _id: ObjectId(id) }, async (err,user) => {
@@ -171,7 +152,7 @@ recordRoutesforOfferedServices.route("/add-offered-service").post(authJwt.verify
   })
 })
 
-recordRoutesforOfferedServices.route("/service-offered/:service_id").get(async (req, res) => {
+recordRoutesforOfferedServices.route("/service-offered/:service_id").get(apiLimiter, async (req, res) => {
   let query = req.params.service_id;
   await OfferedService
   .getOfferedServices()
@@ -183,7 +164,7 @@ recordRoutesforOfferedServices.route("/service-offered/:service_id").get(async (
   });
 })
 
-recordRoutesforOfferedServices.route("/update-offered-service").patch(authJwt.verifyToken, async (req, res) => {
+recordRoutesforOfferedServices.route("/update-offered-service").patch(authJwt.verifyToken, apiLimiter, async (req, res) => {
   const idPost = req.query.idPost;
   let newService = {
       $set: {
@@ -227,7 +208,7 @@ recordRoutesforOfferedServices.route("/update-offered-service").patch(authJwt.ve
   })
 })
 
-recordRoutesforOfferedServices.route('/delete-offered-service').delete(authJwt.verifyToken, async function(req, res) {
+recordRoutesforOfferedServices.route('/delete-offered-service').delete(authJwt.verifyToken, apiLimiter, async function(req, res) {
   const idUser = await getId.getId(req);
   let idPost = req.query.idPost;
   await User.getUser().findOne({ _id: ObjectId(idUser) }, async (err,user) => {
@@ -240,7 +221,6 @@ recordRoutesforOfferedServices.route('/delete-offered-service').delete(authJwt.v
         const _corporate = await corporate;
         if (_corporate === null) return res.status(404).send('User not found');
         services = await _corporate.offeredServices.map(x => x.toString());
-        console.log(services)
         if (!services.includes(idPost)) return res.status(404).send('Post not found!');
         await OfferedService.getOfferedServices().deleteOne({ _id: ObjectId(idPost) }, async (err,result) => {
           if (err) handleErr(err,res);

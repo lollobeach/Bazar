@@ -2,19 +2,12 @@ import { Avatar } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../../assets/store.ico";
+import { decrypt } from "../../utils/decrypted_value";
 
 const Contacts = ( { contacts, changeChat } ) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-
-  const CryptoJS = require('crypto-js')
-
-  const decrypt = (data) => {
-    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-    result = result.toString(CryptoJS.enc.Utf8)
-    return result
-  }
 
   useEffect( () => {
     let data = null

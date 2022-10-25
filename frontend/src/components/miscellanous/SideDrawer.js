@@ -4,6 +4,7 @@ import axios from 'axios'
 import SearchLoading from './SearchLoading'
 import ListOfferedServices from './ListOfferedServices'
 import ListRequiredServices from './ListRequiredServices'
+import { decrypt } from '../../utils/decrypted_value'
 
 import {
   Box,
@@ -35,13 +36,6 @@ const SideDrawer = () => {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
-  const CryptoJS = require('crypto-js')
-
-  const decrypt = (data) => {
-    let result = CryptoJS.AES.decrypt(data, process.env.REACT_APP_SECRET_KEY)
-    result = result.toString(CryptoJS.enc.Utf8)
-    return result
-  }
 
   let user = null
   let data = null
@@ -123,7 +117,7 @@ const SideDrawer = () => {
 
   return (
     <>
-      <Box backgroundColor="#EDF2F7" px={4} position={'fixed'} w={'100%'} zIndex={'2'} backdropFilter={'10px'} >
+      <Box backgroundColor="#EDF2F7" px={4} position={'fixed'} w={'100%'} zIndex={'2'} backdropFilter={'10px'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
 
           <Tooltip hasArrow placement='bottom-end'>
