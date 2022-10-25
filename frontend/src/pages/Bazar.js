@@ -63,6 +63,7 @@ const Bazar = () => {
             </Container> 
             
             </Flex>
+            <Footer />
         </>
    
     )
