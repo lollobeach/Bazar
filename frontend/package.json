@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
+    "decrypt": "0.0.1",
     "emoji-picker-react": "^3.6.2",
     "framer-motion": "^7.3.2",
     "react": "^18.2.0",
