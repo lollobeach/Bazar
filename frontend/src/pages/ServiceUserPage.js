@@ -1,7 +1,7 @@
 import React from 'react'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Box, Badge, Image, VStack, Button, useToast, Flex, Text } from '@chakra-ui/react'
+import { Box, Badge, Image, VStack, Button, useToast, Text } from '@chakra-ui/react'
 import UpdateService from '../components/services/UpdateService'
 import axios from 'axios'
 import { decrypt } from '../utils/decrypted_value'
