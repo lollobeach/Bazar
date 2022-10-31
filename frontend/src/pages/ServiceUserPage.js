@@ -1,7 +1,7 @@
 import React from 'react'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Box, Badge, Image, VStack, Button, useToast } from '@chakra-ui/react'
+import { Box, Badge, Image, VStack, Button, useToast, Text } from '@chakra-ui/react'
 import UpdateService from '../components/services/UpdateService'
 import axios from 'axios'
 import { decrypt } from '../utils/decrypted_value'
@@ -78,7 +78,7 @@ const ServiceUserPage = () => {
                 if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
                     data = decrypt(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
                     info = JSON.parse(data)
-                } else  if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+                } else if (sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
                     data = decrypt(sessionStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
                     info = JSON.parse(data)
                 }
@@ -132,10 +132,12 @@ const ServiceUserPage = () => {
                     <VStack pt={'64px'} h="93.3vh">
                         <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
                             <Image height='500px' w='50%' src={post.picture} alt='hi' />
-                            <Box w='50%'>
+                            <Box w='50%' mt='5%'>
                                 <Box alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Badge borderRadius='full' width='55%'  colorScheme='teal'>
+                                        <Text fontSize='80%'>
                                         Title
+                                        </Text>
                                     </Badge>
                                     <Box
                                         color='gray.500'
@@ -144,13 +146,16 @@ const ServiceUserPage = () => {
                                         fontSize='xs'
                                         textTransform='uppercase'
                                         ml='2'
+                                        p='1%'
                                     >
                                         {post.title}
                                     </Box>
                                 </Box>
-                                <Box alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                <Box alignItems='baseline' minW='30'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                        <Text fontSize='80%'>
                                         Description
+                                        </Text>
                                     </Badge>
                                     <Box
                                         color='gray.500'
@@ -158,13 +163,16 @@ const ServiceUserPage = () => {
                                         letterSpacing='wide'
                                         fontSize='xs'
                                         ml='2'
+                                        p='1%'
                                     >
                                         {post.description}
                                     </Box>
                                 </Box>
-                                <Box alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                <Box alignItems='baseline'minW='30'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                        <Text fontSize='80%'>
                                         Place
+                                        </Text>
                                     </Badge>
                                     <Box
                                         color='gray.500'
@@ -172,14 +180,17 @@ const ServiceUserPage = () => {
                                         letterSpacing='wide'
                                         fontSize='xs'
                                         ml='2'
+                                        p='1%'
                                     >
                                         {post.place}
                                     </Box>
                                 </Box>
                                 {post.dataRequired ? (
-                                    <Box alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Box alignItems='baseline'minW='30'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                            <Text fontSize='80%'>
                                             Data Required
+                                            </Text>
                                         </Badge>
                                         <Box
                                             color='gray.500'
@@ -187,14 +198,17 @@ const ServiceUserPage = () => {
                                             letterSpacing='wide'
                                             fontSize='xs'
                                             ml='2'
+                                            p='1%'
                                         >
                                             {post.dataRequired.split('T')[0]}
                                         </Box>
                                     </Box>
                                 ) : (
-                                    <Box alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Box alignItems='baseline'minW ='30'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                            <Text fontSize='80%'>
                                             Price
+                                            </Text>
                                         </Badge>
                                         <Box
                                             color='gray.500'
@@ -203,14 +217,17 @@ const ServiceUserPage = () => {
                                             fontSize='xs'
                                             textTransform='uppercase'
                                             ml='2'
+                                            p='1%'
                                         >
                                             {post.price}€
                                         </Box>
                                     </Box>
                                 )}
-                                <Box alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                <Box alignItems='baseline'minW='30'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                        <Text fontSize='80%'>
                                         Data Creation
+                                        </Text>
                                     </Badge>
                                     <Box
                                         color='gray.500'
@@ -219,14 +236,21 @@ const ServiceUserPage = () => {
                                         fontSize='xs'
                                         textTransform='uppercase'
                                         ml='2'
+                                        p='1%'
                                     >
                                         {post.dataCreation.split('T')[0]}
                                     </Box>
                                 </Box>
-                                <Box alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
-                                        Last Update
+                                <Box alignItems='baseline'minW='30'>
+                                    
+                                    
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                       <Text fontSize='80%' letterSpacing='wide' > 
+                                      Last Update
+                                      </Text>
+                                        
                                     </Badge>
+                                    
                                     <Box
                                         color='gray.500'
                                         fontWeight='semibold'
@@ -234,15 +258,20 @@ const ServiceUserPage = () => {
                                         fontSize='xs'
                                         textTransform='uppercase'
                                         ml='2'
+                                        p='1%'
+
                                     >
                                         {post.lastUpdate.split('T')[0]}
                                     </Box>
+                                    
                                 </Box>
                                 {isOwner ? (
                                     <Box>
-                                        <Box alignItems='baseline'>
-                                            <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Box alignItems='baseline'minW='30'>
+                                            <Badge borderRadius='full'width='max-content' colorScheme='teal'>
+                                                <Text fontSize='80%'>
                                                 Post ID
+                                                </Text>
                                             </Badge>
                                             <Box
                                                 color='gray.500'
@@ -251,6 +280,7 @@ const ServiceUserPage = () => {
                                                 fontSize='xs'
                                                 textTransform='uppercase'
                                                 ml='2'
+                                                p='1%'
                                             >
                                                 {post.id}
                                             </Box>
@@ -275,9 +305,11 @@ const ServiceUserPage = () => {
                                     </Box>
                                 ) : (
                                     <Box>
-                                        <Box alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Box alignItems='baseline' minW='30'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
+                                            <Text fontSize='80%'>
                                             User
+                                            </Text>
                                         </Badge>
                                         <Box
                                             color='gray.500'
@@ -286,6 +318,7 @@ const ServiceUserPage = () => {
                                             fontSize='xs'
                                             textTransform='uppercase'
                                             ml='2'
+                                            p='1%'
                                         >
                                             {post.user}
                                         </Box>
@@ -297,15 +330,18 @@ const ServiceUserPage = () => {
                                             <Button
                                             mt='5%'
                                             colorScheme={'blue'}
-                                            width='60%'
+                                            width='100%'
                                             >
+                                                <Text d={{base:'none'}} px= "4">
                                                 Contact {post.user}
+                                                </Text>
                                             </Button>
                                         </Link>
                                     </Box>
                                 )}
                             </Box>
                         </Box>
+                        
                     </VStack>
                     <Footer />
                 </div>

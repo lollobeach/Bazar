@@ -5,6 +5,9 @@ import Footer from '../components/miscellanous/Footer'
 import axios from 'axios'
 import { Box } from '@chakra-ui/react'
 import Home from '../components/miscellanous/Home'
+import { Container } from '@chakra-ui/react'
+import {  VStack } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
 const Bazar = () => {
 
@@ -28,29 +31,41 @@ const Bazar = () => {
 
     return (
     <>
-        <div className='superContainer'>
-            <SideDrawer pos={'fixed'}/> 
-            <Home />
-            <div className='columnsContainer'>
-                <div className='offered-services-column'>
-                
-                <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
-                    <h1>Offered Services</h1>    
+        <SideDrawer/> 
+        <Home />
+        <Flex>
+          
+           
+            <Container pt='20' >
+           
+
+            <VStack spacing ='50px' w='70%' marginLeft='30%'>
+            <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
+                <h1>Offered Services</h1>    
+            </Box>
+            <Services services={offeredServices}/>
+            </VStack>
+
+           
+            </Container>
+           
+            <Container pt='20'>
+            
+            
+            <VStack spacing ='50px' w='70%' marginLeft='15%'>
+               <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
+                <h1>Required Services</h1>
                 </Box>
-                <Services services={offeredServices}/>
                 
-                </div>
-                <div className='required-services-column'>
-                <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
-                    <h1>Required Services</h1>
-                    </Box>
-                    
-                    <Services services={requiredServices} />
-                </div>
-            </div>
-        </div>
-        <Footer />
+                <Services services={requiredServices} />
+                </VStack>
+            
+            </Container> 
+            
+            </Flex>
+            <Footer />
         </>
+   
     )
 }
 

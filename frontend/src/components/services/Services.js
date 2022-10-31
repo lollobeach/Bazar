@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Box } from '@chakra-ui/react'
 import { Image } from '@chakra-ui/react'
-import { VStack } from '@chakra-ui/react'
+
 
 
 const Services = (props) => {
@@ -32,7 +32,7 @@ const Services = (props) => {
         }}>
           
     <Box maxW='sm' borderWidth='5px' borderRadius='lg' overflow='hidden' m='15px'>
-      <Image src={item.picture} alt={item.description} borderWidth='5px' />
+      <Image src={item.picture} alt={item.description} borderWidth='5px' minH='299.85' minW='299.85'/>
 
       <Box p='6'>
         <Box display='flex' alignItems='baseline'>

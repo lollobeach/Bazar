@@ -10,7 +10,6 @@ import {
   Box,
   Flex,
   Avatar,
-  IconButton,
   Button,
   Menu,
   MenuButton,
@@ -22,7 +21,7 @@ import {
   Text,
   Drawer, DrawerBody, Input, Tab, TabPanel, Tabs, TabList, TabPanels, DrawerContent, DrawerOverlay, DrawerCloseButton, Tooltip,
 } from '@chakra-ui/react';
-import { ChevronDownIcon, HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const SideDrawer = () => {
 
@@ -201,7 +200,7 @@ const SideDrawer = () => {
             </DrawerContent>
           </Drawer>
           <Link to="/">
-            <Text as='button' fontSize={"5xl"} fontFamily="Work sans">
+            <Text as='button' fontSize={"5xl"} fontFamily="Work sans" >
               Bazar
             </Text>
           </Link>
