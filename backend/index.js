@@ -1,4 +1,5 @@
 const express = require('express');
+const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const mongoose = require("mongoose");
 const path = require('path')
@@ -20,7 +21,11 @@ let expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 ora
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(cors());
 app.use(express.json());
-app.use(helmet())
+app.use(helmet());
+app.use(function (req, res, next) {
+  res.removeHeader("X-Powered-By");
+  next();
+});
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   name: 'sessionId',
