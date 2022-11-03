@@ -31,8 +31,8 @@ const Services = (props) => {
             user: item.user
         }}>
           
-    <Box maxW='sm' borderWidth='5px' borderRadius='lg' overflow='hidden' m='15px'>
-      <Image src={item.picture} alt={item.description} borderWidth='5px' minH='299.85' minW='299.85'/>
+    <Box maxW='sm' borderWidth='5px' borderRadius='lg' overflow='hidden' m='15px' minW='166.28'>
+      <Image src={item.picture} alt={item.description} borderWidth='5px' h='299.85'/>
 
       <Box p='6'>
         <Box display='flex' alignItems='baseline'>

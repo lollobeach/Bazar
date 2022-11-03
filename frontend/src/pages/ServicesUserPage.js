@@ -3,7 +3,7 @@ import axios from 'axios'
 import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, VStack, Container, Flex } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { decrypt } from '../utils/decrypted_value'
 import Footer from '../components/miscellanous/Footer'
@@ -65,7 +65,7 @@ const ServicesUserPage = () => {
         )
     } else {
         return (
-            <div className='superContainerUserPage'> 
+            <>
                 <SideDrawer/>
                 <Box pt={'64px'}>
                 { !corporateServices ? (
@@ -80,6 +80,7 @@ const ServicesUserPage = () => {
                         mt='2%'
                         colorScheme={"blue"}
                         width="20%"
+                        marginLeft='5%'
                         >
                             Add Service
                         </Button>
@@ -93,6 +94,7 @@ const ServicesUserPage = () => {
                         mt='2%'
                         colorScheme={"blue"}
                         width="20%"
+                        marginLeft='5%'
                         >
                             Add Service
                         </Button>
@@ -104,34 +106,43 @@ const ServicesUserPage = () => {
                     <div className='container-corp-service'>
                         <div className='offered-services-column-corporate'>
                         <div>
+                            <Box  bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                             <h1>Offered Services</h1>
+                            </Box>
+
                             <Services services={corporateServices} />
                         </div>
                     </div>
                </div>
                </div>
                 ) : (
-                <div className='superContainer'>
-                  <div className='containerUserPage'>
-                       <div className='offered-services-column'>
-                    
-                    <div>
+                <>
+                <Flex>
+                    <Container pt='20' >
+                    <VStack spacing ='50px' w='70%' marginLeft='30%'>
+                    <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                             <h1>Offered Services</h1>
+                            </Box>
                             <Services services={offeredServices} />
-                    </div>
-                    <div className='required-services-column'>
-                    <div>
+                    </VStack>
+                    </Container>
+                    
+                    <Container pt='20' >
+
+                    <VStack spacing ='50px' w='70%' marginLeft='15%'>
+                        <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'> 
                         <h1>Required Services</h1>
+                        </Box>
+                  
                         <Services services={requiredServices} />
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                    </div>                    
-                
+                        </VStack>
+                     </Container>
+                     </Flex>
+                     </>
+                   
                 )}
                 <Footer />
-            </div>
+            </>
             
         )
         
