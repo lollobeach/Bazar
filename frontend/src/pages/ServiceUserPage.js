@@ -268,7 +268,7 @@ const ServiceUserPage = () => {
                                 {isOwner ? (
                                     <Box>
                                         <Box alignItems='baseline'minW='30'>
-                                            <Badge borderRadius='full'width='max-content' colorScheme='teal'>
+                                            <Badge borderRadius='full'width='55%' colorScheme='teal'>
                                                 <Text fontSize='80%'>
                                                 Post ID
                                                 </Text>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import Services from '../components/services/Services'
 import SideDrawer from '../components/miscellanous/SideDrawer'
 import ErrorPage from './ErrorPage'
-import { Box, Button, VStack, Container, Flex } from '@chakra-ui/react'
+import { Box, Button, VStack, Container, Flex, Text } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { decrypt } from '../utils/decrypted_value'
 import Footer from '../components/miscellanous/Footer'
@@ -76,45 +76,58 @@ const ServicesUserPage = () => {
                         info: info
                     }}
                     >
+                    
                         <Button
                         mt='2%'
                         colorScheme={"blue"}
-                        width="20%"
+                        width='300px'
                         marginLeft='5%'
+                        
                         >
                             Add Service
                         </Button>
                     </Link>
                 ) : (
+                    <Container>
+                        <VStack spacing ='50px' w='70%' marginLeft='21%'>
                     <Link 
                     to='/add-service'
                     state= {{ info: info}}
                     >
+                   
+
                         <Button
+                        variant={'solid'}
                         mt='2%'
                         colorScheme={"blue"}
-                        width="20%"
+                        width="100%"
                         marginLeft='5%'
                         >
+                            <Text d={{base:"none"}} px="4">
                             Add Service
+                            </Text>
                         </Button>
+                        
                     </Link>
+                    </VStack>
+                    </Container>
                 )}
                 </Box>
                 {corporateServices ? (
-                <div className='superContainer'>
-                    <div className='container-corp-service'>
-                        <div className='offered-services-column-corporate'>
-                        <div>
+                
+                <>
+                 <Flex>
+                    <Container pt='20' >
+                    <VStack spacing ='50px' w='70%' marginLeft='23%'>
                             <Box  bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                             <h1>Offered Services</h1>
                             </Box>
 
                             <Services services={corporateServices} />
-                        </div>
-                    </div>
-               </div>
-               </div>
+                            </VStack>
+                    </Container>
+                  </Flex>
+               </>
                 ) : (
                 <>
                 <Flex>
