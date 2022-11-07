@@ -100,12 +100,12 @@ const MyProfilePage = () => {
             <div>
                 <SideDrawer/>
 
-                <VStack pt={'64px'} h="93.3vh">
+                <VStack pt={'64px'} h="93.3vh" ml='4%'>
                     <Box borderRadius='lg' w='50%' borderWidth='5px'>
                     <Avatar mt='1%' size='2xl' src={user.picture} />
                         <Box>
                             <Box mt='2%' alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                     ID
                                 </Badge>
                                 <Box
@@ -119,7 +119,7 @@ const MyProfilePage = () => {
                                 </Box>
                             </Box>
                             <Box mt='2%' alignItems='baseline'>
-                                <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                     Email
                                 </Badge>
                                 <Box
@@ -135,7 +135,7 @@ const MyProfilePage = () => {
                             {user.username ? (
                                 <Box>
                                     <Box mt='2%' alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Badge borderRadius='full'width='55%' colorScheme='teal'>
                                             Username
                                         </Badge>
                                         <Box
@@ -149,7 +149,7 @@ const MyProfilePage = () => {
                                         </Box>
                                     </Box>
                                 <Box mt='2%' alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                         Name
                                     </Badge>
                                     <Box
@@ -163,7 +163,7 @@ const MyProfilePage = () => {
                                     </Box>
                                 </Box>
                                 <Box mt='2%' alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                         Lastname
                                     </Badge>
                                     <Box
@@ -177,7 +177,7 @@ const MyProfilePage = () => {
                                     </Box>
                                 </Box>
                                 <Box mt='2%' alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                         Brithdate
                                     </Badge>
                                     <Box
@@ -191,7 +191,7 @@ const MyProfilePage = () => {
                                     </Box>
                                 </Box>
                                 <Box mt='2%' alignItems='baseline'>
-                                    <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                    <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                         Plan
                                     </Badge>
                                     <Box
@@ -208,7 +208,7 @@ const MyProfilePage = () => {
                             ) : (
                                 <Box>
                                     <Box mt='2%' alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                             Corporate name
                                         </Badge>
                                         <Box
@@ -223,7 +223,7 @@ const MyProfilePage = () => {
                                     </Box>
                                     </Box>
                                     <Box mt='2%' alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                             Residence
                                         </Badge>
                                         <Box
@@ -237,7 +237,7 @@ const MyProfilePage = () => {
                                         </Box>
                                     </Box>
                                     <Box mt='2%' alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                             Address
                                         </Badge>
                                         <Box
@@ -251,7 +251,7 @@ const MyProfilePage = () => {
                                         </Box>
                                     </Box>
                                     <Box mt='2%' alignItems='baseline'>
-                                        <Badge borderRadius='full' px='10' colorScheme='teal'>
+                                        <Badge borderRadius='full' width='55%' colorScheme='teal'>
                                             IVA
                                         </Badge>
                                         <Box
@@ -285,9 +285,10 @@ const MyProfilePage = () => {
                             </Button>
                         </Box>
                     </Box>
-                    
+                  
                 </VStack>
-                <Footer />
+              <Footer /> 
+                
             </div>
         )
     }

@@ -91,6 +91,7 @@ const AddServices = () => {
           <Box            
             w="100%"
             m="40px 0 15px 0"
+            pt='100px'
             >
             <AddOfferedService info={location.state.info} />
           </Box>
