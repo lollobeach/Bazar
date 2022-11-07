@@ -85,15 +85,17 @@ const MyProfilePage = () => {
             <div style={{ width: '100%' }}>
                 <SideDrawer />
                 <ErrorPage error={error} />
+                <Footer />
             </div>
         )
     } else {
         if (update) {
             return (
-                <div>
+                <>
                     <SideDrawer />
-                    <UpdateProfile user={user} />
-                </div>
+                    <UpdateProfile user={user}/>
+                    <Footer />
+                </>
             )
         }
         return (

@@ -276,15 +276,15 @@ const UpdateProfile = (props) => {
     }
 
     const form = (
-        <Box borderRadius='lg' w='50%' borderWidth='5px'>
+        <Box borderRadius='lg' w='50%' borderWidth='5px' >
             <Avatar mt='1%' size='2xl' src={user.picture} />
-            <Box w='100%'>
+            <Box w='100%' >
                 <Box mt='2%'>
                         <Badge borderRadius='full' px='10' colorScheme='teal'>
                             Upload your picture
                         </Badge>
                         <Input
-                        mt='2%'
+                        mt='1%'
                         type={'file'}
                         p={1.5}
                         accept='image/*'
@@ -296,7 +296,7 @@ const UpdateProfile = (props) => {
                         Email
                     </Badge>
                         <Input
-                        mt='2%'
+                        mt='1%'
                         ml='15%'
                         placeholder={user.email}
                         color='gray.500'
@@ -314,7 +314,7 @@ const UpdateProfile = (props) => {
                     <InputGroup>
                         <Input
                         placeholder='new password'
-                        mt='2%'
+                        mt='1%'
                         ml='15%'
                         color='gray.500'
                         fontWeight='semibold'
@@ -338,7 +338,7 @@ const UpdateProfile = (props) => {
                     <InputGroup>
                         <Input
                         placeholder='confirm new password'
-                        mt='2%'
+                        mt='1%'
                         ml='15%'
                         color='gray.500'
                         fontWeight='semibold'
@@ -369,7 +369,7 @@ const UpdateProfile = (props) => {
                             fontSize='xs'
                             w='70%'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewName(e.target.value)}
                             />
                         </Box>
@@ -385,7 +385,7 @@ const UpdateProfile = (props) => {
                             w='70%'
                             fontSize='xs'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewLastName(e.target.value)}
                             />
                         </Box>
@@ -401,7 +401,7 @@ const UpdateProfile = (props) => {
                             w='70%'
                             fontSize='xs'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewUsername(e.target.value)}
                             />
                         </Box>
@@ -417,7 +417,7 @@ const UpdateProfile = (props) => {
                             w='70%'
                             fontSize='xs'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewBirthDate(e.target.value)}
                             />
                         </Box>
@@ -436,7 +436,7 @@ const UpdateProfile = (props) => {
                                 fontSize='xs'
                                 w='70%'
                                 ml='15%'
-                                mt='2%'
+                                mt='1%'
                                 onChange={(e) => setNewCorporateName(e.target.value)}
                             />
                         </Box>
@@ -452,7 +452,7 @@ const UpdateProfile = (props) => {
                             w='70%'
                             fontSize='xs'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewResidence(e.target.value)}
                             />
                         </Box>
@@ -468,7 +468,7 @@ const UpdateProfile = (props) => {
                             w='70%'
                             fontSize='xs'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewAddress(e.target.value)}
                             />
                         </Box>
@@ -484,7 +484,7 @@ const UpdateProfile = (props) => {
                             w='70%'
                             fontSize='xs'
                             ml='15%'
-                            mt='2%'
+                            mt='1%'
                             onChange={(e) => setNewIva(e.target.value)}
                             />
                         </Box>
@@ -515,7 +515,7 @@ const UpdateProfile = (props) => {
 )
 
     return (
-        <VStack top={"100px"} position={'absolute'} >
+        <VStack pt={'64px'} h="93.3vh" ml="4%" overflowY={"auto"}>
             {form}
         </VStack>
     )
