@@ -29,10 +29,6 @@ const Login = () => {
   const handleAccess = () => setKeepAccess(!keepAccess)
 
   const submitUser = async () => {
-    const data = await axios.get('/all-users')
-    const users = data.data
-    const usernames = users.map(item => item.username)
-    const emails = users.map(item => item.email)
     if(!username || !password){
       toast({
         title: "Please fill all the fields",
@@ -43,20 +39,6 @@ const Login = () => {
       })
       setLoading(false)
       return
-    }
-    if(!usernames.includes(username)) {
-      if(!emails.includes(username)){
-        toast({
-          title: "Email or username does not belong to an account",
-          description: "Please verify your username or your email and try again",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-          position: "bottom",
-        })
-        setLoading(false)
-        return
-      }
     }
     try {
       const config = {
@@ -109,10 +91,6 @@ const Login = () => {
   }
 
   const submitCorporate = async () => {
-    const data = await axios.get('/all-users')
-    const corporates = data.data
-    const names = corporates.map(item => item.name)
-    const emails = corporates.map(item => item.email)
     if(!name || !password){
       toast({
         title: "Please fill all the fields",
@@ -123,20 +101,6 @@ const Login = () => {
       })
       setLoading(false)
       return
-    }
-    if(!names.includes(name)) {
-      if(!emails.includes(name)){
-        toast({
-          title: "Email or name does not belong to an account",
-          description: "Please verify your name or your email and try again",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-          position: "bottom",
-        })
-        setLoading(false)
-        return
-      }
     }
     try {
       const config = {

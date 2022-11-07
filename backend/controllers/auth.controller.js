@@ -77,7 +77,7 @@ function userPasswordValidation(req,res,user) {
         req.body.password,
         user.password
         )
-    if (!passwordIsValid) return res.status(401).send('Invalid password!')
+    if (!passwordIsValid) return res.status(401).send('Incorrect credentials!')
     let token = jwt.sign(
         { id: user._id }, 
         config.secret,
@@ -102,10 +102,10 @@ exports.userSignIn = (req,res) => {
                 User.getUser().findOne({ email: req.body.email}, async (err, email) => {
                     if (err) handleError(err,res)
                     const _email = await email
-                    if (!_email) return res.status(404).send('Email not found!')
+                    if (!_email) return res.status(404).send('Incorrect credentials!')
                     userPasswordValidation(req,res,_email)
                 })
-            } else return res.status(404).send('User not found!')
+            } else return res.status(404).send('Incorrect credentials!')
         } else userPasswordValidation(req,res,_user)
     })
 }
@@ -115,7 +115,7 @@ function corporatePasswordValidation(req,res,corporate) {
         req.body.password,
         corporate.password
         )
-    if (!passwordIsValid) return res.status(401).send('Invalid password!');
+    if (!passwordIsValid) return res.status(401).send('Incorrect credentials!');
     let token = jwt.sign(
         { id: corporate._id }, 
         config.secret, {
@@ -139,10 +139,10 @@ exports.corporateSignIn = (req,res) => {
                 Corporate.getCorporates().findOne({ email: req.body.email}, async (err, email) => {
                     if (err) handleError(err,res)
                     const _email = await email
-                    if (!_email) return res.status(404).send('Email not found!')
+                    if (!_email) return res.status(404).send('Incorrect credentials!')
                     corporatePasswordValidation(req,res,_email)
                 })
-            } else return res.status(404).send('User not found!')
+            } else return res.status(404).send('Incorrect credentials!')
         } else corporatePasswordValidation(req,res,_user)
     })
 }

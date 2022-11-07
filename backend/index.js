@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
-
+const path = require('path')
 const cors = require("cors");
 
 let bodyParser = require('body-parser')
@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 let expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 ora
 
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(cors());
 app.use(express.json());
 app.use(helmet())
@@ -73,16 +74,13 @@ io.on("connection", (socket) => {
 app.get('/', (req,res) => {
   res.json('Welcome to Bazar web site!')
 })
-
 require('./routes/auth')(app)
-
 app.use(require("./routes/Offered_Services"));
 app.use(require("./routes/Required_Services"));
-
 app.use(require("./routes/Unauthorised"))
-
 app.use(require("./routes/user_corporate"))
-
-//inizio codice modulare chat
 app.use(require("./routes/chats"));
-//app.use(require("./routes/message"));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../frontend/build', 'index.html'));
+})

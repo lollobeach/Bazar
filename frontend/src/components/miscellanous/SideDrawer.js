@@ -1,12 +1,27 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip, useDisclosure, useToast} from '@chakra-ui/react'
-import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import axios from 'axios'
 import SearchLoading from './SearchLoading'
 import ListOfferedServices from './ListOfferedServices'
 import ListRequiredServices from './ListRequiredServices'
 import { decrypt } from '../../utils/decrypted_value'
+
+import {
+  Box,
+  Flex,
+  Avatar,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  useDisclosure,
+  useToast,
+  Text,
+  Drawer, DrawerBody, Input, Tab, TabPanel, Tabs, TabList, TabPanels, DrawerContent, DrawerOverlay, DrawerCloseButton, Tooltip,
+} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const SideDrawer = () => {
 
@@ -100,19 +115,17 @@ const SideDrawer = () => {
   }
 
   return (
-    <Box
-      display="flex"
-      justifyContent={"space-between"}
-      alignItems={"center"}
-      bgGradient="linear(to-r, blue.500, purple.200)"
-      p="10px 50px"
-      borderWidth={"5px"}
-      borderColor="00FFFF"
-      boxShadow='dark-lg'
-      width="100%"
-      >
-          <Tooltip label="Search Service" hasArrow placement='bottom-end'>
-            <Button variant={"ghost"} ref={btnRef} onClick={onOpen}>
+    <>
+      <Box backgroundColor="#EDF2F7" px={4} position={'fixed'} w={'100%'} zIndex={'2'} backdropFilter={'10px'}>
+        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+
+          <Tooltip hasArrow placement='bottom-end'>
+            <Button variant={'solid'}
+              colorScheme={'teal'}
+              size={'sm'}
+              mr={4}
+              ref={btnRef}
+              onClick={onOpen}>
               <i className="fas fa-search"></i>
                 <Text d={{base: "none"}} px="4">
                   Search Services
@@ -186,46 +199,48 @@ const SideDrawer = () => {
               </Tabs>
             </DrawerContent>
           </Drawer>
-        <Link to="/">
-          <Text as='button' fontSize={"5xl"} fontFamily="Work sans">
-            Bazar
-          </Text>
-        </Link>
-        <div>
-          <Menu>
-            <MenuButton p={1}> 
-              <BellIcon fontSize="1.5rem" m={1}/>
-            </MenuButton>
-          </Menu>
+          <Link to="/">
+            <Text as='button' fontSize={"5xl"} fontFamily="Work sans" >
+              Bazar
+            </Text>
+          </Link>
           {user ? (
-          <Menu >
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} height={"100%"}>
-              {user.data.username ? (<Text>{user.data.username}</Text>)
-              : <Text>{user.data.name}</Text>}
-              <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
-            </MenuButton>
-            <MenuList>
-              <Link to='/my-profile'>
-                <MenuItem>My Profile</MenuItem>
-              </Link>
-              <MenuDivider />
-                <Link to='/services'>
-                  <MenuItem>Services</MenuItem>
-                </Link>
-              <MenuDivider />
-              <Link to='/chats'>
-                  <MenuItem>Chat</MenuItem>
-                </Link>
-              <MenuDivider />
-              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
+            <Flex alignItems={'center'}>
+              <Menu >
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} height={"100%"}>
+                  {user.data.username ? (<Text>{user.data.username}</Text>)
+                  : <Text>{user.data.name}</Text>}
+                  <Avatar size={'sm'} cursor='pointer' name={user.data.username} src={user.data.pic} />
+                </MenuButton>
+                <MenuList>
+                  <Link to='/my-profile'>
+                    <MenuItem>My Profile</MenuItem>
+                  </Link>
+                  <MenuDivider />
+                    <Link to='/services'>
+                      <MenuItem>Services</MenuItem>
+                    </Link>
+                  <MenuDivider />
+                  <Link to='/chats'>
+                      <MenuItem>Chat</MenuItem>
+                    </Link>
+                  <MenuDivider />
+                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
           ):(
+          <Flex alignItems={'center'}>
             <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <Avatar size={'sm'} cursor='pointer' />
-            </MenuButton>
-            <MenuList>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                variant={'link'}
+                cursor={'pointer'}
+                minW={0}>
+                <Avatar size={'sm'} cursor='pointer' />
+              </MenuButton>
+              <MenuList>
               <Link to='/auth'>
                   <MenuItem>Registrati</MenuItem>
               </Link>
@@ -233,12 +248,13 @@ const SideDrawer = () => {
               <Link to='/auth'>
                 <MenuItem>Accedi</MenuItem>
               </Link>
-              <MenuDivider />
             </MenuList>
-          </Menu>
-          )}
-        </div>
-    </Box>
+            </Menu>
+          </Flex>
+        )}
+        </Flex>
+      </Box>
+    </>
   )
 }
 

@@ -10,6 +10,7 @@ import ChatContainer from '../components/chat/ChatContainer'
 import SideDrawer from "../components/miscellanous/SideDrawer";
 import ErrorPage from './ErrorPage'
 import { decrypt } from "../utils/decrypted_value";
+import Footer from "../components/miscellanous/Footer";
 
 
 const ChatPage = () => {
@@ -102,6 +103,7 @@ const ChatPage = () => {
             )}
           </div>
         </Container>
+        <Footer />
       </>
     )
   }
@@ -109,7 +111,7 @@ const ChatPage = () => {
 }
 
 const Container = styled.div`
-  height: 89.4vh;
+  height: 93.3vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -117,6 +119,7 @@ const Container = styled.div`
   gap: 1rem;
   align-items: center;
   background-color: #131324;
+  padding-top: 64px;
   .container {
     height: 85vh;
     width: 85vw;
