@@ -61,3 +61,12 @@ La web application è stata testata tramite analisi di vulnerabilità a diverse 
 - [x] Sanitize and render HTML 
 - [x] Brute force prevention
 - [x] DDos Protection
+
+### Operazioni API-Rest
+Per quanto riguarda la gestione dei servizi offerti e richiesti ci siamo basati sull'utilizzo dell'architettura REST. Quindi una volta definite le 'routes', è stato possibile accedere alla risorsa desiderata e poter effettuare le dovute operazioni utilizzando i metodi HTTP tra cui:
+
+- GET
+- DELETE
+- POST
+- PATCH
+
