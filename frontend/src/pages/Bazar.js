@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Box } from '@chakra-ui/react'
 import Home from '../components/miscellanous/Home'
 import { Container } from '@chakra-ui/react'
-import {  VStack} from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 import { Flex } from '@chakra-ui/react'
 
 const Bazar = () => {
