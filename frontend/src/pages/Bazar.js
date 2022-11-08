@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Box } from '@chakra-ui/react'
 import Home from '../components/miscellanous/Home'
 import { Container } from '@chakra-ui/react'
-import {  VStack, HStack,StackDivider } from '@chakra-ui/react'
+import {  VStack} from '@chakra-ui/react'
 import { Flex } from '@chakra-ui/react'
 
 const Bazar = () => {
@@ -39,7 +39,7 @@ const Bazar = () => {
             <Container pt='20' >
            
 
-            <VStack spacing ='50px' w='70%' marginLeft='30%'>
+            <VStack spacing ='50px' w='70%' marginLeft='15%'>
             <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                 <h1>Offered Services</h1>    
             </Box>
