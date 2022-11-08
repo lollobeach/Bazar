@@ -29,8 +29,8 @@ const Services = (props) => {
             user: item.user
         }}>
           
-    <Box maxW='sm' borderWidth='5px' borderRadius='lg' overflow='hidden' m='15px'>
-      <Image src={item.picture} alt={item.description} borderWidth='5px' minH='299.85' minW='299.85'/>
+    <Box maxW='sm' borderWidth='5px' borderRadius='lg' overflow='hidden' m='15px' minW='166.28'>
+      <Image src={item.picture} alt={item.description} borderWidth='5px' h='299.85'/>
 
       <Box p='6'>
         <Box display='flex' alignItems='baseline'>
@@ -43,27 +43,42 @@ const Services = (props) => {
             ml='2'
           >
           </Box>
-          <Box
-            mt='1'
-            fontWeight='semibold'
-            as='h4'
-            lineHeight='tight'
-            noOfLines={1}
-          >
-            {item.title}
+        </Box>
+
+        <Box
+          mt='1'
+          fontWeight='semibold'
+          as='h4'
+          lineHeight='tight'
+          noOfLines={1}
+        >
+          {item.title}
+        </Box>
+
+        <Box>
+          
+
+          <Box as='span' color='gray.600' fontSize='sm'>
+          
           </Box>
           <Box>
-            <Box as='span' color='gray.600' fontSize='sm' />
-            <Box>
-              Data creation: {item.dataCreation.split('T')[0]}
-            </Box>
-            <Box>
-            </Box>
+          
+          Data creation: {item.dataCreation.split('T')[0]}
           </Box>
-              {item.place}
+          
+          <Box>
+
+          </Box>
+
         </Box>
-      </Box>      
-    </Link>
+            {item.place}
+        </Box>
+        </Box>
+        
+            
+        </Link>
+      
+
     ))
     
   return (
