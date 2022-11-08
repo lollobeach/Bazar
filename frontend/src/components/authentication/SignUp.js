@@ -283,17 +283,6 @@ const SignUp = () => {
         setLoading(false)
         return
       }
-      // if (!validName.test(name)) {
-      //   toast({
-      //     title: "Name format not correct",
-      //     status: "warning",
-      //     duration: 5000,
-      //     isClosable: true,
-      //     position: "bottom"
-      //   })
-      //   setLoading(false)
-      //   return
-      // }
       if(password !== confirmpassword){
         toast({
           title: "Password do not match",
