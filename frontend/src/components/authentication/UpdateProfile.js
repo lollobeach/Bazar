@@ -276,7 +276,7 @@ const UpdateProfile = (props) => {
     }
 
     const form = (
-        <Box borderRadius='lg' w='50%' borderWidth='5px' >
+        <Box mt='50px' borderRadius='lg' w='50%' borderWidth='5px' >
             <Avatar mt='1%' size='2xl' src={user.picture} />
             <Box w='100%' >
                 <Box mt='2%'>
