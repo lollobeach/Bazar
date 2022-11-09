@@ -1,5 +1,4 @@
 const express = require('express');
-const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const mongoose = require("mongoose");
 const path = require('path')
