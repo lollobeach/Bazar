@@ -116,7 +116,7 @@ const ServicesUserPage = () => {
                 {corporateServices ? (
                 
                 <>
-                 <Flex>
+                 <Flex h="78.5vh">
                     <Container pt='20' >
                     <VStack spacing ='50px' w='70%' marginLeft='23%'>
                             <Box  bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
@@ -130,7 +130,7 @@ const ServicesUserPage = () => {
                </>
                 ) : (
                 <>
-                <Flex>
+                <Flex h="78.5vh">
                     <Container pt='20' >
                     <VStack spacing ='50px' w='70%' marginLeft='15%'>
                     <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
