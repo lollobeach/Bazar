@@ -56,6 +56,8 @@ Per quanto riguarda la gestione dei servizi offerti e richiesti ci siamo basati 
 - POST
 - PATCH
 
+<img src="/assets/images/REST-API-Tutorials-AndroWep-2976666305.png" height="50%" alt="REST-API">
+
 Ogni route prevede anche un middleware per il controllo del numero delle richieste da uno stesso IP che vengono effettuate per evitare un attacco Brute Force, questo grazie ai pacchetti npm [express-rate-limit](https://www.npmjs.com/package/express-rate-limit?activeTab=readme) e [express-brute](https://github.com/AdamPflug/express-brute).
 
 Inoltre le routes utilizzate per le operazioni POST, PATCH, DELETE e per i GET relativi alle informazioni personali contengono anche un middleware per il controllo del JWT, in quanto, innanzitutto si verifica la presenza del token e se si dovesse trattare di un privato si controlla il piano scelto durante la fase di registrazione e si verifica il numero di servizi offerti inseriti.
