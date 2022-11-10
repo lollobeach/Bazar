@@ -81,7 +81,7 @@ const ServicesUserPage = () => {
                         mt='2%'
                         colorScheme={"blue"}
                         width='300px'
-                        marginLeft='5%'
+                        marginLeft='0%'
                         
                         >
                             Add Service
@@ -130,17 +130,17 @@ const ServicesUserPage = () => {
             </>
                 ) : (
                 <>
-                    <Flex>
-                        <Container pt='20' >
-                        <VStack spacing ='50px' w='70%' marginLeft='30%'>
-                        <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
-                                <h1>Offered Services</h1>
-                                </Box>
-                                <Services services={offeredServices} />
-                        </VStack>
-                        </Container>
-                        
-                        <Container pt='20' >
+                <Flex>
+                    <Container pt='20' >
+                    <VStack spacing ='50px' w='70%' marginLeft='15%'>
+                    <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
+                            <h1>Offered Services</h1>
+                            </Box>
+                            <Services services={offeredServices} />
+                    </VStack>
+                    </Container>
+                    
+                    <Container pt='20' >
 
                         <VStack spacing ='50px' w='70%' marginLeft='15%'>
                             <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'> 
