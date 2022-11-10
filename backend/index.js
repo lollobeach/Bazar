@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require('path')
 const cors = require("cors");
+const compression = require('compression');
 
 let bodyParser = require('body-parser')
 
@@ -10,6 +11,7 @@ require("dotenv").config({ path: "./config.env" });
 let helmet = require('helmet')
 let session = require('express-session')
 
+app.use(compression())
 app.use(express.json())
 
 app.use(bodyParser.urlencoded({ extended: true }))

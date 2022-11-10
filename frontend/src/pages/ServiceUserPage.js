@@ -130,9 +130,9 @@ const ServiceUserPage = () => {
                 <div>
                     <SideDrawer/>
                     <VStack pt={'64px'} h="93.3vh">
-                        <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-                            <Image height='500px' w='50%' src={post.picture} alt='hi' />
-                            <Box w='50%' mt='5%'>
+                        <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display={{base: 'inline', lg:'flex'}} overflow='hidden'>
+                            <Image objectFit={'contain'} height={{base: '162px',lg: '500px'}} w={{base: '100%', lg:'50%'}} src={post.picture} alt='hi' />
+                            <Box w={{base: '100%', lg:'50%'}} mt='5%' overflow={'auto'}>
                                 <Box alignItems='baseline'>
                                     <Badge borderRadius='full' width='55%'  colorScheme='teal'>
                                         <Text fontSize='80%'>
