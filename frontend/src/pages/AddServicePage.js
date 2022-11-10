@@ -44,7 +44,7 @@ const AddServices = () => {
         <div>
           <SideDrawer />
             { insertPost ? (
-              <Box w="100%" p={4} borderRadius="2xl" color="black">
+              <Box w="100%" p={4} borderRadius="2xl" color="black" pt={'64px'}>
                 <Tabs variant='soft-rounded' colorScheme='green' >
                   <TabList mb="1em">
                     <Tab width="50%">Offered Service</Tab>
@@ -61,7 +61,7 @@ const AddServices = () => {
                 </Tabs>
               </Box>
             ) : (
-              <Box w="100%" p={4} borderRadius="2xl" color="black">
+              <Box w="100%" p={4} borderRadius="2xl" color="black" pt={'64px'}>
                 <Tabs variant='soft-rounded' colorScheme='green' >
                   <TabList mb="1em">
                     <Tab width="50%">Offered Service</Tab>
