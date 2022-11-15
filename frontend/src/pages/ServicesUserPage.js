@@ -101,8 +101,8 @@ const ServicesUserPage = () => {
                                         variant={'solid'}
                                         mt='2%'
                                         colorScheme={"blue"}
-                                        width="100%"
-                                        marginLeft='5%'
+                                        width="300px"
+                                        marginLeft='2.75%'
                                         >
                                             <Text d={{base:"none"}} px="4">
                                             Add Service
