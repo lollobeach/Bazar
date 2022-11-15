@@ -107,7 +107,7 @@ const ServiceUserPage = () => {
         }
         fetchInfo()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[post])
 
     if(!post) {
         return (
