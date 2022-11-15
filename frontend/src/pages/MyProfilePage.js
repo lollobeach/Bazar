@@ -6,7 +6,6 @@ import ErrorPage from './ErrorPage'
 import { useNavigate } from 'react-router-dom'
 import UpdateProfile from '../components/authentication/UpdateProfile'
 import { decrypt } from '../utils/decrypted_value'
-import Footer from '../components/miscellanous/Footer'
 
 const MyProfilePage = () => {
 
@@ -85,7 +84,6 @@ const MyProfilePage = () => {
             <div style={{ width: '100%' }}>
                 <SideDrawer />
                 <ErrorPage error={error} />
-                <Footer />
             </div>
         )
     } else {
@@ -94,7 +92,6 @@ const MyProfilePage = () => {
                 <>
                     <SideDrawer />
                     <UpdateProfile user={user}/>
-                    <Footer />
                 </>
             )
         }
@@ -288,9 +285,7 @@ const MyProfilePage = () => {
                         </Box>
                     </Box>
                   
-                </VStack>
-              <Footer /> 
-                
+                </VStack> 
             </div>
         )
     }

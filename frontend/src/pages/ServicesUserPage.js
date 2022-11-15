@@ -6,7 +6,7 @@ import ErrorPage from './ErrorPage'
 import { Box, Button, VStack, Container, Flex, Text } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { decrypt } from '../utils/decrypted_value'
-import Footer from '../components/miscellanous/Footer'
+
 
 const ServicesUserPage = () => {
 
@@ -83,8 +83,7 @@ const ServicesUserPage = () => {
                                 mt='2%'
                                 colorScheme={"blue"}
                                 width='300px'
-                                marginLeft='5%'
-                                
+                                marginLeft={{lg:"5%", base:"-0.5%"}}
                                 >
                                     Add Service
                                 </Button>
@@ -102,8 +101,8 @@ const ServicesUserPage = () => {
                                         variant={'solid'}
                                         mt='2%'
                                         colorScheme={"blue"}
-                                        width="100%"
-                                        marginLeft='5%'
+                                        width="300px"
+                                        marginLeft='2.75%'
                                         >
                                             <Text d={{base:"none"}} px="4">
                                             Add Service
@@ -155,7 +154,6 @@ const ServicesUserPage = () => {
                         </>                       
                         )}
                     </Box>
-                <Footer />
             </>
             
         )
