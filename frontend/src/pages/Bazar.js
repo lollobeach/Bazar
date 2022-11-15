@@ -33,9 +33,9 @@ const Bazar = () => {
     <>
         <SideDrawer/> 
         <Home />
-        <Flex> 
+        <Flex display={{base: 'inline', lg:'flex'}}> 
             <Container pt='20' >
-                <VStack spacing ='50px' w='70%' marginLeft='30%'>
+                <VStack spacing ='50px' w='70%' marginLeft='15%'>
                     <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
                         <h1>Offered Services</h1>    
                     </Box>
