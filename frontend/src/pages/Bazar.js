@@ -53,7 +53,6 @@ const Bazar = () => {
         </Flex>
         <Footer />
     </>
-   
     )
 }
 

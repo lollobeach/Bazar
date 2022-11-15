@@ -108,7 +108,7 @@ const ServiceUserPage = () => {
         }
         fetchInfo()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[post])
 
     if(!post) {
         return (
@@ -129,7 +129,7 @@ const ServiceUserPage = () => {
             return (
                 <div>
                     <SideDrawer/>
-                    <VStack pt={'64px'} h="93.3vh">
+                    <VStack h="93.3vh" pt={'60px'}>
                         <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display={{base: 'inline', lg:'flex'}} overflow='hidden'>
                             <Image objectFit={'contain'} height={{base: '162px',lg: '500px'}} w={{base: '100%', lg:'50%'}} src={post.picture} alt='hi' />
                             <Box w={{base: '100%', lg:'50%'}} mt='5%' overflow={'auto'}>
@@ -245,9 +245,9 @@ const ServiceUserPage = () => {
                                     
                                     
                                     <Badge borderRadius='full' width='55%' colorScheme='teal'>
-                                       <Text fontSize='80%' letterSpacing='wide' > 
-                                      Last Update
-                                      </Text>
+                                    <Text fontSize='80%' letterSpacing='wide' > 
+                                        Last Update
+                                    </Text>
                                         
                                     </Badge>
                                     
@@ -259,7 +259,6 @@ const ServiceUserPage = () => {
                                         textTransform='uppercase'
                                         ml='2'
                                         p='1%'
-
                                     >
                                         {post.lastUpdate.split('T')[0]}
                                     </Box>
@@ -341,9 +340,8 @@ const ServiceUserPage = () => {
                                 )}
                             </Box>
                         </Box>
-                        
+                        <Footer />
                     </VStack>
-                    <Footer />
                 </div>
             )
         }

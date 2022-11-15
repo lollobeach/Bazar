@@ -94,7 +94,6 @@ const MyProfilePage = () => {
                 <>
                     <SideDrawer />
                     <UpdateProfile user={user}/>
-                    <Footer />
                 </>
             )
         }
@@ -289,7 +288,6 @@ const MyProfilePage = () => {
                     </Box>
                   
                 </VStack>
-              <Footer /> 
                 
             </div>
         )

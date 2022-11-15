@@ -46,7 +46,10 @@ const Footer = () => {
         color={useColorModeValue('gray.700', 'gray.200')}
         width="100%"
         position="fixed"
-        bottom="0">
+        bottom="0"
+        mt="1rem"
+        padding="1rem"
+        >
         <Container
             as={Stack}
             maxW={'6xl'}
