@@ -149,7 +149,7 @@ const UpdateService = (props) => {
                             />
                     </Box>
                     <Box display='grid' mt='5%'>
-                        <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
+                        <Badge w={{base:'75%', lg:'50%'}} ml={{base:'12%', lg:'25%'}} borderRadius='full' px='10' colorScheme='teal'>
                             Description
                         </Badge>
                         <Textarea
