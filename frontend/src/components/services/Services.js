@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom'
 import { Box } from '@chakra-ui/react'
 import { Image } from '@chakra-ui/react'
 
+
+
 const Services = (props) => {
 
-  const [posts, setPosts] = React.useState([])
+    const [posts, setPosts] = React.useState([])
 
-  React.useEffect(() => {
-      setPosts(props.services)
-  },[props.services])
+    React.useEffect(() => {
+        setPosts(props.services)
+    },[props.services])
 
     const services = posts.map(item => (
   
@@ -56,14 +58,14 @@ const Services = (props) => {
         </Box>
 
         <Box>
-           
+        
 
           <Box as='span' color='gray.600' fontSize='sm'>
-           
+          
           </Box>
           <Box>
           
-           Data creation: {item.dataCreation.split('T')[0]}
+          Data creation: {item.dataCreation.split('T')[0]}
           </Box>
           
           <Box>
@@ -74,18 +76,20 @@ const Services = (props) => {
             {item.place}
         </Box>
         </Box>
-           
+        
             
         </Link>
-       
+      
 
     ))
     
-  return (
-  <div>
-      {services}
-  </div>  
-  )
+    return (
+    
+    <div>
+        {services}
+    </div>
+    
+    )
 }
 
 export default Services

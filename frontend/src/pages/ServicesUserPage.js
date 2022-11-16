@@ -6,7 +6,7 @@ import ErrorPage from './ErrorPage'
 import { Box, Button, VStack, Container, Flex, Text } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { decrypt } from '../utils/decrypted_value'
-import Footer from '../components/miscellanous/Footer'
+
 
 const ServicesUserPage = () => {
 
@@ -67,94 +67,93 @@ const ServicesUserPage = () => {
         return (
             <>
                 <SideDrawer/>
-                <Box pt={'64px'}>
-                { !corporateServices ? (
-                    <Link 
-                    to='/add-service'
-                    state={{ 
-                        postsNumber: offeredServices.length,
-                        info: info
-                    }}
-                    >
-                    
-                        <Button
-                        mt='2%'
-                        colorScheme={"blue"}
-                        width='300px'
-                        marginLeft='5%'
-                        
-                        >
-                            Add Service
-                        </Button>
-                    </Link>
-                ) : (
-                    <Container>
-                        <VStack spacing ='50px' w='70%' marginLeft='21%'>
-                    <Link 
-                    to='/add-service'
-                    state= {{ info: info}}
-                    >
-                   
 
-                        <Button
-                        variant={'solid'}
-                        mt='2%'
-                        colorScheme={"blue"}
-                        width="100%"
-                        marginLeft='5%'
-                        >
-                            <Text d={{base:"none"}} px="4">
-                            Add Service
-                            </Text>
-                        </Button>
-                        
-                    </Link>
-                    </VStack>
-                    </Container>
-                )}
-                </Box>
-                {corporateServices ? (
-                
-                <>
-                 <Flex>
-                    <Container pt='20' >
-                    <VStack spacing ='50px' w='70%' marginLeft='23%'>
-                            <Box  bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
-                            <h1>Offered Services</h1>
-                            </Box>
+                    <Box pt={'64px'}>
+                        <Box >
+                        { !corporateServices ? (
+                            <Link 
+                            to='/add-service'
+                            state={{ 
+                                postsNumber: offeredServices.length,
+                                info: info
+                            }}
+                            >
+                            
+                                <Button
+                                mt='2%'
+                                colorScheme={"blue"}
+                                width='300px'
+                                marginLeft={{lg:"5%", base:"-0.5%"}}
+                                >
+                                    Add Service
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Container>
+                                <VStack spacing ='50px' w='70%' marginLeft='21%'>
+                                    <Link 
+                                    to='/add-service'
+                                    state= {{ info: info}}
+                                    >
+                                
 
-                            <Services services={corporateServices} />
-                            </VStack>
-                    </Container>
-                  </Flex>
-               </>
-                ) : (
-                <>
-                <Flex>
-                    <Container pt='20' >
-                    <VStack spacing ='50px' w='70%' marginLeft='30%'>
-                    <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
-                            <h1>Offered Services</h1>
-                            </Box>
-                            <Services services={offeredServices} />
-                    </VStack>
-                    </Container>
-                    
-                    <Container pt='20' >
+                                        <Button
+                                        variant={'solid'}
+                                        mt='2%'
+                                        colorScheme={"blue"}
+                                        width="300px"
+                                        marginLeft='2.75%'
+                                        >
+                                            <Text d={{base:"none"}} px="4">
+                                            Add Service
+                                            </Text>
+                                        </Button>
+                                        
+                                    </Link>
+                                </VStack>
+                            </Container>
+                        )}
 
-                    <VStack spacing ='50px' w='70%' marginLeft='15%'>
-                        <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'> 
-                        <h1>Required Services</h1>
                         </Box>
-                  
-                        <Services services={requiredServices} />
-                        </VStack>
-                     </Container>
-                     </Flex>
-                     </>
-                   
-                )}
-                <Footer />
+                        {corporateServices ? (
+  
+                        <>
+                        <Flex h="78.5vh">
+                            <Container pt='20' >
+                            <VStack spacing ='50px' w='70%' marginLeft='23%'>
+                                    <Box  bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
+                                    <h1>Offered Services</h1>
+                                    </Box>
+
+                                    <Services services={corporateServices} />
+                                    </VStack>
+                            </Container>
+                        </Flex>
+                    </>
+                        ) : (
+                        <>
+                        <Flex h="100%" display={{base: 'inline', lg:'flex'}} >
+                            <Container pt='20' >
+                                <VStack spacing ='50px' w='70%' marginLeft={{base: '15%', lg:'30%'}}>
+                                    <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'>
+                                        <h1>Offered Services</h1>
+                                    </Box>
+                                    <Services services={offeredServices} />
+                                </VStack>
+                            </Container>
+                            
+                            <Container pt='20' >
+                                <VStack spacing ='50px' w='70%' marginLeft='15%'>
+                                    <Box bg='blue.500' w='100%' p='25' color='white' borderRadius='7px'> 
+                                        <h1>Required Services</h1>
+                                    </Box>                 
+                                    <Services services={requiredServices} />
+                                </VStack>
+                            </Container>
+                        </Flex>
+                        </>                       
+                        )}
+                    </Box>
             </>
             
         )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, InputRightElement, useToast, Input, Button, VStack, Box, Badge, InputGroup } from '@chakra-ui/react'
+import { Text, Image, InputRightElement, useToast, Input, Button, VStack, Box, Badge, InputGroup } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -276,12 +276,14 @@ const UpdateProfile = (props) => {
     }
 
     const form = (
-        <Box borderRadius='lg' w='50%' borderWidth='5px' >
-            <Avatar mt='1%' size='2xl' src={user.picture} />
-            <Box w='100%' >
+        <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display={{base: 'inline', lg:'flex'}} marginTop="5%">
+                <Image objectFit={'contain'} height={{base: '162px',lg: '500px'}} w={{base: '100%', lg:'50%'}} src={user.picture} alt='hi' />
+                <Box w={{base: '100%', lg:'50%'}} mt='5%' overflow={'auto'}>
                 <Box mt='2%'>
-                        <Badge borderRadius='full' px='10' colorScheme='teal'>
-                            Upload your picture
+                        <Badge ml='10%' w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal' textAlign={"center"}>
+                            <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                                Upload your picture
+                            </Text>
                         </Badge>
                         <Input
                         mt='1%'
@@ -292,7 +294,7 @@ const UpdateProfile = (props) => {
                         />
                 </Box>
                 <Box mt='3%' display='grid'>
-                    <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
+                    <Badge ml={{base:'10%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal'>
                         Email
                     </Badge>
                         <Input
@@ -308,10 +310,12 @@ const UpdateProfile = (props) => {
                         />
                 </Box>
                 <Box mt='3%' display='grid'>
-                    <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
-                        New password
+                    <Badge ml={{base:'10%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal'>
+                        <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                            New password
+                        </Text> 
                     </Badge>
-                    <InputGroup>
+                    <InputGroup display={'flex'}>
                         <Input
                         placeholder='new password'
                         mt='1%'
@@ -324,7 +328,7 @@ const UpdateProfile = (props) => {
                         type={showNewPass ? "text" : "password"}
                         onChange={(e) => setNewPassword(e.target.value)}
                         />
-                        <InputRightElement width={"4.5rem"}>
+                        <InputRightElement width={"4.5rem"} >
                             <Button mt='25%' h="1.75rem" size="sm" onClick={handleClickPass}>
                                 {showNewPass ? "Hide" : "Show"}
                             </Button>
@@ -332,10 +336,12 @@ const UpdateProfile = (props) => {
                     </InputGroup>
                 </Box>
                 <Box mt='3%' display='grid'>
-                    <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
-                        Confirm new password
+                    <Badge ml={{base:'2%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal' textAlign={"center"}>
+                        <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                            Confirm new password
+                        </Text>
                     </Badge>
-                    <InputGroup>
+                    <InputGroup display={'flex'}>
                         <Input
                         placeholder='confirm new password'
                         mt='1%'
@@ -358,8 +364,10 @@ const UpdateProfile = (props) => {
                 {user.username ? (
                     <Box>
                         <Box display='grid' mt='2%'>
-                        <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
-                            Name
+                        <Badge ml={{base:'10%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal'>
+                            <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                                Name
+                            </Text>
                         </Badge>
                         <Input
                             placeholder={user.name}
@@ -374,8 +382,10 @@ const UpdateProfile = (props) => {
                             />
                         </Box>
                         <Box display='grid' mt='2%'>
-                            <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
-                                Lastname
+                            <Badge ml={{base:'10%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal'>
+                                <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                                    Lastname
+                                </Text>
                             </Badge>
                             <Input
                             placeholder={user.lastName}
@@ -390,8 +400,10 @@ const UpdateProfile = (props) => {
                             />
                         </Box>
                         <Box display='grid' mt='2%'>
-                            <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
-                                Username
+                            <Badge ml={{base:'10%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal'>
+                                <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                                    Username
+                                </Text>
                             </Badge>
                             <Input
                             placeholder={user.username}
@@ -406,8 +418,10 @@ const UpdateProfile = (props) => {
                             />
                         </Box>
                         <Box display='grid' mt='2%'>
-                            <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
-                                Birthdate
+                            <Badge ml={{base:'10%', md:'25%'}} w={{base:'80%', md:'60%'}} borderRadius='full' px='10' colorScheme='teal'>
+                                <Text textAlign={"center"} justifyContent={"center"} display="flex">   
+                                    Birthdate
+                                </Text>
                             </Badge>
                             <Input
                             type='date'
