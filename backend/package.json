@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd frontend && npm run build",
-    "install-client": "cd frontend && npm install",
+    "build": "cd ../frontend && npm run build",
+    "install-client": "cd ../frontend && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
     "server": "nodemon index.js",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
