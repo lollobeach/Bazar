@@ -10,7 +10,7 @@ import ChatContainer from '../components/chat/ChatContainer'
 import SideDrawer from "../components/miscellanous/SideDrawer";
 import ErrorPage from './ErrorPage'
 import { decrypt } from "../utils/decrypted_value";
-import Footer from "../components/miscellanous/Footer";
+
 
 
 const ChatPage = () => {
@@ -103,7 +103,6 @@ const ChatPage = () => {
             )}
           </div>
         </Container>
-        <Footer />
       </>
     )
   }

@@ -75,5 +75,3 @@ const Footer = () => {
         </Box>
     );
 }
-
-export default Footer
