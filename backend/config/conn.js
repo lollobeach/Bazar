@@ -13,7 +13,7 @@ function createOfferedService(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['title', 'description', 'place', 'price', 'dataCreation', 'lastUpdate', 'user'],
+                required: ['title', 'description', 'price', 'place', 'picture', 'dataCreation', 'lastUpdate', 'user'],
                 properties: {
                     title: {
                         bsonType: 'string'
@@ -26,6 +26,9 @@ function createOfferedService(db) {
                         bsonType: 'string',
                     },
                     place: {
+                        bsonType: 'string'
+                    },
+                    picture: {
                         bsonType: 'string'
                     },
                     dataCreation: {
@@ -48,7 +51,7 @@ function createRequiredService(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['title', 'description', 'place', 'dataRequired','dataCreation', 'lastUpdate', 'user'],
+                required: ['title', 'description', 'place', 'picture', 'dataRequired','dataCreation', 'lastUpdate', 'user'],
                 properties: {
                     title: {
                         bsonType: 'string'
@@ -58,6 +61,9 @@ function createRequiredService(db) {
                         maxLength: 500
                     },
                     place: {
+                        bsonType: 'string'
+                    },
+                    picture: {
                         bsonType: 'string'
                     },
                     dataRequired: {
@@ -83,7 +89,7 @@ function createUser(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'offeredServices', 'requiredServices'],
+                required: ['name', 'lastName', 'birthDate', 'username', 'email', 'password', 'plan', 'picture', 'offeredServices', 'requiredServices'],
                 properties: {
                     name: {
                         bsonType: 'string'
@@ -108,6 +114,9 @@ function createUser(db) {
                     plan: {
                         bsonType: 'string'
                     },
+                    picture: {
+                        bsonType: 'string'
+                    },
                     offeredServices: {
                         bsonType: 'array'
                     },
@@ -125,7 +134,7 @@ function createCorporate(db) {
         validator: {
             $jsonSchema: {
                 bsonType: 'object',
-                required: ['name', 'countryOfResidence', 'address', 'iva', 'email', 'password', 'offeredServices'],
+                required: ['name', 'countryOfResidence', 'address', 'iva', 'email', 'password', 'picture', 'offeredServices'],
                 properties: {
                     name: {
                         bsonType: 'string'
@@ -146,6 +155,9 @@ function createCorporate(db) {
                     password: {
                         bsonType: 'string',
                         pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\\[-`{-~]).{6,64}$'
+                    },
+                    picture: {
+                        bsonType: 'string'
                     },
                     offeredServices: {
                         bsonType: 'array'

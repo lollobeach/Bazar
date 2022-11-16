@@ -1,0 +1,156 @@
+
+body {
+  margin: 0;
+  margin: 30px auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: linear-gradient(blue,purple);
+  min-height: 100vh;
+}
+
+.superContainer{
+  width: 100%;
+  min-width:800px;
+}
+
+
+.superContainerUserPage{
+  width: 100%;
+  min-width:800px;
+}
+
+.container { 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: inherit;
+}
+
+
+.serviceImage{
+	border-radius: 50px;
+  height: 100%;
+  width:100% ;
+}
+
+
+.containerUserPage{
+  width: 100%;
+  column-gap: 10%;
+  display: flex;
+  flex-direction: row;
+}
+
+.columnsContainer{
+  column-gap: 10%;
+  display: flex;
+  flex-direction: row;
+  position:relative;
+}
+
+.container-corp-service {
+  width: 100%;
+  display:flex;
+  flex-direction: row;
+  padding:200px;
+  margin-bottom:20%;
+  margin-right: 200px;
+  text-align: center;
+}
+
+
+.offered-services-column {
+  margin-left:32%;
+  margin-top: 5%;
+  
+}
+
+.required-services-column{
+  margin-right: 28%;
+  margin-top: 5%;
+  
+}
+
+.serviceCard{
+  margin-top: 50px;
+  height: 500px;
+  width: 260px;
+  margin-bottom: 15px;
+  background-size: cover;
+  position: relative;
+  border-radius: 50px;
+	-webkit-transition: 200ms ease-in-out;
+	-o-transition: 200ms ease-in-out;
+	transition: 200ms ease-in-out;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.serviceImage{
+  border-radius: 50px;
+  max-width:100% ;
+  max-height:100% ;
+  background-size: cover;  
+}
+
+.box{
+	width:63% ;
+	height: 40%;
+  background-color: #ffffff;
+  position: absolute;
+  text-align: center;
+  margin-left:19.5%;
+  top:60%;
+	border-radius: 30px;
+	-webkit-transition: 200ms ease-in-out;
+	-o-transition: 200ms ease-in-out;
+	transition: 200ms ease-in-out;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.serviceTitle{
+  font-weight: bold;
+  padding:5px;
+  font-size: 18px; 
+}
+
+.serviceInformations > p{
+  padding: 4px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 13px;
+}
+
+.linkBox {
+  background-color: black;
+  color:white;
+  border-radius: 8px;
+  display:block;
+  margin: 12px 25px;
+  position:absolute;
+  bottom: -6%; 
+  margin-left:18%;
+  width: 65%;
+}
+
+
+.offered-services-column-corporate>h1{
+  border: 5px solid rgb(0, 0, 0);
+  padding: 30px;
+  text-align: center;
+  background-image: linear-gradient(to top left, #ffffff 50%, #696b6c 100%);
+  color: black;
+  font-size: 30px;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  border-radius: 30px;
+  text-align: center;
+}
+.offered-services-column-corporate{
+  margin-left: 37.5%;
+  margin-top: -10;
+}
+
+
