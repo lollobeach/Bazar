@@ -128,16 +128,17 @@ const UpdateService = (props) => {
     }
 
     const form = (
-            <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display='flex' overflow='hidden'>
-                <Image height='540px' w='50%' src={picture} alt='hi' />
-                <Box w='50%'>
-                    <Box mt='3%' display='grid'>
-                        <Badge ml='25%' w='50%' borderRadius='full' px='10' colorScheme='teal'>
+        <VStack pt={'64px'} h="100%">
+            <Box margin='2%' w='60%' borderWidth='5px' borderRadius='lg' display={{base: 'inline', lg:'flex'}} overflow='hidden' marginTop="5%">
+                <Image objectFit={'contain'} height={{base: '162px',lg: '500px'}} w={{base: '100%', lg:'50%'}} src={picture} alt='hi' />
+                <Box w={{base: '100%', lg:'50%'}} mt='5%' overflow={'auto'}>
+                    <Box alignItems='baseline'>
+                        <Badge borderRadius='full' width='50%' colorScheme='teal'>
                             Title
                         </Badge>
                             <Input
                             mt='2%'
-                            ml='15%'
+                            ml='1%'
                             placeholder={title}
                             color='gray.500'
                             fontWeight='semibold'
@@ -148,7 +149,7 @@ const UpdateService = (props) => {
                             />
                     </Box>
                     <Box display='grid' mt='5%'>
-                        <Badge w='50%' ml='25%' borderRadius='full' px='10' colorScheme='teal'>
+                        <Badge w={{base:'75%', lg:'50%'}} ml={{base:'12%', lg:'25%'}} borderRadius='full' px='10' colorScheme='teal'>
                             Description
                         </Badge>
                         <Textarea
@@ -252,6 +253,7 @@ const UpdateService = (props) => {
                     </Box>
                 </Box>
             </Box>
+        </VStack>
     )
 
     return (
