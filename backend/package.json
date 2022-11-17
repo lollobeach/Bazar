@@ -4,12 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd ../frontend && npm run build",
-    "install-client": "cd ../frontend && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "server": "nodemon index.js",
-    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix ../frontend\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix ../frontend\""
+    "server": "node index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "author": "4.20",
   "license": "ISC",
