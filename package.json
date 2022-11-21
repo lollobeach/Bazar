@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
       "start": "node ./backend/index.js",
-      "heroku-postbuild": "cd frontend/ && npm run build"
+      "heroku-postbuild": "cd frontend/ && npm install && npm run build"
     },
     "author": "4.20",
     "license": "ISC",
