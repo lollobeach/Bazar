@@ -77,10 +77,6 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../frontend/build', 'index.html'));
-})
-
 require('./routes/auth')(app)
 app.use(require("./routes/Offered_Services"));
 app.use(require("./routes/Required_Services"));
@@ -88,3 +84,6 @@ app.use(require("./routes/Unauthorised"))
 app.use(require("./routes/user_corporate"))
 app.use(require("./routes/chats"));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../frontend/build', 'index.html'));
+})
